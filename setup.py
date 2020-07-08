@@ -5,7 +5,21 @@ this_directory = path.abspath(path.dirname(__file__))
 with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
-requirements = []
+requirements = [
+    "bg-atlasapi==0.0.3rc0",
+    "bgspace",
+    "numpy>=1.15.4,<1.19.0",
+    "configparser",
+    "scikit-image>=0.14.0,<0.17.0",
+    "multiprocessing-logging",
+    "configobj",
+    "slurmio",
+    "brainio>=0.0.19",
+    "fancylog",
+    "micrometa",
+    "imlib>=0.0.26",
+    "neuro>=0.0.13",
+]
 
 
 setup(
@@ -16,20 +30,11 @@ setup(
     long_description_content_type="text/markdown",
     install_requires=requirements,
     extras_require={
-        "dev": [
-            "sphinx",
-            "recommonmark",
-            "sphinx_rtd_theme",
-            "pydoc-markdown",
-            "black",
-            "pytest-cov",
-            "pytest",
-            "gitpython",
-            "coverage",
-        ]
+        "dev": ["black", "pytest-cov", "pytest", "gitpython", "coverage",]
     },
     python_requires=">=3.6, <3.8",
     packages=find_namespace_packages(exclude=("docs", "tests*")),
+    entry_points={"console_scripts": ["brainreg = brainreg.cli:main",]},
     include_package_data=True,
     author="Adam Tyson",
     author_email="adam.tyson@ucl.ac.uk",
