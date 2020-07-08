@@ -5,7 +5,7 @@ this_directory = path.abspath(path.dirname(__file__))
 with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
-requirements = []
+requirements = ["bg-atlasapi==0.0.3rc0"]
 
 
 setup(
@@ -16,13 +16,7 @@ setup(
     long_description_content_type="text/markdown",
     install_requires=requirements,
     extras_require={
-        "dev": [
-            "black",
-            "pytest-cov",
-            "pytest",
-            "gitpython",
-            "coverage",
-        ]
+        "dev": ["black", "pytest-cov", "pytest", "gitpython", "coverage",]
     },
     python_requires=">=3.6, <3.8",
     packages=find_namespace_packages(exclude=("docs", "tests*")),
