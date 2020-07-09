@@ -20,6 +20,9 @@ class Paths:
 
     def make_reg_paths(self):
         self.downsampled_brain_path = self.make_reg_path("downsampled.tiff")
+        self.downsampled_brain_standard_space = self.make_reg_path(
+            "downsampled_standard.tiff"
+        )
         self.boundaries_file_path = self.make_reg_path("boundaries.tiff")
 
         self.hemispheres = self.make_reg_path(HEMISPHERES)
@@ -49,6 +52,11 @@ class NiftyRegPaths:
         self.make_reg_paths()
 
     def make_reg_paths(self):
+        self.downsampled_brain = self.make_reg_path("downsampled.nii")
+        self.downsampled_brain_standard_space = self.make_reg_path(
+            "downsampled_standard.nii"
+        )
+
         self.brain_filtered = self.make_reg_path("brain_filtered.nii")
 
         self.hemispheres = self.make_reg_path("hemispheres.nii")

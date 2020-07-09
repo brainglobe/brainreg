@@ -1,4 +1,3 @@
-import os
 import logging
 import tempfile
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
@@ -10,7 +9,6 @@ from micrometa.micrometa import SUPPORTED_METADATA_TYPES
 from imlib.general.system import ensure_directory_exists
 from imlib.general.numerical import check_positive_int, check_positive_float
 from imlib.image.metadata import define_pixel_sizes
-from imlib.source import source_files
 
 from brainreg.main import main as register
 
@@ -25,8 +23,9 @@ def register_cli_parser():
     parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
     parser = cli_parse(parser)
     parser = visualisation_parser(parser)
-    parser = config_parse(parser)
     parser = registration_parse(parser)
+    parser = niftyreg_parse(parser)
+
     parser = pixel_parser(parser)
     parser = geometry_parser(parser)
     parser = misc_parse(parser)
@@ -190,19 +189,6 @@ def visualisation_parser(parser):
     return parser
 
 
-def config_parse(parser):
-    config_opt_parser = parser.add_argument_group("Config options")
-    config_opt_parser.add_argument(
-        "--registration-config",
-        dest="registration_config",
-        type=str,
-        default=source_files.source_custom_config_amap(),
-        help="To supply your own, custom registration configuration file.",
-    )
-
-    return parser
-
-
 def registration_parse(parser):
     registration_opt_parser = parser.add_argument_group("Registration options")
     registration_opt_parser.add_argument(
@@ -221,8 +207,12 @@ def registration_parse(parser):
         action="store_true",
         help="Dont save the downsampled brain before filtering.",
     )
+    return parser
 
-    registration_opt_parser.add_argument(
+
+def niftyreg_parse(parser):
+    niftyreg_opt_parser = parser.add_argument_group("NiftyReg options")
+    niftyreg_opt_parser.add_argument(
         "--affine-n-steps",
         dest="affine_n_steps",
         type=check_positive_int,
@@ -234,7 +224,7 @@ def registration_parse(parser):
         "steps are being performed, with each step halving the data "
         "size along each dimension.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--affine-use-n-steps",
         dest="affine_use_n_steps",
         type=check_positive_int,
@@ -248,7 +238,7 @@ def registration_parse(parser):
         "full resolution data. Can be used to save time if running the "
         "full resolution doesn't result in noticeable improvements.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--freeform-n-steps",
         dest="freeform_n_steps",
         type=check_positive_int,
@@ -260,7 +250,7 @@ def registration_parse(parser):
         "steps are being performed, with each step halving the data "
         "size along each dimension.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--freeform-use-n-steps",
         dest="freeform_use_n_steps",
         type=check_positive_int,
@@ -274,7 +264,7 @@ def registration_parse(parser):
         "full resolution data. Can be used to save time if running the "
         "full resolution doesn't result in noticeable improvements.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--bending-energy-weight",
         dest="bending_energy_weight",
         type=check_positive_float,
@@ -285,7 +275,7 @@ def registration_parse(parser):
         "with higher values leading to more restriction of the "
         "registration.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--grid-spacing",
         dest="grid_spacing",
         type=int,
@@ -296,7 +286,7 @@ def registration_parse(parser):
         "grid spacing allows for more local deformations but increases "
         "the risk of over-fitting.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--smoothing-sigma-reference",
         dest="smoothing_sigma_reference",
         type=float,
@@ -306,7 +296,7 @@ def registration_parse(parser):
         "Positive values are interpreted as real values in mm, "
         "negative values are interpreted as distance in voxels.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--smoothing-sigma-floating",
         dest="smoothing_sigma_floating",
         type=float,
@@ -316,7 +306,7 @@ def registration_parse(parser):
         "values are interpreted as real values in mm, negative values "
         "are interpreted as distance in voxels.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--histogram-n-bins-floating",
         dest="histogram_n_bins_floating",
         type=check_positive_int,
@@ -325,7 +315,7 @@ def registration_parse(parser):
         "for the calculation of Normalized Mutual Information on "
         "the floating image.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--histogram-n-bins-reference",
         dest="histogram_n_bins_reference",
         type=check_positive_int,
@@ -350,15 +340,6 @@ def prep_registration(args):
     return args, additional_images_downsample
 
 
-def make_paths_absolute(args):
-    args.image_paths = os.path.abspath(args.image_paths)
-    args.registration_output_folder = os.path.abspath(
-        args.registration_output_folder
-    )
-    args.registration_config = os.path.abspath(args.registration_config)
-    return args
-
-
 def run():
     start_time = datetime.now()
     args = register_cli_parser().parse_args()
@@ -378,7 +359,6 @@ def run():
     logging.info("Starting registration")
 
     register(
-        args.registration_config,
         args.image_paths,
         args.registration_output_folder,
         x_pixel_um=args.x_pixel_um,
@@ -396,8 +376,6 @@ def run():
         histogram_n_bins_reference=args.histogram_n_bins_reference,
         sort_input_file=args.sort_input_file,
         n_free_cpus=args.n_free_cpus,
-        save_downsampled=not (args.no_save_downsampled),
-        boundaries=not (args.no_boundaries),
         additional_images_downsample=additional_images_downsample,
         debug=args.debug,
     )

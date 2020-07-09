@@ -6,7 +6,6 @@ The module to handle all the registration options and program binaries
 """
 
 
-from imlib.general.config import get_config_obj
 from imlib.source.niftyreg_binaries import get_niftyreg_binaries, get_binary
 
 
@@ -19,7 +18,6 @@ class RegistrationParams:
 
     def __init__(
         self,
-        config_path,
         affine_n_steps=6,
         affine_use_n_steps=5,
         freeform_n_steps=6,
@@ -31,7 +29,6 @@ class RegistrationParams:
         histogram_n_bins_floating=128,
         histogram_n_bins_reference=128,
     ):
-        self.config = get_config_obj(config_path)
         self.transform_program_path = self.__get_binary("transform")
         self.affine_reg_program_path = self.__get_binary("affine")
         self.freeform_reg_program_path = self.__get_binary("freeform")

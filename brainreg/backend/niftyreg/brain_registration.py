@@ -23,13 +23,8 @@ class BrainRegistration(object):
     """
 
     def __init__(
-        self,
-        registration_config,
-        paths,
-        registration_params,
-        n_processes=None,
+        self, paths, registration_params, n_processes=None,
     ):
-        self.registration_config = registration_config
         self.paths = paths
         self.reg_params = registration_params
         if n_processes is not None:
