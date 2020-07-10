@@ -114,6 +114,10 @@ class NiftyRegPaths:
             self.tmp__segmentation_error_file,
         ) = self.compute_reg_log_file_paths("segment")
         (
+            self.tmp__inverse_transform_log_file,
+            self.tmp__inverse_transform_error_file,
+        ) = self.compute_reg_log_file_paths("inverse_transform")
+        (
             self.tmp__invert_affine_log_file,
             self.tmp__invert_affine_error_file,
         ) = self.compute_reg_log_file_paths("invert_affine")

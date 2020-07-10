@@ -1,11 +1,3 @@
-"""
-registration_params
-===================
-
-The module to handle all the registration options and program binaries
-"""
-
-
 from imlib.source.niftyreg_binaries import get_niftyreg_binaries, get_binary
 
 

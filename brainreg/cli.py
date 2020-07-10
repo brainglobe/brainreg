@@ -1,6 +1,6 @@
 import logging
 import tempfile
-from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, Namespace
 from datetime import datetime
 from fancylog import fancylog
 from pathlib import Path
@@ -10,10 +10,12 @@ from imlib.general.system import ensure_directory_exists
 from imlib.general.numerical import check_positive_int, check_positive_float
 from imlib.image.metadata import define_pixel_sizes
 
+
 from brainreg.main import main as register
 
 import brainreg as program_for_log
 
+from bg_atlasapi.bg_atlas import AllenBrain25Um
 
 temp_dir = tempfile.TemporaryDirectory()
 temp_dir_path = temp_dir.name
@@ -22,10 +24,7 @@ temp_dir_path = temp_dir.name
 def register_cli_parser():
     parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
     parser = cli_parse(parser)
-    parser = visualisation_parser(parser)
-    parser = registration_parse(parser)
     parser = niftyreg_parse(parser)
-
     parser = pixel_parser(parser)
     parser = geometry_parser(parser)
     parser = misc_parse(parser)
@@ -46,7 +45,7 @@ def cli_parse(parser):
     cli_parser.add_argument(
         dest="registration_output_folder",
         type=str,
-        help="Directory to save the cubes into",
+        help="Directory to save the output",
     )
 
     cli_parser.add_argument(
@@ -58,6 +57,16 @@ def cli_parse(parser):
         help="Paths to N additional channels to downsample to the same "
         "coordinate space. ",
     )
+    cli_parser.add_argument(
+        "--sort-input-file",
+        dest="sort_input_file",
+        action="store_true",
+        help="If set to true, the input text file will be sorted using "
+        "natural sorting. This means that the file paths will be "
+        "sorted as would be expected by a human and "
+        "not purely alphabetically",
+    )
+
     return parser
 
 
@@ -125,67 +134,16 @@ def geometry_parser(parser):
     geometry_opt_parser = parser.add_argument_group(
         "Options to define size/shape/orientation of data"
     )
+
     geometry_opt_parser.add_argument(
         "--orientation",
         type=str,
-        choices=("coronal", "sagittal", "horizontal"),
-        default="coronal",
+        default="asl",
         help="The orientation of the sample brain. "
         "This is used to transpose the atlas "
         "into the same orientation as the brain.",
     )
 
-    # Warning: atlas reference
-    geometry_opt_parser.add_argument(
-        "--flip-x",
-        dest="flip_x",
-        action="store_true",
-        help="If the supplied data does not match the NifTI standard "
-        "orientation (origin is the most ventral, posterior, left voxel),"
-        "then the atlas will be flipped to match the input data",
-    )
-    geometry_opt_parser.add_argument(
-        "--flip-y",
-        dest="flip_y",
-        action="store_true",
-        help="If the supplied data does not match the NifTI standard "
-        "orientation (origin is the most ventral, posterior, left voxel),"
-        "then the atlas will be flipped to match the input data",
-    )
-    geometry_opt_parser.add_argument(
-        "--flip-z",
-        dest="flip_z",
-        action="store_true",
-        help="If the supplied data does not match the NifTI standard "
-        "orientation (origin is the most ventral, posterior, left voxel),"
-        "then the atlas will be flipped to match the input data",
-    )
-
-    geometry_opt_parser.add_argument(
-        "--rotation",
-        dest="rotation",
-        default="x0y0z0",
-        help="How to rotate the atlas to match the raw data. In the format "
-        "'xIyJzK', where x, y & z are the axes to rotate around, and "
-        "I, J & K are the number of 90 degree rotations for the "
-        "respective axes.",
-    )
-
-    return parser
-
-
-def visualisation_parser(parser):
-    vis_parser = parser.add_argument_group(
-        "Options relating to registration visualisation"
-    )
-
-    vis_parser.add_argument(
-        "--no-boundaries",
-        dest="no_boundaries",
-        action="store_true",
-        help="Do not precompute the outline images (if you don't want to"
-        " use brainreg_vis",
-    )
     return parser
 
 
@@ -201,17 +159,11 @@ def registration_parse(parser):
         "not purely alphabetically",
     )
 
-    registration_opt_parser.add_argument(
-        "--no-save-downsampled",
-        dest="no_save_downsampled",
-        action="store_true",
-        help="Dont save the downsampled brain before filtering.",
-    )
-    return parser
-
 
 def niftyreg_parse(parser):
-    niftyreg_opt_parser = parser.add_argument_group("NiftyReg options")
+    niftyreg_opt_parser = parser.add_argument_group(
+        "NiftyReg registration backend options"
+    )
     niftyreg_opt_parser.add_argument(
         "--affine-n-steps",
         dest="affine_n_steps",
@@ -340,16 +292,13 @@ def prep_registration(args):
     return args, additional_images_downsample
 
 
-import argparse
-
-
 def get_arg_groups(args, parser):
     arg_groups = {}
     for group in parser._action_groups:
         group_dict = {
             a.dest: getattr(args, a.dest, None) for a in group._group_actions
         }
-        arg_groups[group.title] = argparse.Namespace(**group_dict)
+        arg_groups[group.title] = Namespace(**group_dict)
 
     return arg_groups
 
@@ -374,10 +323,17 @@ def run():
 
     logging.info("Starting registration")
 
+    atlas = AllenBrain25Um()
+    # TODO: get this from atlas metadata
+    atlas_orientation = "asl"
+
     register(
+        atlas,
+        atlas_orientation,
+        args.orientation,
         args.image_paths,
         args.registration_output_folder,
-        arg_groups["NiftyReg options"],
+        arg_groups["NiftyReg registration backend options"],
         x_pixel_um=args.x_pixel_um,
         y_pixel_um=args.y_pixel_um,
         z_pixel_um=args.z_pixel_um,
