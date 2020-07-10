@@ -23,6 +23,7 @@ class Paths:
         self.registered_hemispheres = self.make_reg_path(
             "registered_hemispheres.tiff"
         )
+        self.volume_csv_path = self.make_reg_path("volumes.csv")
 
     def make_reg_path(self, basename):
         """
@@ -66,7 +67,6 @@ class NiftyRegPaths:
         self.hemispheres_atlas_path = self.make_reg_path(
             "registered_hemispheres.nii"
         )
-        self.volume_csv_path = self.make_reg_path("volumes.csv")
 
         self.tmp__affine_registered_atlas_brain_path = self.make_reg_path(
             "affine_registered_atlas_brain.nii"

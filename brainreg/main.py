@@ -18,11 +18,11 @@ from imlib.general.exceptions import TransformationError
 from imlib.source.niftyreg_binaries import get_binary, get_niftyreg_binaries
 from imlib.image.scale import scale_and_convert_to_16_bits
 
-from brainreg.tools import image
+from brainreg.utils import image
 from brainreg.paths import Paths, NiftyRegPaths
 from brainreg.backend.niftyreg.brain_registration import BrainRegistration
-from brainreg.volume import calculate_volumes
-from brainreg.boundaries import main as calc_boundaries
+from brainreg.utils.volume import calculate_volumes
+from brainreg.utils.boundaries import boundaries
 from brainreg.backend.niftyreg.registration_params import RegistrationParams
 from bg_atlasapi.bg_atlas import AllenBrain25Um
 
@@ -169,16 +169,7 @@ def run_niftyreg(
     additional_images_downsample,
     DATA_ORIENTATION,
     ATLAS_ORIENTATION,
-    affine_n_steps,
-    affine_use_n_steps,
-    freeform_n_steps,
-    freeform_use_n_steps,
-    bending_energy_weight,
-    grid_spacing,
-    smoothing_sigma_reference,
-    smoothing_sigma_floating,
-    histogram_n_bins_floating,
-    histogram_n_bins_reference,
+    niftyreg_args,
     target_brain_path,
     x_scaling,
     y_scaling,
@@ -187,6 +178,17 @@ def run_niftyreg(
     sort_input_file,
     n_free_cpus,
 ):
+    affine_n_steps = niftyreg_args.affine_n_steps
+    affine_use_n_steps = niftyreg_args.affine_use_n_steps
+    freeform_n_steps = niftyreg_args.freeform_n_steps
+    freeform_use_n_steps = niftyreg_args.freeform_use_n_steps
+    bending_energy_weight = niftyreg_args.bending_energy_weight
+    grid_spacing = niftyreg_args.grid_spacing
+    smoothing_sigma_reference = niftyreg_args.smoothing_sigma_reference
+    smoothing_sigma_floating = niftyreg_args.smoothing_sigma_floating
+    histogram_n_bins_floating = niftyreg_args.histogram_n_bins_floating
+    histogram_n_bins_reference = niftyreg_args.histogram_n_bins_reference
+
     niftyreg_directory = os.path.join(registration_output_folder, "niftyreg")
     ensure_directory_exists(niftyreg_directory)
     niftyreg_paths = NiftyRegPaths(niftyreg_directory)
@@ -240,22 +242,6 @@ def run_niftyreg(
 
     logging.info("Generating inverse (sample to atlas) transforms")
     brain_reg.generate_inverse_transforms()
-
-    logging.info("Calculating volumes of each brain area")
-    calculate_volumes(
-        atlas,
-        niftyreg_paths.registered_atlas_path,
-        niftyreg_paths.hemispheres_atlas_path,
-        niftyreg_paths.volume_csv_path,
-        # get this from atlas
-        left_hemisphere_value=1,
-        right_hemisphere_value=2,
-    )
-
-    logging.info("Generating boundary image")
-    calc_boundaries(
-        niftyreg_paths.registered_atlas_path, paths.boundaries_file_path,
-    )
 
     logging.info("Transforming image to standard space")
     transform_to_standard_space(
@@ -342,19 +328,10 @@ def run_niftyreg(
 def main(
     target_brain_path,
     registration_output_folder,
+    niftyreg_args,
     x_pixel_um=0.02,
     y_pixel_um=0.02,
     z_pixel_um=0.05,
-    affine_n_steps=6,
-    affine_use_n_steps=5,
-    freeform_n_steps=6,
-    freeform_use_n_steps=4,
-    bending_energy_weight=0.95,
-    grid_spacing=-10,
-    smoothing_sigma_reference=-1.0,
-    smoothing_sigma_floating=-1.0,
-    histogram_n_bins_floating=128,
-    histogram_n_bins_reference=128,
     n_free_cpus=2,
     sort_input_file=False,
     additional_images_downsample=None,
@@ -444,16 +421,7 @@ def main(
         additional_images_downsample,
         DATA_ORIENTATION,
         ATLAS_ORIENTATION,
-        affine_n_steps,
-        affine_use_n_steps,
-        freeform_n_steps,
-        freeform_use_n_steps,
-        bending_energy_weight,
-        grid_spacing,
-        smoothing_sigma_reference,
-        smoothing_sigma_floating,
-        histogram_n_bins_floating,
-        histogram_n_bins_reference,
+        niftyreg_args,
         target_brain_path,
         x_scaling,
         y_scaling,
@@ -461,6 +429,22 @@ def main(
         load_parallel,
         sort_input_file,
         n_free_cpus,
+    )
+
+    logging.info("Calculating volumes of each brain area")
+    calculate_volumes(
+        atlas,
+        paths.registered_atlas,
+        paths.registered_hemispheres,
+        paths.volume_csv_path,
+        # get this from atlas
+        left_hemisphere_value=1,
+        right_hemisphere_value=2,
+    )
+
+    logging.info("Generating boundary image")
+    boundaries(
+        paths.registered_atlas, paths.boundaries_file_path,
     )
 
     logging.info(
