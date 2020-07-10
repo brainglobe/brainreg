@@ -343,9 +343,9 @@ def prep_registration(args):
 import argparse
 
 
-def get_arg_groups(args):
+def get_arg_groups(args, parser):
     arg_groups = {}
-    for group in register_cli_parser()._action_groups:
+    for group in parser()._action_groups:
         group_dict = {
             a.dest: getattr(args, a.dest, None) for a in group._group_actions
         }
@@ -359,7 +359,7 @@ def run():
     args = register_cli_parser().parse_args()
     arg_groups = get_arg_groups(args)
 
-    args = define_pixel_sizes(args)
+    args = define_pixel_sizes(args, register_cli_parser)
 
     args, additional_images_downsample = prep_registration(args)
 
