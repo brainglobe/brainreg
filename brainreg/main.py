@@ -6,7 +6,7 @@ from pathlib import Path
 from tqdm import trange
 
 import bgspace as bg
-from brainio import brainio
+import imio
 
 from imlib.general.system import (
     get_num_processes,
@@ -109,12 +109,12 @@ def filter_for_registration(brain):
 
 def make_hemispheres_stack(shape):
     """ Make stack with hemispheres id. Assumes CCFv3 orientation.
-    0: left hemisphere, 1:right hemisphere.
+    1: left hemisphere, 2:right hemisphere.
     :param shape: shape of the stack
     :return:
     """
-    stack = np.zeros(shape, dtype=np.uint8)
-    stack[:, :, (shape[2] // 2) :] = 1
+    stack = np.ones(shape, dtype=np.uint8)
+    stack[:, :, (shape[2] // 2) :] = 2
 
     return stack
 
@@ -128,7 +128,7 @@ def save_nii(stack, atlas_pixel_sizes, dest_path):
     :param str dest_path: Where to save the image on the filesystem
     """
     transformation_matrix = get_transf_matrix_from_res(atlas_pixel_sizes)
-    brainio.to_nii(
+    imio.to_nii(
         stack,
         dest_path,
         scale=(
@@ -199,7 +199,7 @@ def run_niftyreg(
     save_nii(reference, atlas_pixel_sizes, niftyreg_paths.brain_filtered)
 
     save_nii(target_brain, atlas_pixel_sizes, niftyreg_paths.downsampled_brain)
-    brainio.to_tiff(target_brain, paths.downsampled_brain_path)
+    imio.to_tiff(target_brain, paths.downsampled_brain_path)
 
     target_brain = filter_for_registration(target_brain)
     save_nii(
@@ -248,8 +248,8 @@ def run_niftyreg(
         niftyreg_paths.hemispheres_atlas_path,
         niftyreg_paths.volume_csv_path,
         # get this from atlas
-        left_hemisphere_value=0,
-        right_hemisphere_value=1,
+        left_hemisphere_value=1,
+        right_hemisphere_value=2,
     )
 
     logging.info("Generating boundary image")
@@ -267,14 +267,16 @@ def run_niftyreg(
     )
 
     logging.info("Exporting images as tiff")
-    brainio.to_tiff(
-        brainio.load_any(niftyreg_paths.annotations), paths.annotations
+    imio.to_tiff(
+        imio.load_any(niftyreg_paths.registered_atlas_path),
+        paths.registered_atlas,
     )
-    brainio.to_tiff(
-        brainio.load_any(niftyreg_paths.hemispheres), paths.hemispheres
+    imio.to_tiff(
+        imio.load_any(niftyreg_paths.registered_hemispheres_img_path),
+        paths.registered_hemispheres,
     )
-    brainio.to_tiff(
-        brainio.load_any(niftyreg_paths.downsampled_brain_standard_space),
+    imio.to_tiff(
+        imio.load_any(niftyreg_paths.downsampled_brain_standard_space),
         paths.downsampled_brain_standard_space,
     )
 
@@ -297,7 +299,7 @@ def run_niftyreg(
             )
 
             ## do the tiff part at the beginning
-            downsampled_brain = brainio.load_any(
+            downsampled_brain = imio.load_any(
                 target_brain_path,
                 x_scaling,
                 y_scaling,
@@ -316,7 +318,7 @@ def run_niftyreg(
                 atlas_pixel_sizes,
                 tmp_downsampled_brain_path,
             )
-            brainio.to_tiff(downsampled_brain, downsampled_brain_path)
+            imio.to_tiff(downsampled_brain, downsampled_brain_path)
 
             logging.info("Transforming to standard space")
             transform_to_standard_space(
@@ -326,15 +328,13 @@ def run_niftyreg(
                 niftyreg_paths.inverse_control_point_file_path,
                 niftyreg_directory,
             )
-            brainio.to_tiff(
-                brainio.load_any(tmp_downsampled_brain_standard_path),
+            imio.to_tiff(
+                imio.load_any(tmp_downsampled_brain_standard_path),
                 downsampled_brain_standard_path,
             )
 
-            brainio.to_tiff(
-                brainio.load_any(
-                    niftyreg_paths.downsampled_brain_standard_space
-                ),
+            imio.to_tiff(
+                imio.load_any(niftyreg_paths.downsampled_brain_standard_space),
                 paths.downsampled_brain_standard_space,
             )
 
@@ -398,7 +398,7 @@ def main(
     ATLAS_ORIENTATION = "asl"
 
     # TODO: deal with other orientations
-    DATA_ORIENTATION = "slp"
+    DATA_ORIENTATION = "psl"
 
     scaling_rounding_decimals = 5
 
@@ -413,10 +413,10 @@ def main(
     )
 
     logging.info("Loading raw image data")
-    # TODO: brainio loads in a weird way, eventually it should return "normal"
+    # TODO: imio loads in a weird way, eventually it should return "normal"
     # orientation
 
-    target_brain = brainio.load_any(
+    target_brain = imio.load_any(
         target_brain_path,
         x_scaling,
         y_scaling,

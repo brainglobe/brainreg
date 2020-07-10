@@ -1,12 +1,6 @@
 import os
 
 
-ANNOTATIONS = "annotations.tiff"
-HEMISPHERES = "hemispheres.tiff"
-
-INVERSE_CONTROL_POINT = "inverse_control_point_file.nii"
-
-
 class Paths:
     """
     A single class to hold all file paths that amap may need. Any paths
@@ -25,8 +19,10 @@ class Paths:
         )
         self.boundaries_file_path = self.make_reg_path("boundaries.tiff")
 
-        self.hemispheres = self.make_reg_path(HEMISPHERES)
-        self.annotations = self.make_reg_path(ANNOTATIONS)
+        self.registered_atlas = self.make_reg_path("registered_atlas.tiff")
+        self.registered_hemispheres = self.make_reg_path(
+            "registered_hemispheres.tiff"
+        )
 
     def make_reg_path(self, basename):
         """
@@ -98,7 +94,7 @@ class NiftyRegPaths:
             "control_point_file.nii"
         )
         self.inverse_control_point_file_path = self.make_reg_path(
-            INVERSE_CONTROL_POINT
+            "inverse_control_point_file.nii"
         )
 
         (

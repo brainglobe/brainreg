@@ -1,5 +1,5 @@
 import logging
-from brainio import brainio
+import imio
 from skimage.segmentation import find_boundaries
 from imlib.image.scale import scale_and_convert_to_16_bits
 
@@ -7,7 +7,7 @@ import numpy as np
 
 
 def main(registered_atlas, boundaries_out_path):
-    atlas_img = brainio.load_nii(registered_atlas)
+    atlas_img = imio.load_nii(registered_atlas)
     atlas_img = np.asanyarray(atlas_img.dataobj)
     boundaries(
         atlas_img, boundaries_out_path,
@@ -32,6 +32,6 @@ def boundaries(
         boundaries_image = boundaries_image * atlas
     boundaries_image = scale_and_convert_to_16_bits(boundaries_image)
     logging.debug("Saving segmentation boundary image")
-    brainio.to_tiff(
+    imio.to_tiff(
         boundaries_image, boundaries_out_path,
     )

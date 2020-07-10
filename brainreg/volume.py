@@ -8,7 +8,7 @@ Module to calculate volume of brain regions
 import numpy as np
 import logging
 
-from brainio import brainio
+import imio
 from imlib.pandas.misc import initialise_df
 
 from neuro.structures.structures_tree import (
@@ -31,8 +31,8 @@ def get_lateralised_atlas(
     left_hemisphere_value=2,
     right_hemisphere_value=1,
 ):
-    atlas = brainio.load_any(atlas_path)
-    hemispheres = brainio.load_any(hemispheres_path)
+    atlas = imio.load_any(atlas_path)
+    hemispheres = imio.load_any(hemispheres_path)
 
     atlas_left, atlas_right = lateralise_atlas(
         atlas,
