@@ -345,7 +345,7 @@ import argparse
 
 def get_arg_groups(args, parser):
     arg_groups = {}
-    for group in parser()._action_groups:
+    for group in parser._action_groups:
         group_dict = {
             a.dest: getattr(args, a.dest, None) for a in group._group_actions
         }
@@ -357,9 +357,9 @@ def get_arg_groups(args, parser):
 def run():
     start_time = datetime.now()
     args = register_cli_parser().parse_args()
-    arg_groups = get_arg_groups(args)
+    arg_groups = get_arg_groups(args, register_cli_parser())
 
-    args = define_pixel_sizes(args, register_cli_parser)
+    args = define_pixel_sizes(args)
 
     args, additional_images_downsample = prep_registration(args)
 
