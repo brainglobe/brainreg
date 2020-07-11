@@ -1,7 +1,6 @@
-import os
 import logging
 import tempfile
-from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, Namespace
 from datetime import datetime
 from fancylog import fancylog
 from pathlib import Path
@@ -10,12 +9,13 @@ from micrometa.micrometa import SUPPORTED_METADATA_TYPES
 from imlib.general.system import ensure_directory_exists
 from imlib.general.numerical import check_positive_int, check_positive_float
 from imlib.image.metadata import define_pixel_sizes
-from imlib.source import source_files
+
 
 from brainreg.main import main as register
 
 import brainreg as program_for_log
 
+from bg_atlasapi.bg_atlas import AllenBrain25Um
 
 temp_dir = tempfile.TemporaryDirectory()
 temp_dir_path = temp_dir.name
@@ -24,9 +24,7 @@ temp_dir_path = temp_dir.name
 def register_cli_parser():
     parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
     parser = cli_parse(parser)
-    parser = visualisation_parser(parser)
-    parser = config_parse(parser)
-    parser = registration_parse(parser)
+    parser = niftyreg_parse(parser)
     parser = pixel_parser(parser)
     parser = geometry_parser(parser)
     parser = misc_parse(parser)
@@ -47,7 +45,7 @@ def cli_parse(parser):
     cli_parser.add_argument(
         dest="registration_output_folder",
         type=str,
-        help="Directory to save the cubes into",
+        help="Directory to save the output",
     )
 
     cli_parser.add_argument(
@@ -59,6 +57,16 @@ def cli_parse(parser):
         help="Paths to N additional channels to downsample to the same "
         "coordinate space. ",
     )
+    cli_parser.add_argument(
+        "--sort-input-file",
+        dest="sort_input_file",
+        action="store_true",
+        help="If set to true, the input text file will be sorted using "
+        "natural sorting. This means that the file paths will be "
+        "sorted as would be expected by a human and "
+        "not purely alphabetically",
+    )
+
     return parser
 
 
@@ -126,78 +134,14 @@ def geometry_parser(parser):
     geometry_opt_parser = parser.add_argument_group(
         "Options to define size/shape/orientation of data"
     )
+
     geometry_opt_parser.add_argument(
         "--orientation",
         type=str,
-        choices=("coronal", "sagittal", "horizontal"),
-        default="coronal",
+        default="asl",
         help="The orientation of the sample brain. "
         "This is used to transpose the atlas "
         "into the same orientation as the brain.",
-    )
-
-    # Warning: atlas reference
-    geometry_opt_parser.add_argument(
-        "--flip-x",
-        dest="flip_x",
-        action="store_true",
-        help="If the supplied data does not match the NifTI standard "
-        "orientation (origin is the most ventral, posterior, left voxel),"
-        "then the atlas will be flipped to match the input data",
-    )
-    geometry_opt_parser.add_argument(
-        "--flip-y",
-        dest="flip_y",
-        action="store_true",
-        help="If the supplied data does not match the NifTI standard "
-        "orientation (origin is the most ventral, posterior, left voxel),"
-        "then the atlas will be flipped to match the input data",
-    )
-    geometry_opt_parser.add_argument(
-        "--flip-z",
-        dest="flip_z",
-        action="store_true",
-        help="If the supplied data does not match the NifTI standard "
-        "orientation (origin is the most ventral, posterior, left voxel),"
-        "then the atlas will be flipped to match the input data",
-    )
-
-    geometry_opt_parser.add_argument(
-        "--rotation",
-        dest="rotation",
-        default="x0y0z0",
-        help="How to rotate the atlas to match the raw data. In the format "
-        "'xIyJzK', where x, y & z are the axes to rotate around, and "
-        "I, J & K are the number of 90 degree rotations for the "
-        "respective axes.",
-    )
-
-    return parser
-
-
-def visualisation_parser(parser):
-    vis_parser = parser.add_argument_group(
-        "Options relating to registration visualisation"
-    )
-
-    vis_parser.add_argument(
-        "--no-boundaries",
-        dest="no_boundaries",
-        action="store_true",
-        help="Do not precompute the outline images (if you don't want to"
-        " use brainreg_vis",
-    )
-    return parser
-
-
-def config_parse(parser):
-    config_opt_parser = parser.add_argument_group("Config options")
-    config_opt_parser.add_argument(
-        "--registration-config",
-        dest="registration_config",
-        type=str,
-        default=source_files.source_custom_config_amap(),
-        help="To supply your own, custom registration configuration file.",
     )
 
     return parser
@@ -215,14 +159,12 @@ def registration_parse(parser):
         "not purely alphabetically",
     )
 
-    registration_opt_parser.add_argument(
-        "--no-save-downsampled",
-        dest="no_save_downsampled",
-        action="store_true",
-        help="Dont save the downsampled brain before filtering.",
-    )
 
-    registration_opt_parser.add_argument(
+def niftyreg_parse(parser):
+    niftyreg_opt_parser = parser.add_argument_group(
+        "NiftyReg registration backend options"
+    )
+    niftyreg_opt_parser.add_argument(
         "--affine-n-steps",
         dest="affine_n_steps",
         type=check_positive_int,
@@ -234,7 +176,7 @@ def registration_parse(parser):
         "steps are being performed, with each step halving the data "
         "size along each dimension.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--affine-use-n-steps",
         dest="affine_use_n_steps",
         type=check_positive_int,
@@ -248,7 +190,7 @@ def registration_parse(parser):
         "full resolution data. Can be used to save time if running the "
         "full resolution doesn't result in noticeable improvements.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--freeform-n-steps",
         dest="freeform_n_steps",
         type=check_positive_int,
@@ -260,7 +202,7 @@ def registration_parse(parser):
         "steps are being performed, with each step halving the data "
         "size along each dimension.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--freeform-use-n-steps",
         dest="freeform_use_n_steps",
         type=check_positive_int,
@@ -274,7 +216,7 @@ def registration_parse(parser):
         "full resolution data. Can be used to save time if running the "
         "full resolution doesn't result in noticeable improvements.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--bending-energy-weight",
         dest="bending_energy_weight",
         type=check_positive_float,
@@ -285,7 +227,7 @@ def registration_parse(parser):
         "with higher values leading to more restriction of the "
         "registration.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--grid-spacing",
         dest="grid_spacing",
         type=int,
@@ -296,7 +238,7 @@ def registration_parse(parser):
         "grid spacing allows for more local deformations but increases "
         "the risk of over-fitting.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--smoothing-sigma-reference",
         dest="smoothing_sigma_reference",
         type=float,
@@ -306,7 +248,7 @@ def registration_parse(parser):
         "Positive values are interpreted as real values in mm, "
         "negative values are interpreted as distance in voxels.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--smoothing-sigma-floating",
         dest="smoothing_sigma_floating",
         type=float,
@@ -316,7 +258,7 @@ def registration_parse(parser):
         "values are interpreted as real values in mm, negative values "
         "are interpreted as distance in voxels.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--histogram-n-bins-floating",
         dest="histogram_n_bins_floating",
         type=check_positive_int,
@@ -325,7 +267,7 @@ def registration_parse(parser):
         "for the calculation of Normalized Mutual Information on "
         "the floating image.",
     )
-    registration_opt_parser.add_argument(
+    niftyreg_opt_parser.add_argument(
         "--histogram-n-bins-reference",
         dest="histogram_n_bins_reference",
         type=check_positive_int,
@@ -350,18 +292,22 @@ def prep_registration(args):
     return args, additional_images_downsample
 
 
-def make_paths_absolute(args):
-    args.image_paths = os.path.abspath(args.image_paths)
-    args.registration_output_folder = os.path.abspath(
-        args.registration_output_folder
-    )
-    args.registration_config = os.path.abspath(args.registration_config)
-    return args
+def get_arg_groups(args, parser):
+    arg_groups = {}
+    for group in parser._action_groups:
+        group_dict = {
+            a.dest: getattr(args, a.dest, None) for a in group._group_actions
+        }
+        arg_groups[group.title] = Namespace(**group_dict)
+
+    return arg_groups
 
 
 def run():
     start_time = datetime.now()
     args = register_cli_parser().parse_args()
+    arg_groups = get_arg_groups(args, register_cli_parser())
+
     args = define_pixel_sizes(args)
 
     args, additional_images_downsample = prep_registration(args)
@@ -371,33 +317,28 @@ def run():
         program_for_log,
         variables=[args],
         verbose=args.debug,
-        log_header="brainreg LOG",
+        log_header="BRAINREG LOG",
         multiprocessing_aware=False,
     )
 
     logging.info("Starting registration")
 
+    atlas = AllenBrain25Um()
+    # TODO: get this from atlas metadata
+    atlas_orientation = "asl"
+
     register(
-        args.registration_config,
+        atlas,
+        atlas_orientation,
+        args.orientation,
         args.image_paths,
         args.registration_output_folder,
+        arg_groups["NiftyReg registration backend options"],
         x_pixel_um=args.x_pixel_um,
         y_pixel_um=args.y_pixel_um,
         z_pixel_um=args.z_pixel_um,
-        affine_n_steps=args.affine_n_steps,
-        affine_use_n_steps=args.affine_use_n_steps,
-        freeform_n_steps=args.freeform_n_steps,
-        freeform_use_n_steps=args.freeform_use_n_steps,
-        bending_energy_weight=args.bending_energy_weight,
-        grid_spacing=args.grid_spacing,
-        smoothing_sigma_reference=args.smoothing_sigma_reference,
-        smoothing_sigma_floating=args.smoothing_sigma_floating,
-        histogram_n_bins_floating=args.histogram_n_bins_floating,
-        histogram_n_bins_reference=args.histogram_n_bins_reference,
         sort_input_file=args.sort_input_file,
         n_free_cpus=args.n_free_cpus,
-        save_downsampled=not (args.no_save_downsampled),
-        boundaries=not (args.no_boundaries),
         additional_images_downsample=additional_images_downsample,
         debug=args.debug,
     )

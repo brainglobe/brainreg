@@ -1,11 +1,3 @@
-"""
-brain_registration
-==================
-
-The module to actually start the registration
-"""
-
-
 import logging
 
 
@@ -14,7 +6,11 @@ from imlib.general.system import (
     SafeExecuteCommandError,
 )
 
-from imlib.general.exceptions import RegistrationError, SegmentationError
+from imlib.general.exceptions import (
+    RegistrationError,
+    SegmentationError,
+    TransformationError,
+)
 
 
 class BrainRegistration(object):
@@ -23,13 +19,8 @@ class BrainRegistration(object):
     """
 
     def __init__(
-        self,
-        registration_config,
-        paths,
-        registration_params,
-        n_processes=None,
+        self, paths, registration_params, n_processes=None,
     ):
-        self.registration_config = registration_config
         self.paths = paths
         self.reg_params = registration_params
         if n_processes is not None:
@@ -197,6 +188,19 @@ class BrainRegistration(object):
         )
         return cmd
 
+    def _prepare_inverse_registration_cmd(
+        self, floating_image_path, dest_img_path
+    ):
+        cmd = "{} {} -cpp {} -flo {} -ref {} -res {}".format(
+            self.reg_params.segmentation_program_path,
+            self.reg_params.format_segmentation_params().strip(),
+            self.paths.inverse_control_point_file_path,
+            floating_image_path,
+            self.brain_of_atlas_img_path,
+            dest_img_path,
+        )
+        return cmd
+
     def segment(self):
         """
         Registers the atlas to the sample (propagates the transformation
@@ -239,3 +243,21 @@ class BrainRegistration(object):
             )
         except SafeExecuteCommandError as err:
             SegmentationError("Segmentation failed; {}".format(err))
+
+    def transform_to_standard_space(self, image_path, destination_path):
+        """
+        Transform an image in sample space to standard space
+        """
+
+        try:
+            safe_execute_command(
+                self._prepare_inverse_registration_cmd(
+                    image_path, destination_path,
+                ),
+                self.paths.tmp__inverse_transform_log_file,
+                self.paths.tmp__inverse_transform_error_file,
+            )
+        except SafeExecuteCommandError as err:
+            raise TransformationError(
+                "Reverse transformation failed; {}".format(err)
+            )
