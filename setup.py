@@ -7,7 +7,7 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 requirements = [
     "bg-atlasapi==0.0.3rc0",
-    "bgspace",
+    "bg-space",
     "numpy>=1.15.4,<1.19.0",
     "configparser",
     "scikit-image>=0.14.0,<0.17.0",

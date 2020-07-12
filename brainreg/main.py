@@ -3,7 +3,7 @@ import numpy as np
 
 from pathlib import Path
 
-import bgspace as bg
+import bg_space as bg
 import imio
 
 from imlib.general.system import get_num_processes

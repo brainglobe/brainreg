@@ -1,7 +1,7 @@
 import os
 import logging
 
-import bgspace as bg
+import bg_space as bg
 import imio
 
 from imlib.general.system import ensure_directory_exists
