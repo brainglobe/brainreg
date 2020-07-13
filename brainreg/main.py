@@ -67,7 +67,6 @@ def main(
     load_parallel = n_processes > 1
 
     paths = Paths(registration_output_folder)
-    # atlas = AllenBrain25Um()
 
     # TODO: check orientation of atlas voxel sizes
     atlas_pixel_sizes = {
