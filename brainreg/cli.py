@@ -58,7 +58,7 @@ def cli_parse(parser):
     )
 
     cli_parser.add_argument(
-        dest="registration_output_folder",
+        dest="brainreg_directory",
         type=str,
         help="Directory to save the output",
     )
@@ -176,7 +176,7 @@ def geometry_parser(parser):
 
 def prep_registration(args):
     logging.debug("Making registration directory")
-    ensure_directory_exists(args.registration_output_folder)
+    ensure_directory_exists(args.brainreg_directory)
 
     additional_images_downsample = {}
     if args.downsample_images:
@@ -217,7 +217,7 @@ def run():
     args, additional_images_downsample = prep_registration(args)
 
     fancylog.start_logging(
-        args.registration_output_folder,
+        args.brainreg_directory,
         program_for_log,
         variables=[args],
         verbose=args.debug,
@@ -237,7 +237,7 @@ def run():
         atlas_orientation,
         args.orientation,
         args.image_paths,
-        args.registration_output_folder,
+        args.brainreg_directory,
         arg_groups["NiftyReg registration backend options"],
         x_pixel_um=args.x_pixel_um,
         y_pixel_um=args.y_pixel_um,

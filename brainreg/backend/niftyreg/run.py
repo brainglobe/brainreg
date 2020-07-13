@@ -4,13 +4,11 @@ import logging
 import bg_space as bg
 import imio
 
-from imlib.general.system import ensure_directory_exists
-
 
 from brainreg.utils import preprocess
-from brainreg.paths import NiftyRegPaths
-from brainreg.backend.niftyreg.brain_registration import BrainRegistration
-from brainreg.backend.niftyreg.registration_params import RegistrationParams
+from brainreg.backend.niftyreg.paths import NiftyRegPaths
+from brainreg.backend.niftyreg.registration import BrainRegistration
+from brainreg.backend.niftyreg.parameters import RegistrationParams
 from brainreg.backend.niftyreg.utils import save_nii
 
 
@@ -36,7 +34,7 @@ def run_niftyreg(
 ):
 
     niftyreg_directory = os.path.join(registration_output_folder, "niftyreg")
-    ensure_directory_exists(niftyreg_directory)
+
     niftyreg_paths = NiftyRegPaths(niftyreg_directory)
 
     save_nii(hemispheres, atlas_pixel_sizes, niftyreg_paths.hemispheres)
@@ -51,9 +49,7 @@ def run_niftyreg(
 
     target_brain = preprocess.filter_image(target_brain)
     save_nii(
-        target_brain,
-        atlas_pixel_sizes,
-        niftyreg_paths.tmp__downsampled_filtered,
+        target_brain, atlas_pixel_sizes, niftyreg_paths.downsampled_filtered,
     )
 
     logging.info("Registering")
@@ -95,6 +91,9 @@ def run_niftyreg(
         niftyreg_paths.downsampled_brain_standard_space,
     )
 
+    logging.info("Generating deformation field")
+    brain_reg.generate_deformation_field(niftyreg_paths.deformation_field)
+
     logging.info("Exporting images as tiff")
     imio.to_tiff(
         imio.load_any(niftyreg_paths.registered_atlas_path),
@@ -109,6 +108,11 @@ def run_niftyreg(
         paths.downsampled_brain_standard_space,
     )
 
+    deformation_image = imio.load_any(niftyreg_paths.deformation_field)
+    imio.to_tiff(deformation_image[..., 0], paths.deformation_field_0)
+    imio.to_tiff(deformation_image[..., 1], paths.deformation_field_1)
+    imio.to_tiff(deformation_image[..., 2], paths.deformation_field_2)
+
     if additional_images_downsample:
         logging.info("Saving additional downsampled images")
         for name, image in additional_images_downsample.items():
@@ -118,10 +122,12 @@ def run_niftyreg(
                 registration_output_folder, f"downsampled_{name}.tiff"
             )
             tmp_downsampled_brain_path = os.path.join(
-                niftyreg_directory, f"downsampled_{name}.nii"
+                niftyreg_paths.niftyreg_process_directory,
+                f"downsampled_{name}.nii",
             )
             tmp_downsampled_brain_standard_path = os.path.join(
-                niftyreg_directory, f"downsampled_standard_{name}.nii"
+                niftyreg_paths.niftyreg_process_directory,
+                f"downsampled_standard_{name}.nii",
             )
             downsampled_brain_standard_path = os.path.join(
                 registration_output_folder, f"downsampled_standard_{name}.tiff"
