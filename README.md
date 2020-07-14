@@ -98,7 +98,7 @@ If the origin of your data \(first, top left voxel\) is the most posterior, supe
 
 ### Registration options
 
-To change how the actual registration performs, see [Registration parameters](registration-parameters.md)
+To change how the actual registration performs, see [Registration parameters](https://docs.cellfinder.info/brainreg/getting-started/registration-parameters)
 
 Full command-line arguments are available with `brainreg -h`, but please 
 [get in touch](mailto:adam.tyson@ucl.ac.uk?subject=brainreg) if you have any questions.
