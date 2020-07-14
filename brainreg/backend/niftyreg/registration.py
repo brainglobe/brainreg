@@ -29,7 +29,7 @@ class BrainRegistration(object):
         else:
             self.n_processes = None
 
-        self.dataset_img_path = paths.tmp__downsampled_filtered
+        self.dataset_img_path = paths.downsampled_filtered
         self.brain_of_atlas_img_path = paths.brain_filtered
         self.atlas_img_path = paths.annotations
         self.hemispheres_img_path = paths.hemispheres
@@ -44,7 +44,7 @@ class BrainRegistration(object):
             self.brain_of_atlas_img_path,
             self.dataset_img_path,
             self.paths.affine_matrix_path,
-            self.paths.tmp__affine_registered_atlas_brain_path,
+            self.paths.affine_registered_atlas_brain_path,
         )
 
         if self.n_processes is not None:
@@ -63,8 +63,8 @@ class BrainRegistration(object):
         try:
             safe_execute_command(
                 self._prepare_affine_reg_cmd(),
-                self.paths.tmp__affine_log_file_path,
-                self.paths.tmp__affine_error_path,
+                self.paths.affine_log_file_path,
+                self.paths.affine_error_path,
             )
         except SafeExecuteCommandError as err:
             raise RegistrationError(
@@ -79,7 +79,7 @@ class BrainRegistration(object):
             self.brain_of_atlas_img_path,
             self.dataset_img_path,
             self.paths.control_point_file_path,
-            self.paths.tmp__freeform_registered_atlas_brain_path,
+            self.paths.freeform_registered_atlas_brain_path,
         )
 
         if self.n_processes is not None:
@@ -98,8 +98,8 @@ class BrainRegistration(object):
         try:
             safe_execute_command(
                 self._prepare_freeform_reg_cmd(),
-                self.paths.tmp__freeform_log_file_path,
-                self.paths.tmp__freeform_error_file_path,
+                self.paths.freeform_log_file_path,
+                self.paths.freeform_error_file_path,
             )
         except SafeExecuteCommandError as err:
             raise RegistrationError(
@@ -131,8 +131,8 @@ class BrainRegistration(object):
         try:
             safe_execute_command(
                 self._prepare_invert_affine_cmd(),
-                self.paths.tmp__invert_affine_log_file,
-                self.paths.tmp__invert_affine_error_file,
+                self.paths.invert_affine_log_file,
+                self.paths.invert_affine_error_file,
             )
         except SafeExecuteCommandError as err:
             raise RegistrationError(
@@ -148,7 +148,7 @@ class BrainRegistration(object):
             self.dataset_img_path,
             self.brain_of_atlas_img_path,
             self.paths.inverse_control_point_file_path,
-            self.paths.tmp__inverse_freeform_registered_atlas_brain_path,
+            self.paths.inverse_freeform_registered_atlas_brain_path,
         )
 
         if self.n_processes is not None:
@@ -169,8 +169,8 @@ class BrainRegistration(object):
         try:
             safe_execute_command(
                 self._prepare_inverse_freeform_reg_cmd(),
-                self.paths.tmp__inverse_freeform_log_file_path,
-                self.paths.tmp__inverse_freeform_error_file_path,
+                self.paths.inverse_freeform_log_file_path,
+                self.paths.inverse_freeform_error_file_path,
             )
         except SafeExecuteCommandError as err:
             raise RegistrationError(
@@ -201,6 +201,15 @@ class BrainRegistration(object):
         )
         return cmd
 
+    def _prepare_deformation_field_cmd(self, deformation_field_path):
+        cmd = "{} -def {} {} -ref {}".format(
+            self.reg_params.transform_program_path,
+            self.paths.control_point_file_path,
+            deformation_field_path,
+            self.paths.downsampled_filtered,
+        )
+        return cmd
+
     def segment(self):
         """
         Registers the atlas to the sample (propagates the transformation
@@ -216,8 +225,8 @@ class BrainRegistration(object):
                 self._prepare_segmentation_cmd(
                     self.atlas_img_path, self.paths.registered_atlas_img_path
                 ),
-                self.paths.tmp__segmentation_log_file,
-                self.paths.tmp__segmentation_error_file,
+                self.paths.segmentation_log_file,
+                self.paths.segmentation_error_file,
             )
         except SafeExecuteCommandError as err:
             SegmentationError("Segmentation failed; {}".format(err))
@@ -238,8 +247,8 @@ class BrainRegistration(object):
                     self.hemispheres_img_path,
                     self.paths.registered_hemispheres_img_path,
                 ),
-                self.paths.tmp__segmentation_log_file,
-                self.paths.tmp__segmentation_error_file,
+                self.paths.segmentation_log_file,
+                self.paths.segmentation_error_file,
             )
         except SafeExecuteCommandError as err:
             SegmentationError("Segmentation failed; {}".format(err))
@@ -254,10 +263,23 @@ class BrainRegistration(object):
                 self._prepare_inverse_registration_cmd(
                     image_path, destination_path,
                 ),
-                self.paths.tmp__inverse_transform_log_file,
-                self.paths.tmp__inverse_transform_error_file,
+                self.paths.inverse_transform_log_file,
+                self.paths.inverse_transform_error_file,
             )
         except SafeExecuteCommandError as err:
             raise TransformationError(
                 "Reverse transformation failed; {}".format(err)
+            )
+
+    def generate_deformation_field(self, deformation_field_path):
+        logging.info("Generating deformation field")
+        try:
+            safe_execute_command(
+                self._prepare_deformation_field_cmd(deformation_field_path),
+                self.paths.deformation_log_file_path,
+                self.paths.deformation_error_file_path,
+            )
+        except SafeExecuteCommandError as err:
+            raise TransformationError(
+                "Generation of deformation field failed ; {}".format(err)
             )
