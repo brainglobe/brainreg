@@ -109,9 +109,9 @@ def run_niftyreg(
     )
 
     deformation_image = imio.load_any(niftyreg_paths.deformation_field)
-    imio.to_tiff(deformation_image[..., 0], paths.deformation_field_0)
-    imio.to_tiff(deformation_image[..., 1], paths.deformation_field_1)
-    imio.to_tiff(deformation_image[..., 2], paths.deformation_field_2)
+    imio.to_tiff(deformation_image[..., 0, 0], paths.deformation_field_0)
+    imio.to_tiff(deformation_image[..., 0, 1], paths.deformation_field_1)
+    imio.to_tiff(deformation_image[..., 0, 2], paths.deformation_field_2)
 
     if additional_images_downsample:
         logging.info("Saving additional downsampled images")
@@ -122,11 +122,10 @@ def run_niftyreg(
                 registration_output_folder, f"downsampled_{name}.tiff"
             )
             tmp_downsampled_brain_path = os.path.join(
-                niftyreg_paths.niftyreg_process_directory,
-                f"downsampled_{name}.nii",
+                niftyreg_paths.niftyreg_directory, f"downsampled_{name}.nii",
             )
             tmp_downsampled_brain_standard_path = os.path.join(
-                niftyreg_paths.niftyreg_process_directory,
+                niftyreg_paths.niftyreg_directory,
                 f"downsampled_standard_{name}.nii",
             )
             downsampled_brain_standard_path = os.path.join(

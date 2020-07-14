@@ -6,10 +6,6 @@ class NiftyRegPaths:
     def __init__(self, niftyreg_directory):
         self.niftyreg_directory = niftyreg_directory
         ensure_directory_exists(self.niftyreg_directory)
-        self.niftyreg_process_directory = os.path.join(
-            niftyreg_directory, "process"
-        )
-        ensure_directory_exists(self.niftyreg_process_directory)
         self.make_reg_paths()
 
     def make_reg_paths(self):
@@ -101,7 +97,7 @@ class NiftyRegPaths:
         :return: The path
         :rtype: str
         """
-        return os.path.join(self.niftyreg_process_directory, basename)
+        return os.path.join(self.niftyreg_directory, basename)
 
     def compute_reg_log_file_paths(self, basename):
         """
@@ -112,12 +108,8 @@ class NiftyRegPaths:
         :return: log_file_path, error_file_path
         """
 
-        log_file_template = os.path.join(
-            self.niftyreg_process_directory, "{}.log"
-        )
-        error_file_template = os.path.join(
-            self.niftyreg_process_directory, "{}.err"
-        )
+        log_file_template = os.path.join(self.niftyreg_directory, "{}.log")
+        error_file_template = os.path.join(self.niftyreg_directory, "{}.err")
         log_file_path = log_file_template.format(basename)
         error_file_path = error_file_template.format(basename)
         return log_file_path, error_file_path
