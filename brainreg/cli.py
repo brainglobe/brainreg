@@ -227,7 +227,8 @@ def run():
 
     logging.info("Starting registration")
 
-    atlas = Atlas(args.atlas, valid_atlases)
+    # atlas = Atlas(args.atlas, valid_atlases)
+    atlas = BrainGlobeAtlas(valid_atlases[args.atlas])
     # TODO: get this from atlas metadata
     atlas_orientation = "asl"
     # atlas_orientation = atlas.metadata["orientation"]
