@@ -24,16 +24,6 @@ from bg_atlasapi.bg_atlas import BrainGlobeAtlas
 temp_dir = tempfile.TemporaryDirectory()
 temp_dir_path = temp_dir.name
 
-valid_atlases = {
-    "allen_25": "allen_mouse_25um",
-    "allen_50": "allen_mouse_50um",
-    "kim_25": "kim_unified_25um",
-    "kim_50": "kim_unified_50um",
-    "rat": "ratatlas",
-    "zebrafish": "mpin_zfish_1um",
-    "human": "allen_human_500um",
-}
-
 
 def register_cli_parser():
     parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
@@ -82,8 +72,9 @@ def atlas_parse(parser):
         "--atlas",
         dest="atlas",
         type=str,
-        default="allen_25",
-        help="Atlas to use for registration",
+        default="allen_mouse_25um",
+        help="Brainglobe atlas to use for registration. Run 'brainglobe list' "
+        "to see the atlases available.",
     )
     return parser
 
@@ -187,31 +178,10 @@ def prep_registration(args):
     return args, additional_images_downsample
 
 
-def valid_atlas(atlas_name):
-    """
-    Ensures a correct atlas is chosen
-    :param atlas_name: Input value
-    :param atlases: Dict of allowed atlases
-    """
-
-    if atlas_name not in valid_atlases.keys():
-        raise ArgumentTypeError(
-            f"Atlas: {atlas_name} is not valid. Please "
-            f"choose one of: {list(valid_atlases.keys())}"
-        )
-
-
-class Atlas(BrainGlobeAtlas):
-    def __init__(self, atlas_name, valid_atlases, *args, **kwargs):
-        self.atlas_name = valid_atlases[atlas_name]
-        BrainGlobeAtlas.__init__(self, *args, **kwargs)
-
-
 def run():
     start_time = datetime.now()
     args = register_cli_parser().parse_args()
     arg_groups = get_arg_groups(args, register_cli_parser())
-    valid_atlas(args.atlas)
     args = define_pixel_sizes(args)
 
     args, additional_images_downsample = prep_registration(args)
@@ -227,15 +197,10 @@ def run():
 
     logging.info("Starting registration")
 
-    # atlas = Atlas(args.atlas, valid_atlases)
-    atlas = BrainGlobeAtlas(valid_atlases[args.atlas])
-    # TODO: get this from atlas metadata
-    atlas_orientation = "asl"
-    # atlas_orientation = atlas.metadata["orientation"]
+    atlas = BrainGlobeAtlas(args.atlas)
 
     register(
         atlas,
-        atlas_orientation,
         args.orientation,
         args.image_paths,
         args.brainreg_directory,

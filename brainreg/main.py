@@ -29,7 +29,6 @@ def make_hemispheres_stack(shape):
 
 def main(
     atlas,
-    atlas_orientation,
     data_orientation,
     target_brain_path,
     registration_output_folder,
@@ -102,7 +101,7 @@ def main(
     )
 
     target_brain = bg.map_stack_to(
-        data_orientation, atlas_orientation, target_brain
+        data_orientation, atlas.metadata["orientation"], target_brain
     )
 
     # TODO: incororate this into bg-atlasapi
@@ -118,7 +117,7 @@ def main(
         n_processes,
         additional_images_downsample,
         data_orientation,
-        atlas_orientation,
+        atlas.metadata["orientation"],
         niftyreg_args,
         target_brain_path,
         x_scaling,
