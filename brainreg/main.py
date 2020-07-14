@@ -39,29 +39,10 @@ def main(
     n_free_cpus=2,
     sort_input_file=False,
     additional_images_downsample=None,
+    backend="niftyreg",
     debug=False,
 ):
-    """
-        The main function that will perform the library calls and
-    register the atlas to the brain given on the CLI
 
-    :param target_brain_path:
-    :param registration_output_folder:
-    :param filtered_brain_path:
-    :param x_pixel_um:
-    :param y_pixel_um:
-    :param z_pixel_um:
-    :param orientation:
-    :param flip_x:
-    :param flip_y:
-    :param flip_z:
-    :param n_free_cpus:
-    :param sort_input_file:
-    :param save_downsampled:
-    :param additional_images_downsample: dict of
-    {image_name: image_to_be_downsampled}
-    :return:
-    """
     n_processes = get_num_processes(min_free_cpu_cores=n_free_cpus)
     load_parallel = n_processes > 1
 
@@ -87,8 +68,6 @@ def main(
     )
 
     logging.info("Loading raw image data")
-    # TODO: imio loads in a weird way, eventually it should return "normal"
-    # orientation
 
     target_brain = imio.load_any(
         target_brain_path,
@@ -107,26 +86,27 @@ def main(
     # TODO: incororate this into bg-atlasapi
     hemispheres = make_hemispheres_stack(atlas.reference.shape)
 
-    run_niftyreg(
-        registration_output_folder,
-        paths,
-        atlas,
-        hemispheres,
-        atlas_pixel_sizes,
-        target_brain,
-        n_processes,
-        additional_images_downsample,
-        data_orientation,
-        atlas.metadata["orientation"],
-        niftyreg_args,
-        target_brain_path,
-        x_scaling,
-        y_scaling,
-        z_scaling,
-        load_parallel,
-        sort_input_file,
-        n_free_cpus,
-    )
+    if backend == "niftyreg":
+        run_niftyreg(
+            registration_output_folder,
+            paths,
+            atlas,
+            hemispheres,
+            atlas_pixel_sizes,
+            target_brain,
+            n_processes,
+            additional_images_downsample,
+            data_orientation,
+            atlas.metadata["orientation"],
+            niftyreg_args,
+            target_brain_path,
+            x_scaling,
+            y_scaling,
+            z_scaling,
+            load_parallel,
+            sort_input_file,
+            n_free_cpus,
+        )
 
     logging.info("Calculating volumes of each brain area")
     calculate_volumes(

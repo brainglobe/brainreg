@@ -3,7 +3,6 @@ import tempfile
 from argparse import (
     ArgumentParser,
     ArgumentDefaultsHelpFormatter,
-    ArgumentTypeError,
 )
 from datetime import datetime
 from fancylog import fancylog
@@ -29,6 +28,7 @@ def register_cli_parser():
     parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
     parser = cli_parse(parser)
     parser = atlas_parse(parser)
+    parser = backend_parse(parser)
     parser = niftyreg_parse(parser)
     parser = pixel_parser(parser)
     parser = geometry_parser(parser)
@@ -75,6 +75,18 @@ def atlas_parse(parser):
         default="allen_mouse_25um",
         help="Brainglobe atlas to use for registration. Run 'brainglobe list' "
         "to see the atlases available.",
+    )
+    return parser
+
+
+def backend_parse(parser):
+    atlas_parser = parser.add_argument_group("registration backend options")
+    atlas_parser.add_argument(
+        "--backend",
+        dest="backend",
+        type=str,
+        default="niftyreg",
+        help="Registration backend to use.",
     )
     return parser
 
@@ -211,6 +223,7 @@ def run():
         sort_input_file=args.sort_input_file,
         n_free_cpus=args.n_free_cpus,
         additional_images_downsample=additional_images_downsample,
+        backend=args.backend,
         debug=args.debug,
     )
 
