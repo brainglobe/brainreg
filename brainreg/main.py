@@ -1,8 +1,6 @@
 import logging
 import numpy as np
 
-from pathlib import Path
-
 import bg_space as bg
 import imio
 

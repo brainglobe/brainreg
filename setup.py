@@ -31,7 +31,14 @@ setup(
     long_description_content_type="text/markdown",
     install_requires=requirements,
     extras_require={
-        "dev": ["black", "pytest-cov", "pytest", "coverage", "bump2version"]
+        "dev": [
+            "black",
+            "pytest-cov",
+            "pytest",
+            "coverage",
+            "bump2version",
+            "pre-commit",
+        ]
     },
     python_requires=">=3.6, <3.8",
     packages=find_namespace_packages(exclude=("docs", "tests*")),

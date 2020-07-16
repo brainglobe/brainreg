@@ -132,7 +132,7 @@ def run_niftyreg(
                 registration_output_folder, f"downsampled_standard_{name}.tiff"
             )
 
-            ## do the tiff part at the beginning
+            # do the tiff part at the beginning
             downsampled_brain = imio.load_any(
                 target_brain_path,
                 x_scaling,
