@@ -3,6 +3,7 @@ after_success:
   - coveralls
 
 stages:
+  - lint
   - test
   - name: deploy
     if:
@@ -10,6 +11,13 @@ stages:
 
 jobs:
   include:
+    - stage: lint
+      name: "Lint"
+      language: python
+      os: linux
+      dist: bionic
+      python: 3.7
+      script: bash travis/lint.sh
     - stage: test
       name: "Ubuntu Bionic python 3.6"
       language: python
