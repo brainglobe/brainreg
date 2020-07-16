@@ -38,6 +38,7 @@ setup(
             "coverage",
             "bump2version",
             "pre-commit",
+            "flake8",
         ]
     },
     python_requires=">=3.6, <3.8",
