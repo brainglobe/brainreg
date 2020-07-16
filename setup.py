@@ -25,13 +25,13 @@ requirements = [
 
 setup(
     name="brainreg",
-    version="0.0.1a",
+    version="0.0.1",
     description="Automated 3D brain registration",
     long_description=long_description,
     long_description_content_type="text/markdown",
     install_requires=requirements,
     extras_require={
-        "dev": ["black", "pytest-cov", "pytest", "gitpython", "coverage",]
+        "dev": ["black", "pytest-cov", "pytest", "coverage", "bump2version"]
     },
     python_requires=">=3.6, <3.8",
     packages=find_namespace_packages(exclude=("docs", "tests*")),
