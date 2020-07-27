@@ -16,7 +16,6 @@ def run_niftyreg(
     registration_output_folder,
     paths,
     atlas,
-    hemispheres,
     atlas_pixel_sizes,
     target_brain,
     n_processes,
@@ -37,7 +36,7 @@ def run_niftyreg(
 
     niftyreg_paths = NiftyRegPaths(niftyreg_directory)
 
-    save_nii(hemispheres, atlas_pixel_sizes, niftyreg_paths.hemispheres)
+    save_nii(atlas.hemispheres, atlas_pixel_sizes, niftyreg_paths.hemispheres)
 
     save_nii(atlas.annotation, atlas_pixel_sizes, niftyreg_paths.annotations)
 
