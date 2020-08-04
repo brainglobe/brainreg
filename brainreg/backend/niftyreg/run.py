@@ -107,6 +107,10 @@ def run_niftyreg(
         paths.downsampled_brain_standard_space,
     )
 
+    del atlas
+    del reference
+    del target_brain
+
     deformation_image = imio.load_any(niftyreg_paths.deformation_field)
     imio.to_tiff(deformation_image[..., 0, 0], paths.deformation_field_0)
     imio.to_tiff(deformation_image[..., 0, 1], paths.deformation_field_1)
