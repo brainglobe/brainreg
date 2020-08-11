@@ -87,6 +87,7 @@ def main(
             load_parallel,
             sort_input_file,
             n_free_cpus,
+            debug=debug,
         )
 
     logging.info("Calculating volumes of each brain area")

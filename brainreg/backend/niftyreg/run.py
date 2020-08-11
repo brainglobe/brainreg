@@ -4,6 +4,7 @@ import logging
 import bg_space as bg
 import imio
 
+from imlib.general.system import delete_directory_contents
 
 from brainreg.utils import preprocess
 from brainreg.backend.niftyreg.paths import NiftyRegPaths
@@ -30,6 +31,7 @@ def run_niftyreg(
     load_parallel,
     sort_input_file,
     n_free_cpus,
+    debug=False,
 ):
 
     niftyreg_directory = os.path.join(registration_output_folder, "niftyreg")
@@ -173,3 +175,8 @@ def run_niftyreg(
                 imio.load_any(niftyreg_paths.downsampled_brain_standard_space),
                 paths.downsampled_brain_standard_space,
             )
+
+    if not debug:
+        logging.info("Deleting intermediate niftyreg files")
+        delete_directory_contents(niftyreg_directory)
+        os.rmdir(niftyreg_directory)
