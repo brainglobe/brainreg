@@ -61,20 +61,19 @@ def test_registration_niftyreg(tmpdir):
             "registered_atlas.tiff",
             "registered_hemispheres.tiff",
         ]
-    # else:
-    #     image_list = [
-    #         "annotations.nii",
-    #         # "boundaries.nii",
-    #         "brain_filtered.nii",
-    #         "control_point_file.nii",
-    #         "downsampled.nii",
-    #         "hemispheres.nii",
-    #         "inverse_control_point_file.nii",
-    #         # "registered_atlas.nii",
-    #         "registered_hemispheres.nii",
-    #         "downsampled_brain.nii",
-    #     ]
-
+    else:
+        image_list = [
+            "boundaries.tiff",
+            "deformation_field_0.tiff",
+            "deformation_field_1.tiff",
+            "deformation_field_2.tiff",
+            "downsampled.tiff",
+            "downsampled_brain.tiff",
+            "downsampled_standard.tiff",
+            "downsampled_standard_brain.tiff",
+            "registered_atlas.tiff",
+            "registered_hemispheres.tiff",
+        ]
     for image in image_list:
         are_images_equal(image, output_directory, test_niftyreg_output)
 
@@ -82,7 +81,6 @@ def test_registration_niftyreg(tmpdir):
         pd.read_csv(os.path.join(output_directory, "volumes.csv")),
         pd.read_csv(os.path.join(test_niftyreg_output, "volumes.csv")),
         check_exact=False,
-        check_less_precise=check_less_precise_pd,
     )
 
 
