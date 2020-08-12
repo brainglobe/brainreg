@@ -89,10 +89,10 @@ If your data does not match the [brainglobe](https://github.com/brainglobe) defa
 
 
 
-If the origin of your data \(first, top left voxel\) is the most posterior, superior, left part of the brain, then the orientation string would be "psl" \(posterior, superior, left\), and you would use:
+If the origin of your data \(first, top left voxel\) is the most anterior, superior, left part of the brain, then the orientation string would be "asl" \(anterior, superior, left\), and you would use:
 
 ```bash
---orientation psl
+--orientation asl
 ```
 
 
