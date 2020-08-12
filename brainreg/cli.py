@@ -230,9 +230,5 @@ def run():
     logging.info("Finished. Total time taken: %s", datetime.now() - start_time)
 
 
-def main():
-    run()
-
-
 if __name__ == "__main__":
     run()
