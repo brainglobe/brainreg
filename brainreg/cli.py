@@ -168,7 +168,7 @@ def geometry_parser(parser):
     geometry_opt_parser.add_argument(
         "--orientation",
         type=str,
-        default="asl",
+        default="psl",
         help="The orientation of the sample brain. "
         "This is used to transpose the atlas "
         "into the same orientation as the brain.",
@@ -228,10 +228,6 @@ def run():
     )
 
     logging.info("Finished. Total time taken: %s", datetime.now() - start_time)
-
-
-def main():
-    run()
 
 
 if __name__ == "__main__":

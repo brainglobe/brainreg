@@ -19,19 +19,26 @@ requirements = [
     "fancylog",
     "micrometa",
     "imlib>=0.0.26",
-    "neuro>=0.0.13",
 ]
 
 
 setup(
     name="brainreg",
-    version="0.0.1a",
+    version="0.0.3",
     description="Automated 3D brain registration",
     long_description=long_description,
     long_description_content_type="text/markdown",
     install_requires=requirements,
     extras_require={
-        "dev": ["black", "pytest-cov", "pytest", "gitpython", "coverage",]
+        "dev": [
+            "black",
+            "pytest-cov",
+            "pytest",
+            "coverage",
+            "bump2version",
+            "pre-commit",
+            "flake8",
+        ]
     },
     python_requires=">=3.6, <3.8",
     packages=find_namespace_packages(exclude=("docs", "tests*")),

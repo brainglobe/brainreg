@@ -1,7 +1,4 @@
 import logging
-import numpy as np
-
-from pathlib import Path
 
 import bg_space as bg
 import imio
@@ -13,18 +10,6 @@ from brainreg.backend.niftyreg.run import run_niftyreg
 
 from brainreg.utils.volume import calculate_volumes
 from brainreg.utils.boundaries import boundaries
-
-
-def make_hemispheres_stack(shape):
-    """ Make stack with hemispheres id. Assumes CCFv3 orientation.
-    1: left hemisphere, 2:right hemisphere.
-    :param shape: shape of the stack
-    :return:
-    """
-    stack = np.ones(shape, dtype=np.uint8)
-    stack[:, :, (shape[2] // 2) :] = 2
-
-    return stack
 
 
 def main(
@@ -83,15 +68,11 @@ def main(
         data_orientation, atlas.metadata["orientation"], target_brain
     )
 
-    # TODO: incororate this into bg-atlasapi
-    hemispheres = make_hemispheres_stack(atlas.reference.shape)
-
     if backend == "niftyreg":
         run_niftyreg(
             registration_output_folder,
             paths,
             atlas,
-            hemispheres,
             atlas_pixel_sizes,
             target_brain,
             n_processes,
@@ -106,6 +87,7 @@ def main(
             load_parallel,
             sort_input_file,
             n_free_cpus,
+            debug=debug,
         )
 
     logging.info("Calculating volumes of each brain area")
@@ -114,7 +96,7 @@ def main(
         paths.registered_atlas,
         paths.registered_hemispheres,
         paths.volume_csv_path,
-        # get this from atlas
+        # for all brainglobe atlases
         left_hemisphere_value=1,
         right_hemisphere_value=2,
     )

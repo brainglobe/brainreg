@@ -11,10 +11,19 @@ import logging
 import imio
 from imlib.pandas.misc import initialise_df
 
-from neuro.structures.structures_tree import (
-    atlas_value_to_name,
-    UnknownAtlasValue,
-)
+
+class UnknownAtlasValue(Exception):
+    pass
+
+
+def atlas_value_to_name(atlas_value, structures_reference_df):
+    line = structures_reference_df[
+        structures_reference_df["id"] == atlas_value
+    ]
+    if len(line) == 0:
+        raise UnknownAtlasValue(atlas_value)
+    name = line["name"]
+    return str(name.values[0])
 
 
 def lateralise_atlas(
@@ -132,7 +141,7 @@ def calculate_volumes(
         "total_volume_mm3",
     )
     for atlas_value in unique_vals_left:
-        if atlas_value is not 0:  # outside brain
+        if atlas_value != 0:  # outside brain
             try:
                 df = add_structure_volume_to_df(
                     df,

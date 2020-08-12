@@ -4,6 +4,7 @@ import logging
 import bg_space as bg
 import imio
 
+from imlib.general.system import delete_directory_contents
 
 from brainreg.utils import preprocess
 from brainreg.backend.niftyreg.paths import NiftyRegPaths
@@ -16,7 +17,6 @@ def run_niftyreg(
     registration_output_folder,
     paths,
     atlas,
-    hemispheres,
     atlas_pixel_sizes,
     target_brain,
     n_processes,
@@ -31,13 +31,14 @@ def run_niftyreg(
     load_parallel,
     sort_input_file,
     n_free_cpus,
+    debug=False,
 ):
 
     niftyreg_directory = os.path.join(registration_output_folder, "niftyreg")
 
     niftyreg_paths = NiftyRegPaths(niftyreg_directory)
 
-    save_nii(hemispheres, atlas_pixel_sizes, niftyreg_paths.hemispheres)
+    save_nii(atlas.hemispheres, atlas_pixel_sizes, niftyreg_paths.hemispheres)
 
     save_nii(atlas.annotation, atlas_pixel_sizes, niftyreg_paths.annotations)
 
@@ -108,6 +109,10 @@ def run_niftyreg(
         paths.downsampled_brain_standard_space,
     )
 
+    del atlas
+    del reference
+    del target_brain
+
     deformation_image = imio.load_any(niftyreg_paths.deformation_field)
     imio.to_tiff(deformation_image[..., 0, 0], paths.deformation_field_0)
     imio.to_tiff(deformation_image[..., 0, 1], paths.deformation_field_1)
@@ -132,7 +137,7 @@ def run_niftyreg(
                 registration_output_folder, f"downsampled_standard_{name}.tiff"
             )
 
-            ## do the tiff part at the beginning
+            # do the tiff part at the beginning
             downsampled_brain = imio.load_any(
                 target_brain_path,
                 x_scaling,
@@ -170,3 +175,8 @@ def run_niftyreg(
                 imio.load_any(niftyreg_paths.downsampled_brain_standard_space),
                 paths.downsampled_brain_standard_space,
             )
+
+    if not debug:
+        logging.info("Deleting intermediate niftyreg files")
+        delete_directory_contents(niftyreg_directory)
+        os.rmdir(niftyreg_directory)
