@@ -19,7 +19,6 @@ requirements = [
     "fancylog",
     "micrometa",
     "imlib>=0.0.26",
-    "neuro>=0.0.13",
 ]
 
 
