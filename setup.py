@@ -19,6 +19,8 @@ requirements = [
     "fancylog",
     "micrometa",
     "imlib>=0.0.26",
+    "napari",
+    "napari-brainreg",
 ]
 
 

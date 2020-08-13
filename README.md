@@ -104,4 +104,3 @@ Full command-line arguments are available with `brainreg -h`, but please
 [get in touch](mailto:adam.tyson@ucl.ac.uk?subject=brainreg) if you have any questions.
 
 
-
