@@ -190,7 +190,7 @@ def prep_registration(args):
     return args, additional_images_downsample
 
 
-def run():
+def main():
     start_time = datetime.now()
     args = register_cli_parser().parse_args()
     arg_groups = get_arg_groups(args, register_cli_parser())
@@ -231,4 +231,4 @@ def run():
 
 
 if __name__ == "__main__":
-    run()
+    main()
