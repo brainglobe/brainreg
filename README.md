@@ -17,7 +17,8 @@ to include multiple registration backends, and to support the many atlases
 provided by [bg-atlasapi](https://github.com/brainglobe/bg-atlasapi).
 
 
-Documentation can be found [here](https://docs.cellfinder.info/brainreg/introduction).
+Documentation can be found [here](https://docs.cellfinder.info/brainreg/introduction) 
+and a tutorial is [here](https://docs.cellfinder.info/brainreg/tutorial).
 
 ## Details
 The aim of brainreg is to register the template brain
