@@ -80,7 +80,6 @@ def test_registration_niftyreg(tmpdir):
     pd.testing.assert_frame_equal(
         pd.read_csv(os.path.join(output_directory, "volumes.csv")),
         pd.read_csv(os.path.join(test_niftyreg_output, "volumes.csv")),
-        check_exact=False,
     )
 
 
