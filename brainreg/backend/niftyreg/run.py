@@ -120,7 +120,7 @@ def run_niftyreg(
 
     if additional_images_downsample:
         logging.info("Saving additional downsampled images")
-        for name, image in additional_images_downsample.items():
+        for name, filename in additional_images_downsample.items():
             logging.info(f"Processing: {name}")
 
             downsampled_brain_path = os.path.join(
@@ -129,17 +129,17 @@ def run_niftyreg(
             tmp_downsampled_brain_path = os.path.join(
                 niftyreg_paths.niftyreg_directory, f"downsampled_{name}.nii",
             )
+            downsampled_brain_standard_path = os.path.join(
+                registration_output_folder, f"downsampled_standard_{name}.tiff"
+            )
             tmp_downsampled_brain_standard_path = os.path.join(
                 niftyreg_paths.niftyreg_directory,
                 f"downsampled_standard_{name}.nii",
             )
-            downsampled_brain_standard_path = os.path.join(
-                registration_output_folder, f"downsampled_standard_{name}.tiff"
-            )
 
             # do the tiff part at the beginning
             downsampled_brain = imio.load_any(
-                target_brain_path,
+                filename,
                 x_scaling,
                 y_scaling,
                 z_scaling,
