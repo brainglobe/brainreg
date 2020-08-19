@@ -6,6 +6,7 @@
     https://travis-ci.com/brainglobe/brainreg)
 [![Coverage Status](https://coveralls.io/repos/github/brainglobe/brainreg/badge.svg?branch=master)](https://coveralls.io/github/brainglobe/brainreg?branch=master)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+[![DOI](https://zenodo.org/badge/267067901.svg)](https://zenodo.org/badge/latestdoi/267067901)
 [![Gitter](https://badges.gitter.im/cellfinder/brainreg.svg)](https://gitter.im/cellfinder/brainreg?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # brainreg
@@ -119,3 +120,10 @@ Various images should then open, including:
 If you downsampled additional channels, these will also be loaded.
 
 ![process](https://raw.githubusercontent.com/brainglobe/napari-brainreg/master/resources/napari-brainreg.png)
+
+
+### Citing brainreg
+
+If you find brainreg useful, and use it in your research, please let us know and also cite this repository:
+
+> Adam L. Tyson, Charly V. Rousseau, and Troy W. Margrie (2020). brainreg: automated 3D brain registration with support for multiple species and atlases. [10.5281/zenodo.3991718](https://doi.org/10.5281/zenodo.3991718)
