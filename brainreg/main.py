@@ -80,7 +80,6 @@ def main(
             data_orientation,
             atlas.metadata["orientation"],
             niftyreg_args,
-            target_brain_path,
             x_scaling,
             y_scaling,
             z_scaling,

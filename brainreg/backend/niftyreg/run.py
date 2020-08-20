@@ -1,6 +1,8 @@
 import os
 import logging
 
+import numpy as np
+
 import bg_space as bg
 import imio
 
@@ -24,7 +26,6 @@ def run_niftyreg(
     DATA_ORIENTATION,
     ATLAS_ORIENTATION,
     niftyreg_args,
-    target_brain_path,
     x_scaling,
     y_scaling,
     z_scaling,
@@ -97,15 +98,21 @@ def run_niftyreg(
 
     logging.info("Exporting images as tiff")
     imio.to_tiff(
-        imio.load_any(niftyreg_paths.registered_atlas_path),
+        imio.load_any(niftyreg_paths.registered_atlas_path).astype(
+            np.uint32, copy=False
+        ),
         paths.registered_atlas,
     )
     imio.to_tiff(
-        imio.load_any(niftyreg_paths.registered_hemispheres_img_path),
+        imio.load_any(niftyreg_paths.registered_hemispheres_img_path).astype(
+            np.uint8, copy=False
+        ),
         paths.registered_hemispheres,
     )
     imio.to_tiff(
-        imio.load_any(niftyreg_paths.downsampled_brain_standard_space),
+        imio.load_any(niftyreg_paths.downsampled_brain_standard_space).astype(
+            np.uint16, copy=False
+        ),
         paths.downsampled_brain_standard_space,
     )
 
@@ -114,9 +121,18 @@ def run_niftyreg(
     del target_brain
 
     deformation_image = imio.load_any(niftyreg_paths.deformation_field)
-    imio.to_tiff(deformation_image[..., 0, 0], paths.deformation_field_0)
-    imio.to_tiff(deformation_image[..., 0, 1], paths.deformation_field_1)
-    imio.to_tiff(deformation_image[..., 0, 2], paths.deformation_field_2)
+    imio.to_tiff(
+        deformation_image[..., 0, 0].astype(np.uint32, copy=False),
+        paths.deformation_field_0,
+    )
+    imio.to_tiff(
+        deformation_image[..., 0, 1].astype(np.uint32, copy=False),
+        paths.deformation_field_1,
+    )
+    imio.to_tiff(
+        deformation_image[..., 0, 2].astype(np.uint32, copy=False),
+        paths.deformation_field_2,
+    )
 
     if additional_images_downsample:
         logging.info("Saving additional downsampled images")
@@ -150,7 +166,7 @@ def run_niftyreg(
 
             downsampled_brain = bg.map_stack_to(
                 DATA_ORIENTATION, ATLAS_ORIENTATION, downsampled_brain
-            )
+            ).astype(np.uint16, copy=False)
 
             save_nii(
                 downsampled_brain,
@@ -167,13 +183,10 @@ def run_niftyreg(
             )
 
             imio.to_tiff(
-                imio.load_any(tmp_downsampled_brain_standard_path),
+                imio.load_any(tmp_downsampled_brain_standard_path).astype(
+                    np.uint16, copy=False
+                ),
                 downsampled_brain_standard_path,
-            )
-
-            imio.to_tiff(
-                imio.load_any(niftyreg_paths.downsampled_brain_standard_space),
-                paths.downsampled_brain_standard_space,
             )
 
     if not debug:

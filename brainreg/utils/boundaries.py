@@ -1,7 +1,9 @@
 import logging
 import imio
+
+import numpy as np
+
 from skimage.segmentation import find_boundaries
-from imlib.image.scale import scale_and_convert_to_16_bits
 
 
 def boundaries(registered_atlas, boundaries_out_path):
@@ -14,8 +16,9 @@ def boundaries(registered_atlas, boundaries_out_path):
     :param boundaries_out_path: Path to save the boundary image
     """
     atlas_img = imio.load_any(registered_atlas)
-    boundaries_image = find_boundaries(atlas_img, mode="inner")
-    boundaries_image = scale_and_convert_to_16_bits(boundaries_image)
+    boundaries_image = find_boundaries(atlas_img, mode="inner").astype(
+        np.int8, copy=False
+    )
     logging.debug("Saving segmentation boundary image")
     imio.to_tiff(
         boundaries_image, boundaries_out_path,
