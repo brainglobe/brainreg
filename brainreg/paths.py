@@ -36,6 +36,8 @@ class Paths:
 
         self.volume_csv_path = self.make_reg_path("volumes.csv")
 
+        self.metadata_path = self.make_reg_path("brainreg.json")
+
     def make_reg_path(self, basename):
         """
         Compute the absolute path of the destination file to

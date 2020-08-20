@@ -5,7 +5,6 @@ import imio
 
 from imlib.general.system import get_num_processes
 
-from brainreg.paths import Paths
 from brainreg.backend.niftyreg.run import run_niftyreg
 
 from brainreg.utils.volume import calculate_volumes
@@ -16,7 +15,7 @@ def main(
     atlas,
     data_orientation,
     target_brain_path,
-    registration_output_folder,
+    paths,
     niftyreg_args,
     x_pixel_um=0.02,
     y_pixel_um=0.02,
@@ -30,8 +29,6 @@ def main(
 
     n_processes = get_num_processes(min_free_cpu_cores=n_free_cpus)
     load_parallel = n_processes > 1
-
-    paths = Paths(registration_output_folder)
 
     # TODO: check orientation of atlas voxel sizes
     atlas_pixel_sizes = {
@@ -70,7 +67,7 @@ def main(
 
     if backend == "niftyreg":
         run_niftyreg(
-            registration_output_folder,
+            paths.registration_output_folder,
             paths,
             atlas,
             atlas_pixel_sizes,
@@ -107,5 +104,5 @@ def main(
 
     logging.info(
         f"brainreg completed. Results can be found here: "
-        f"{registration_output_folder}"
+        f"{paths.registration_output_folder}"
     )

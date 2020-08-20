@@ -1,3 +1,4 @@
+import json
 from argparse import Namespace
 
 
@@ -10,3 +11,8 @@ def get_arg_groups(args, parser):
         arg_groups[group.title] = Namespace(**group_dict)
 
     return arg_groups
+
+
+def log_metadata(file_path, args):
+    with open(file_path, "w") as f:
+        json.dump(args, f, default=lambda x: x.__dict__)

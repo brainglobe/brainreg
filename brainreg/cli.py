@@ -13,10 +13,11 @@ from imlib.general.system import ensure_directory_exists
 from imlib.general.numerical import check_positive_int, check_positive_float
 from imlib.image.metadata import define_pixel_sizes
 
-from brainreg.utils.misc import get_arg_groups
+from brainreg.utils.misc import get_arg_groups, log_metadata
 from brainreg.main import main as register
 from brainreg.backend.niftyreg.parser import niftyreg_parse
 import brainreg as program_for_log
+from brainreg.paths import Paths
 
 from bg_atlasapi.bg_atlas import BrainGlobeAtlas
 
@@ -198,8 +199,12 @@ def main():
 
     args, additional_images_downsample = prep_registration(args)
 
+    paths = Paths(args.brainreg_directory)
+
+    log_metadata(paths.metadata_path, args)
+
     fancylog.start_logging(
-        args.brainreg_directory,
+        paths.registration_output_folder,
         program_for_log,
         variables=[args],
         verbose=args.debug,
@@ -215,7 +220,7 @@ def main():
         atlas,
         args.orientation,
         args.image_paths,
-        args.brainreg_directory,
+        paths,
         arg_groups["NiftyReg registration backend options"],
         x_pixel_um=args.x_pixel_um,
         y_pixel_um=args.y_pixel_um,
