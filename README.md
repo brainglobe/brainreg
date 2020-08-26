@@ -1,4 +1,4 @@
-[![Python Version](https://img.shields.io/pypi/pyversions/brainreg.svg)](https://pypi.org/project/amap)
+[![Python Version](https://img.shields.io/pypi/pyversions/brainreg.svg)](https://pypi.org/project/brainreg)
 [![PyPI](https://img.shields.io/pypi/v/brainreg.svg)](https://pypi.org/project/brainreg)
 [![Wheel](https://img.shields.io/pypi/wheel/brainreg.svg)](https://pypi.org/project/brainreg)
 [![Development Status](https://img.shields.io/pypi/status/brainreg.svg)](https://github.com/brainglobe/brainreg)
