@@ -17,9 +17,8 @@ of the [original Java software](https://www.nature.com/articles/ncomms11879))
 to include multiple registration backends, and to support the many atlases 
 provided by [bg-atlasapi](https://github.com/brainglobe/bg-atlasapi).
 
-
-Documentation can be found [here](https://docs.cellfinder.info/brainreg/introduction) 
-and a tutorial is [here](https://docs.cellfinder.info/brainreg/tutorial).
+Documentation can be found [here](https://docs.brainglobe.info/brainreg/introduction) 
+and a tutorial is [here](https://docs.brainglobe.info/brainreg/tutorial).
 
 ## Details
 The aim of brainreg is to register the template brain
