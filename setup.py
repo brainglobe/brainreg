@@ -21,6 +21,7 @@ requirements = [
     "imlib>=0.0.26",
     "napari",
     "napari-brainreg",
+    "brainreg-segment>=0.0.2",
 ]
 
 
