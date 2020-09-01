@@ -10,6 +10,8 @@ from brainreg.backend.niftyreg.run import run_niftyreg
 from brainreg.utils.volume import calculate_volumes
 from brainreg.utils.boundaries import boundaries
 
+from bg_atlasapi import BrainGlobeAtlas
+
 
 def main(
     atlas,
@@ -26,6 +28,7 @@ def main(
     backend="niftyreg",
     debug=False,
 ):
+    atlas = BrainGlobeAtlas(atlas)
 
     n_processes = get_num_processes(min_free_cpu_cores=n_free_cpus)
     load_parallel = n_processes > 1

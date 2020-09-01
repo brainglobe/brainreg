@@ -19,7 +19,6 @@ from brainreg.backend.niftyreg.parser import niftyreg_parse
 import brainreg as program_for_log
 from brainreg.paths import Paths
 
-from bg_atlasapi.bg_atlas import BrainGlobeAtlas
 
 temp_dir = tempfile.TemporaryDirectory()
 temp_dir_path = temp_dir.name
@@ -214,10 +213,8 @@ def main():
 
     logging.info("Starting registration")
 
-    atlas = BrainGlobeAtlas(args.atlas)
-
     register(
-        atlas,
+        args.atlas,
         args.orientation,
         args.image_paths,
         paths,
