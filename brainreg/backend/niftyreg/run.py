@@ -122,15 +122,15 @@ def run_niftyreg(
 
     deformation_image = imio.load_any(niftyreg_paths.deformation_field)
     imio.to_tiff(
-        deformation_image[..., 0, 0].astype(np.uint32, copy=False),
+        deformation_image[..., 0, 0].astype(np.float32, copy=False),
         paths.deformation_field_0,
     )
     imio.to_tiff(
-        deformation_image[..., 0, 1].astype(np.uint32, copy=False),
+        deformation_image[..., 0, 1].astype(np.float32, copy=False),
         paths.deformation_field_1,
     )
     imio.to_tiff(
-        deformation_image[..., 0, 2].astype(np.uint32, copy=False),
+        deformation_image[..., 0, 2].astype(np.float32, copy=False),
         paths.deformation_field_2,
     )
 
