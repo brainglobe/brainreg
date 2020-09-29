@@ -18,8 +18,8 @@ x_pix = "40"
 y_pix = "40"
 z_pix = "50"
 
-relative_tolerance = 0.01
-absolute_tolerance = 10
+relative_tolerance = 0.1
+absolute_tolerance = 100
 check_less_precise_pd = 1
 
 
