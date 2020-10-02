@@ -23,8 +23,8 @@ x_pix = "40"
 y_pix = "40"
 z_pix = "50"
 
-relative_tolerance = 0.1
-absolute_tolerance = 100
+relative_tolerance = 0.01
+absolute_tolerance = 10
 check_less_precise_pd = 1
 
 
@@ -59,10 +59,10 @@ def test_registration_niftyreg(tmpdir):
             "deformation_field_0.tiff",
             "deformation_field_1.tiff",
             "deformation_field_2.tiff",
-            # "downsampled.tiff",
-            # "downsampled_brain.tiff",
-            # "downsampled_standard.tiff",
-            # "downsampled_standard_brain.tiff",
+            "downsampled.tiff",
+            "downsampled_brain.tiff",
+            "downsampled_standard.tiff",
+            "downsampled_standard_brain.tiff",
             "registered_atlas.tiff",
             "registered_hemispheres.tiff",
         ]
