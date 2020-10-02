@@ -102,7 +102,8 @@ def main(
 
     logging.info("Generating boundary image")
     boundaries(
-        paths.registered_atlas, paths.boundaries_file_path,
+        paths.registered_atlas,
+        paths.boundaries_file_path,
     )
 
     logging.info(

@@ -24,7 +24,7 @@ def save_nii(stack, atlas_pixel_sizes, dest_path):
 
 
 def get_transf_matrix_from_res(pix_sizes):
-    """ Create transformation matrix in mm
+    """Create transformation matrix in mm
     from a dictionary of pixel sizes in um
     :param pix_sizes:
     :return:

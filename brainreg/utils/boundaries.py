@@ -21,5 +21,6 @@ def boundaries(registered_atlas, boundaries_out_path):
     )
     logging.debug("Saving segmentation boundary image")
     imio.to_tiff(
-        boundaries_image, boundaries_out_path,
+        boundaries_image,
+        boundaries_out_path,
     )

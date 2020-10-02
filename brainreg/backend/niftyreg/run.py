@@ -51,7 +51,9 @@ def run_niftyreg(
 
     target_brain = preprocess.filter_image(target_brain)
     save_nii(
-        target_brain, atlas_pixel_sizes, niftyreg_paths.downsampled_filtered,
+        target_brain,
+        atlas_pixel_sizes,
+        niftyreg_paths.downsampled_filtered,
     )
 
     logging.info("Registering")
@@ -69,7 +71,9 @@ def run_niftyreg(
         histogram_n_bins_reference=niftyreg_args.histogram_n_bins_reference,
     )
     brain_reg = BrainRegistration(
-        niftyreg_paths, registration_params, n_processes=n_processes,
+        niftyreg_paths,
+        registration_params,
+        n_processes=n_processes,
     )
 
     logging.info("Starting affine registration")
@@ -143,7 +147,8 @@ def run_niftyreg(
                 registration_output_folder, f"downsampled_{name}.tiff"
             )
             tmp_downsampled_brain_path = os.path.join(
-                niftyreg_paths.niftyreg_directory, f"downsampled_{name}.nii",
+                niftyreg_paths.niftyreg_directory,
+                f"downsampled_{name}.nii",
             )
             downsampled_brain_standard_path = os.path.join(
                 registration_output_folder, f"downsampled_standard_{name}.tiff"
