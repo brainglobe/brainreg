@@ -67,19 +67,19 @@ def test_registration_niftyreg(tmpdir):
             "registered_atlas.tiff",
             "registered_hemispheres.tiff",
         ]
-    # else:
-    #     image_list = [
-    #         "boundaries.tiff",
-    #         "deformation_field_0.tiff",
-    #         "deformation_field_1.tiff",
-    #         "deformation_field_2.tiff",
-    #         "downsampled.tiff",
-    #         "downsampled_brain.tiff",
-    #         "downsampled_standard.tiff",
-    #         "downsampled_standard_brain.tiff",
-    #         "registered_atlas.tiff",
-    #         "registered_hemispheres.tiff",
-    #     ]
+    else:
+        image_list = [
+            "boundaries.tiff",
+            "deformation_field_0.tiff",
+            "deformation_field_1.tiff",
+            "deformation_field_2.tiff",
+            "downsampled.tiff",
+            "downsampled_brain.tiff",
+            "downsampled_standard.tiff",
+            "downsampled_standard_brain.tiff",
+            "registered_atlas.tiff",
+            "registered_hemispheres.tiff",
+        ]
     for image in image_list:
         are_images_equal(image, output_directory, test_niftyreg_output)
 
