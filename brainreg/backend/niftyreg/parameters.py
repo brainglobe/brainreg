@@ -1,4 +1,7 @@
-from imlib.source.niftyreg_binaries import get_niftyreg_binaries, get_binary
+from brainreg.backend.niftyreg.niftyreg_binaries import (
+    get_niftyreg_binaries,
+    get_binary,
+)
 
 
 class RegistrationParams:
