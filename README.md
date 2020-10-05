@@ -20,6 +20,8 @@ provided by [bg-atlasapi](https://github.com/brainglobe/bg-atlasapi).
 Documentation can be found [here](https://docs.brainglobe.info/brainreg/introduction) 
 and a tutorial is [here](https://docs.brainglobe.info/brainreg/tutorial).
 
+If you have any questions, please ask on the [forum](https://gitter.im/cellfinder/brainreg).
+
 ## Details
 The aim of brainreg is to register the template brain
  (e.g. from the [Allen Reference Atlas](https://mouse.brain-map.org/static/atlas))

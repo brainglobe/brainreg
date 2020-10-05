@@ -19,7 +19,10 @@ class BrainRegistration(object):
     """
 
     def __init__(
-        self, paths, registration_params, n_processes=None,
+        self,
+        paths,
+        registration_params,
+        n_processes=None,
     ):
         self.paths = paths
         self.reg_params = registration_params
@@ -261,7 +264,8 @@ class BrainRegistration(object):
         try:
             safe_execute_command(
                 self._prepare_inverse_registration_cmd(
-                    image_path, destination_path,
+                    image_path,
+                    destination_path,
                 ),
                 self.paths.inverse_transform_log_file,
                 self.paths.inverse_transform_error_file,

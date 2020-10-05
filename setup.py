@@ -8,10 +8,9 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 requirements = [
     "bg-atlasapi",
     "bg-space",
-    "bgviewer",
-    "numpy>=1.15.4,<1.19.0",
+    "numpy",
     "configparser",
-    "scikit-image>=0.14.0,<0.17.0",
+    "scikit-image",
     "multiprocessing-logging",
     "configobj",
     "slurmio",
@@ -19,7 +18,7 @@ requirements = [
     "fancylog",
     "micrometa",
     "imlib>=0.0.26",
-    "napari",
+    "napari[pyqt5]",
     "napari-brainreg",
     "brainreg-segment>=0.0.2",
 ]
@@ -27,7 +26,7 @@ requirements = [
 
 setup(
     name="brainreg",
-    version="0.1.8",
+    version="0.1.12",
     description="Automated 3D brain registration",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -43,9 +42,13 @@ setup(
             "flake8",
         ]
     },
-    python_requires=">=3.6, <3.8",
+    python_requires=">=3.7",
     packages=find_namespace_packages(exclude=("docs", "tests*")),
-    entry_points={"console_scripts": ["brainreg = brainreg.cli:main",]},
+    entry_points={
+        "console_scripts": [
+            "brainreg = brainreg.cli:main",
+        ]
+    },
     include_package_data=True,
     author="Adam Tyson, Charly Rousseau",
     author_email="adam.tyson@ucl.ac.uk",
