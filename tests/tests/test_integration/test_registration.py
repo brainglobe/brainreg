@@ -51,6 +51,7 @@ def test_registration_niftyreg(tmpdir):
     sys.argv = brainreg_args
     brainreg_run()
 
+    # results seem to depend on the compiler version
     # a hack because testing on linux on travis is 100% identical to local,
     # but windows is not
     if platform.system() == "Linux":
