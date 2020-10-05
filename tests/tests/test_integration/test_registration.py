@@ -82,10 +82,11 @@ def test_registration_niftyreg(tmpdir):
     for image in image_list:
         are_images_equal(image, output_directory, test_niftyreg_output)
 
-    pd.testing.assert_frame_equal(
-        pd.read_csv(os.path.join(output_directory, "volumes.csv")),
-        pd.read_csv(os.path.join(test_niftyreg_output, "volumes.csv")),
-    )
+    if platform.system() == "Linux":
+        pd.testing.assert_frame_equal(
+            pd.read_csv(os.path.join(output_directory, "volumes.csv")),
+            pd.read_csv(os.path.join(test_niftyreg_output, "volumes.csv")),
+        )
 
 
 def are_images_equal(image_name, output_directory, test_output_directory):
