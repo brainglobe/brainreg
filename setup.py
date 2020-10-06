@@ -18,6 +18,7 @@ requirements = [
     "fancylog",
     "micrometa",
     "imlib>=0.0.26",
+    "napari[pyside2]>=0.3.7",
     "napari-brainreg",
     "brainreg-segment>=0.0.2",
 ]
