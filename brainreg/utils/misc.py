@@ -1,6 +1,8 @@
 import json
 from argparse import Namespace
 
+from pathlib import PurePath
+
 
 def get_arg_groups(args, parser):
     arg_groups = {}
@@ -13,7 +15,13 @@ def get_arg_groups(args, parser):
     return arg_groups
 
 
+def serialise(obj):
+    if isinstance(obj, PurePath):
+        return str(obj)
+    else:
+        return obj.__dict__
+
+
 def log_metadata(file_path, args):
-    args.metadata = str(args.metadata)  # quick fix, need to deal with properly
     with open(file_path, "w") as f:
-        json.dump(args, f, default=lambda x: x.__dict__)
+        json.dump(args, f, default=serialise)
