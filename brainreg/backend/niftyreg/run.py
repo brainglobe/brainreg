@@ -19,16 +19,13 @@ def run_niftyreg(
     registration_output_folder,
     paths,
     atlas,
-    atlas_pixel_sizes,
     target_brain,
     n_processes,
     additional_images_downsample,
     DATA_ORIENTATION,
     ATLAS_ORIENTATION,
     niftyreg_args,
-    x_scaling,
-    y_scaling,
-    z_scaling,
+    scaling,
     load_parallel,
     sort_input_file,
     n_free_cpus,
@@ -39,20 +36,20 @@ def run_niftyreg(
 
     niftyreg_paths = NiftyRegPaths(niftyreg_directory)
 
-    save_nii(atlas.hemispheres, atlas_pixel_sizes, niftyreg_paths.hemispheres)
-
-    save_nii(atlas.annotation, atlas_pixel_sizes, niftyreg_paths.annotations)
+    save_nii(atlas.hemispheres, atlas.resolution, niftyreg_paths.hemispheres)
+    save_nii(atlas.annotation, atlas.resolution, niftyreg_paths.annotations)
 
     reference = preprocess.filter_image(atlas.reference)
-    save_nii(reference, atlas_pixel_sizes, niftyreg_paths.brain_filtered)
+    save_nii(reference, atlas.resolution, niftyreg_paths.brain_filtered)
 
-    save_nii(target_brain, atlas_pixel_sizes, niftyreg_paths.downsampled_brain)
+    save_nii(target_brain, atlas.resolution, niftyreg_paths.downsampled_brain)
+
     imio.to_tiff(target_brain, paths.downsampled_brain_path)
 
     target_brain = preprocess.filter_image(target_brain)
     save_nii(
         target_brain,
-        atlas_pixel_sizes,
+        atlas.resolution,
         niftyreg_paths.downsampled_filtered,
     )
 
@@ -120,7 +117,6 @@ def run_niftyreg(
         paths.downsampled_brain_standard_space,
     )
 
-    del atlas
     del reference
     del target_brain
 
@@ -161,9 +157,9 @@ def run_niftyreg(
             # do the tiff part at the beginning
             downsampled_brain = imio.load_any(
                 filename,
-                x_scaling,
-                y_scaling,
-                z_scaling,
+                scaling[1],
+                scaling[2],
+                scaling[0],
                 load_parallel=load_parallel,
                 sort_input_file=sort_input_file,
                 n_free_cpus=n_free_cpus,
@@ -175,9 +171,11 @@ def run_niftyreg(
 
             save_nii(
                 downsampled_brain,
-                atlas_pixel_sizes,
+                atlas.resolution,
                 tmp_downsampled_brain_path,
             )
+            del atlas
+
             imio.to_tiff(downsampled_brain, downsampled_brain_path)
 
             logging.info("Transforming to standard space")
