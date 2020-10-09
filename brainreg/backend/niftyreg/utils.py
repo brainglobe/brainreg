@@ -15,9 +15,9 @@ def save_nii(stack, atlas_pixel_sizes, dest_path):
         stack,
         dest_path,
         scale=(
-            atlas_pixel_sizes["x"] / 1000,
-            atlas_pixel_sizes["y"] / 1000,
-            atlas_pixel_sizes["z"] / 1000,
+            atlas_pixel_sizes[0] / 1000,
+            atlas_pixel_sizes[1] / 1000,
+            atlas_pixel_sizes[2] / 1000,
         ),
         affine_transform=transformation_matrix,
     )
@@ -30,6 +30,6 @@ def get_transf_matrix_from_res(pix_sizes):
     :return:
     """
     transformation_matrix = np.eye(4)
-    for i, axis in enumerate(("x", "y", "z")):
-        transformation_matrix[i, i] = pix_sizes[axis] / 1000
+    for i in [0, 1, 2]:
+        transformation_matrix[i, i] = pix_sizes[i] / 1000
     return transformation_matrix

@@ -8,10 +8,8 @@ from datetime import datetime
 from fancylog import fancylog
 from pathlib import Path
 
-from micrometa.micrometa import SUPPORTED_METADATA_TYPES
 from imlib.general.system import ensure_directory_exists
-from imlib.general.numerical import check_positive_int, check_positive_float
-from imlib.image.metadata import define_pixel_sizes
+from imlib.general.numerical import check_positive_int
 
 from brainreg.utils.misc import get_arg_groups, log_metadata
 from brainreg.main import main as register
@@ -109,14 +107,7 @@ def misc_parse(parser):
         help="Debug mode. Will increase verbosity of logging and save all "
         "intermediate files for diagnosis of software issues.",
     )
-    misc_parser.add_argument(
-        "--metadata",
-        dest="metadata",
-        type=Path,
-        help="Path to the metadata file. Supported formats are '{}'.".format(
-            SUPPORTED_METADATA_TYPES
-        ),
-    )
+
     misc_parser.add_argument(
         "--sort-input-file",
         dest="sort_input_file",
@@ -134,29 +125,16 @@ def pixel_parser(parser):
         "Options to define pixel sizes of raw data"
     )
     pixel_opt_parser.add_argument(
-        "-x",
-        "--x-pixel-um",
-        dest="x_pixel_um",
-        type=check_positive_float,
-        help="Pixel spacing of the data in the first "
-        "dimension, specified in um.",
+        "-v",
+        "--voxel-sizes",
+        dest="voxel_sizes",
+        required=True,
+        nargs="+",
+        # type=tuple,
+        help="Voxel sizes in microns, in the order of data orientation. "
+        "e.g. '5 2 2'",
     )
-    pixel_opt_parser.add_argument(
-        "-y",
-        "--y-pixel-um",
-        dest="y_pixel_um",
-        type=check_positive_float,
-        help="Pixel spacing of the data in the second "
-        "dimension, specified in um.",
-    )
-    pixel_opt_parser.add_argument(
-        "-z",
-        "--z-pixel-um",
-        dest="z_pixel_um",
-        type=check_positive_float,
-        help="Pixel spacing of the data in the third "
-        "dimension, specified in um.",
-    )
+
     return parser
 
 
@@ -168,7 +146,7 @@ def geometry_parser(parser):
     geometry_opt_parser.add_argument(
         "--orientation",
         type=str,
-        default="psl",
+        required=True,
         help="The orientation of the sample brain. "
         "This is used to transpose the atlas "
         "into the same orientation as the brain.",
@@ -194,7 +172,6 @@ def main():
     start_time = datetime.now()
     args = register_cli_parser().parse_args()
     arg_groups = get_arg_groups(args, register_cli_parser())
-    args = define_pixel_sizes(args)
 
     args, additional_images_downsample = prep_registration(args)
 
@@ -218,10 +195,8 @@ def main():
         args.orientation,
         args.image_paths,
         paths,
+        args.voxel_sizes,
         arg_groups["NiftyReg registration backend options"],
-        x_pixel_um=args.x_pixel_um,
-        y_pixel_um=args.y_pixel_um,
-        z_pixel_um=args.z_pixel_um,
         sort_input_file=args.sort_input_file,
         n_free_cpus=args.n_free_cpus,
         additional_images_downsample=additional_images_downsample,
