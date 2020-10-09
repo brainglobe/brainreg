@@ -146,7 +146,7 @@ def geometry_parser(parser):
     geometry_opt_parser.add_argument(
         "--orientation",
         type=str,
-        default="psl",
+        required=True,
         help="The orientation of the sample brain. "
         "This is used to transpose the atlas "
         "into the same orientation as the brain.",
