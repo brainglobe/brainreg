@@ -1,3 +1,3 @@
 __author__ = "Adam Tyson"
-__version__ = "0.1.13"
+__version__ = "0.2.0"
 from . import *
