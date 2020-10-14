@@ -7,7 +7,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/brainglobe/brainreg/badge.svg?branch=master)](https://coveralls.io/github/brainglobe/brainreg?branch=master)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 [![DOI](https://zenodo.org/badge/267067901.svg)](https://zenodo.org/badge/latestdoi/267067901)
-[![Gitter](https://badges.gitter.im/cellfinder/brainreg.svg)](https://gitter.im/cellfinder/brainreg?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Gitter](https://badges.gitter.im/brainglobe/brainreg.svg)](https://gitter.im/brainglobe/brainreg?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # brainreg
 
