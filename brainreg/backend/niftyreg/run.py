@@ -174,7 +174,6 @@ def run_niftyreg(
                 atlas.resolution,
                 tmp_downsampled_brain_path,
             )
-            del atlas
 
             imio.to_tiff(downsampled_brain, downsampled_brain_path)
 
@@ -191,6 +190,7 @@ def run_niftyreg(
                 ),
                 downsampled_brain_standard_path,
             )
+        del atlas
 
     if not debug:
         logging.info("Deleting intermediate niftyreg files")
