@@ -3,7 +3,7 @@ import os
 
 class Paths:
     """
-    A single class to hold all file paths that amap may need. Any paths
+    A single class to hold all file paths that brainreg may need. Any paths
     prefixed with "tmp__" refer to internal intermediate steps, and will be
     deleted if "--debug" is not used.
     """
