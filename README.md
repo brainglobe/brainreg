@@ -2,8 +2,8 @@
 [![PyPI](https://img.shields.io/pypi/v/brainreg.svg)](https://pypi.org/project/brainreg)
 [![Wheel](https://img.shields.io/pypi/wheel/brainreg.svg)](https://pypi.org/project/brainreg)
 [![Development Status](https://img.shields.io/pypi/status/brainreg.svg)](https://github.com/brainglobe/brainreg)
-[![Travis](https://img.shields.io/travis/com/brainglobe/brainreg?label=Travis%20CI)](
-    https://travis-ci.com/brainglobe/brainreg)
+[![Tests](https://img.shields.io/github/workflow/status/brainglobe/brainreg/tests)](
+    https://github.com/brainglobe/brainreg/actions)
 [![Coverage Status](https://coveralls.io/repos/github/brainglobe/brainreg/badge.svg?branch=master)](https://coveralls.io/github/brainglobe/brainreg?branch=master)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 [![DOI](https://zenodo.org/badge/267067901.svg)](https://zenodo.org/badge/latestdoi/267067901)
