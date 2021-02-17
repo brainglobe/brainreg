@@ -41,12 +41,8 @@ jobs:
           pip install .[dev]
       - name: Test
         run: pytest
-      - name: Coveralls
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-            pip install coveralls
-            coveralls
+      - name: Coverage
+        uses: codecov/codecov-action@v1
 
   deploy:
     needs: test
