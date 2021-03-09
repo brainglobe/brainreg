@@ -6,11 +6,17 @@ from imlib.general.system import (
     SafeExecuteCommandError,
 )
 
-from imlib.general.exceptions import (
-    RegistrationError,
-    SegmentationError,
-    TransformationError,
-)
+
+class RegistrationError(Exception):
+    pass
+
+
+class SegmentationError(RegistrationError):
+    pass
+
+
+class TransformationError(RegistrationError):
+    pass
 
 
 class BrainRegistration(object):
