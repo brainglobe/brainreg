@@ -144,4 +144,8 @@ This is typically only used in other software, but you can enable it yourself:
 
 If you find brainreg useful, and use it in your research, please let us know and also cite this repository:
 
-> Adam L. Tyson, Charly V. Rousseau, and Troy W. Margrie (2020). brainreg: automated 3D brain registration with support for multiple species and atlases. [10.5281/zenodo.3991718](https://doi.org/10.5281/zenodo.3991718)
+> Tyson, A.L., Rousseau, C.V.,  and Margrie, T.W. (2021). brainreg: automated 3D brain registration with support for multiple species and atlases. [10.5281/zenodo.3991718](https://doi.org/10.5281/zenodo.3991718)
+
+Please also cite aMAP (the original pipeline from which this software is based):
+
+>Niedworok, C.J., Brown, A.P.Y., Jorge Cardoso, M., Osten, P., Ourselin, S., Modat, M., Margrie, T.W., 2016. AMAP is a validated pipeline for registration and segmentation of high-resolution mouse brain data. Nature Communications. 7, 1–9. https://doi.org/10.1038/ncomms11879
