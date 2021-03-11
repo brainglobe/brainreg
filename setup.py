@@ -1,4 +1,4 @@
-from setuptools import setup, find_namespace_packages
+from setuptools import setup, find_packages
 from os import path
 
 this_directory = path.abspath(path.dirname(__file__))
@@ -42,7 +42,7 @@ setup(
         ]
     },
     python_requires=">=3.7",
-    packages=find_namespace_packages(exclude=("docs", "tests*")),
+    packages=find_packages(),
     entry_points={
         "console_scripts": [
             "brainreg = brainreg.cli:main",

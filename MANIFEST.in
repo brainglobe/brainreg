@@ -1,1 +1,5 @@
 recursive-include brainreg/bin/nifty_reg reg_* *.dll
+
+prune tests
+prune resources
+prune .github
