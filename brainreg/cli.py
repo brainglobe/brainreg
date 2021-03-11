@@ -11,6 +11,7 @@ from pathlib import Path
 from imlib.general.system import ensure_directory_exists
 from imlib.general.numerical import check_positive_int
 
+from brainreg import __version__
 from brainreg.utils.misc import get_arg_groups, log_metadata
 from brainreg.main import main as register
 from brainreg.backend.niftyreg.parser import niftyreg_parse
@@ -59,6 +60,11 @@ def cli_parse(parser):
         nargs="+",
         help="Paths to N additional channels to downsample to the same "
         "coordinate space. ",
+    )
+    cli_parser.add_argument(
+        "--version",
+        action="version",
+        version="%(prog)s {version}".format(version=__version__),
     )
 
     return parser
