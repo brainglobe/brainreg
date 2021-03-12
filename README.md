@@ -109,10 +109,10 @@ Full command-line arguments are available with `brainreg -h`, but please
 
 ### Visualisation
 
-brainreg comes with a plugin ([napari-brainreg](https://github.com/brainglobe/napari-brainreg)) for [napari](https://github.com/napari/napari) to view your data
+brainreg comes with a plugin ([brainglobe-napari-io](https://github.com/brainglobe/brainglobe-napari-io)) for [napari](https://github.com/napari/napari) to view your data
 
 ##### Sample space
-Open napari and drag your [brainreg](https://github.com/brainglobe/brainreg) output directory (the one with the log file) onto the napari window.
+Open napari and drag your brainreg output directory (the one with the log file) onto the napari window.
     
 Various images should then open, including:
 * `Registered image` - the image used for registration, downsampled to atlas resolution
@@ -138,7 +138,6 @@ This is typically only used in other software, but you can enable it yourself:
 * In the `Plugin Sorter` window, select `napari_get_reader` from the `select hook...` dropdown box
 * Drag `brainreg_standard` (the atlas space viewer plugin) above `brainreg` (the normal plugin) to ensure that the atlas space plugin is used preferentially.
 
-![atlas_space](https://raw.githubusercontent.com/brainglobe/napari-brainreg/master/resources/atlas_space.gif)
 
 ### Citing brainreg
 
