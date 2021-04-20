@@ -18,7 +18,10 @@ to include multiple registration backends, and to support the many atlases
 provided by [bg-atlasapi](https://github.com/brainglobe/bg-atlasapi).
 
 Documentation can be found [here](https://docs.brainglobe.info/brainreg/introduction) 
-and a tutorial is [here](https://docs.brainglobe.info/brainreg/tutorial).
+and a tutorial is [here](https://docs.brainglobe.info/brainreg/tutorial). 
+For segmentation of bulk structures in 3D space 
+(e.g. injection sites, Neuropixels probes), please see 
+[brainreg-segment](https://github.com/brainglobe/brainreg-segment).
 
 If you have any questions, please ask on the [forum](https://gitter.im/cellfinder/brainreg).
 
