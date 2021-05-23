@@ -148,9 +148,9 @@ This is typically only used in other software, but you can enable it yourself:
 
 ### Citing brainreg
 
-If you find brainreg useful, and use it in your research, please let us know and also cite this repository:
+If you find brainreg useful, and use it in your research, please let us know and also cite the preprint:
 
-> Tyson, A.L., Rousseau, C.V.,  and Margrie, T.W. (2021). brainreg: automated 3D brain registration with support for multiple species and atlases. [10.5281/zenodo.3991718](https://doi.org/10.5281/zenodo.3991718)
+> Tyson, A. L., V&eacute;lez-Fort, M.,  Rousseau, C. V., Cossell, L., Tsitoura, C., Obenhaus, H. A., Claudi, F., Lenzi, S. C., Branco, T.,  Margrie, T. W. (2021) “Tools for accurate post hoc determination of marker location within whole-brain microscopy images’ bioRxiv, [doi.org/10.1101/2021.05.21.445133](https://doi.org/10.1101/2021.05.21.445133)
 
 Please also cite aMAP (the original pipeline from which this software is based):
 
