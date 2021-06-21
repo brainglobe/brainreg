@@ -57,7 +57,7 @@ pip install brainreg
 
 ### Basic usage
 ```bash
-brainreg /path/to/raw/data /path/to/output/directory -v 2 2 5 --orientation psl
+brainreg /path/to/raw/data /path/to/output/directory -v 5 2 2 --orientation psl
 ```
 
 ## Arguments
