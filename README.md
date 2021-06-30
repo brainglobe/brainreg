@@ -66,7 +66,7 @@ brainreg /path/to/raw/data /path/to/output/directory -v 5 2 2 --orientation psl
 * Path to the directory of the images. (Can also be a text file pointing to the files\)
 * Output directory for all intermediate and final results
 
-**You must also specify the pixel sizes, see [Specifying pixel size](https://docs.cellfinder.info/user-guide/usage/specifying-pixel-size)**
+**You must also specify the voxel sizes, see [Specifying voxel size](https://docs.brainglobe.info/cellfinder/image-orientation#voxel-sizes)**
 
 ### Additional options
 
