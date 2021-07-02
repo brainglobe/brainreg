@@ -1,10 +1,10 @@
-# brainreg-gui
+# brainreg-napari
 
-[![License](https://img.shields.io/pypi/l/brainreg-gui.svg?color=green)](https://github.com/stephenlenzi/brainreg-gui/raw/master/LICENSE)
-[![PyPI](https://img.shields.io/pypi/v/brainreg-gui.svg?color=green)](https://pypi.org/project/brainreg-gui)
-[![Python Version](https://img.shields.io/pypi/pyversions/brainreg-gui.svg?color=green)](https://python.org)
-[![tests](https://github.com/stephenlenzi/brainreg-gui/workflows/tests/badge.svg)](https://github.com/stephenlenzi/brainreg-gui/actions)
-[![codecov](https://codecov.io/gh/stephenlenzi/brainreg-gui/branch/master/graph/badge.svg)](https://codecov.io/gh/stephenlenzi/brainreg-gui)
+[![License](https://img.shields.io/pypi/l/brainreg-napari.svg?color=green)](https://github.com/stephenlenzi/brainreg-napari/raw/master/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/brainreg-napari.svg?color=green)](https://pypi.org/project/brainreg-napari)
+[![Python Version](https://img.shields.io/pypi/pyversions/brainreg-napari.svg?color=green)](https://python.org)
+[![tests](https://github.com/stephenlenzi/brainreg-napari/workflows/tests/badge.svg)](https://github.com/stephenlenzi/brainreg-napari/actions)
+[![codecov](https://codecov.io/gh/stephenlenzi/brainreg-napari/branch/master/graph/badge.svg)](https://codecov.io/gh/stephenlenzi/brainreg-napari)
 
 A simple plugin for running and viewing brainreg results
 
