@@ -72,9 +72,6 @@ def brainreg_register():
             value=DEFAULT_PARAMETERS["data_orientation"],
             label="data_orientation",
         ),
-        # atlas_key=dict(
-        #     value=DEFAULT_PARAMETERS["atlas_key"], label="atlas_key"
-        # ),
         registration_output_folder=dict(
             value=DEFAULT_PARAMETERS["registration_output_folder"],
             mode="d",
@@ -119,7 +116,6 @@ def brainreg_register():
             label="histogram_n_bins_reference",
         ),
         reset_button=dict(widget_type="PushButton", text="Reset defaults"),
-        # call_button=True,
     )
     def widget(
         viewer: napari.Viewer,
