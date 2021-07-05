@@ -10,6 +10,7 @@ requirements = [
     "napari-plugin-engine >= 0.1.4",
     "napari-ndtiffs",
     "brainglobe-napari-io",
+    "brainreg",
 ]
 
 setup(
