@@ -55,6 +55,6 @@ setup(
         "Operating System :: OS Independent",
     ],
     entry_points={
-        "napari.plugin": ["brainreg-register = brainreg_napari.plugins"]
+        "napari.plugin": ["brainreg = brainreg_napari.plugins"]
     },
 )
