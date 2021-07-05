@@ -1,6 +1,7 @@
 from enum import Enum
 
 import napari
+from brainreg.utils.misc import log_metadata
 from brainreg_segment.atlas.utils import get_available_atlases
 from magicgui import magicgui
 import pathlib
@@ -122,7 +123,8 @@ def brainreg_register():
         # call_button=True,
     )
     def widget(
-        img_layer: "napari.layers.Image",
+        viewer: napari.Viewer,
+        img_layer: napari.layers.Image,
         atlas_key: atlas_keys,
         data_orientation: str,
         voxel_size_z: float,
@@ -162,6 +164,12 @@ def brainreg_register():
         :param histogram_n_bins_reference:
         :return:
         """
+
+        def add_image_layers():
+            registration_output_folder = getattr(widget, 'registration_output_folder').value
+            p = pathlib.Path(registration_output_folder)
+            paths = p.glob('*.tiff')
+            [viewer.open(str(p)) for p in paths]
 
         @thread_worker
         def run(
@@ -255,6 +263,7 @@ def brainreg_register():
             histogram_n_bins_floating,
             histogram_n_bins_reference,
         )
+        worker.returned.connect(add_image_layers)
         worker.start()
 
     @widget.reset_button.changed.connect
