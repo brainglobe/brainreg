@@ -23,7 +23,7 @@ def brainreg_register():
         voxel_size_x=2,
         data_orientation="psl",
         atlas_key="allen_mouse_25um",
-        registration_output_folder="",
+        registration_output_folder=pathlib.Path.home(),
         affine_n_steps=6,
         affine_use_n_steps=5,
         freeform_n_steps=6,
@@ -61,7 +61,7 @@ def brainreg_register():
             value=DEFAULT_PARAMETERS["atlas_key"], label="atlas_key"
         ),
         registration_output_folder=dict(
-            value=DEFAULT_PARAMETERS["registration_output_folder"],
+            value=DEFAULT_PARAMETERS["registration_output_folder"], mode='d',
             label="registration_output_folder",
         ),
         affine_n_steps=dict(
