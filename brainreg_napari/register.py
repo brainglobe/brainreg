@@ -21,7 +21,7 @@ def get_atlas_dropdown():
     return atlas_keys
 
 
-atlas_keys = get_atlas_dropdown()
+
 
 
 def brainreg_register():
@@ -37,7 +37,7 @@ def brainreg_register():
         voxel_size_y=2,
         voxel_size_x=2,
         data_orientation="psl",
-        atlas_key=atlas_keys,
+        atlas_key=get_atlas_dropdown(),
         registration_output_folder=pathlib.Path.home(),
         affine_n_steps=6,
         affine_use_n_steps=5,
@@ -124,7 +124,7 @@ def brainreg_register():
     def widget(
         viewer: napari.Viewer,
         img_layer: napari.layers.Image,
-        atlas_key: atlas_keys,
+        atlas_key: get_atlas_dropdown(),
         data_orientation: str,
         voxel_size_z: float,
         voxel_size_x: float,
