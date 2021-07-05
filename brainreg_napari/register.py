@@ -14,7 +14,6 @@ from brainreg.backend.niftyreg.run import run_niftyreg
 
 
 def get_atlas_dropdown():
-    global atlas_keys
     atlas_dict = {}
     for i, k in enumerate(get_available_atlases().keys()):
         atlas_dict.setdefault(k, k)
