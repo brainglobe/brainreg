@@ -9,7 +9,7 @@ import logging
 from brainreg.backend.niftyreg.run import run_niftyreg
 
 
-def register():
+def brainreg_register():
     from napari._qt.qthreading import thread_worker
     from brainreg_napari.util import (
         initialise_brainreg,

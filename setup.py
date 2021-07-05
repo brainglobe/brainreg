@@ -54,5 +54,5 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Operating System :: OS Independent",
     ],
-    entry_points={"napari.plugin": ["register = brainreg_napari.plugins"]},
+    entry_points={"napari.plugin": ["brainreg-register = brainreg_napari.plugins"]},
 )
