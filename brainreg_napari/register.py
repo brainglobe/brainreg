@@ -114,7 +114,7 @@ def brainreg_register():
         voxel_size_z: float,
         voxel_size_x: float,
         voxel_size_y: float,
-        registration_output_folder: str,
+        registration_output_folder: pathlib.Path,
         affine_n_steps: int,
         affine_use_n_steps: int,
         freeform_n_steps: int,
