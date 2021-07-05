@@ -1,4 +1,7 @@
+from enum import Enum
+
 import napari
+from brainreg_segment.atlas.utils import get_available_atlases
 from magicgui import magicgui
 import pathlib
 from brainreg.paths import Paths
@@ -7,6 +10,18 @@ from brainreg.utils.volume import calculate_volumes
 import bg_space as bg
 import logging
 from brainreg.backend.niftyreg.run import run_niftyreg
+
+
+def get_atlas_dropdown():
+    global atlas_keys
+    atlas_dict = {}
+    for i, k in enumerate(get_available_atlases().keys()):
+        atlas_dict.setdefault(k, k)
+    atlas_keys = Enum("atlas_key", atlas_dict)
+    return atlas_keys
+
+
+atlas_keys = get_atlas_dropdown()
 
 
 def brainreg_register():
@@ -22,7 +37,7 @@ def brainreg_register():
         voxel_size_y=2,
         voxel_size_x=2,
         data_orientation="psl",
-        atlas_key="allen_mouse_25um",
+        atlas_key=atlas_keys,
         registration_output_folder=pathlib.Path.home(),
         affine_n_steps=6,
         affine_use_n_steps=5,
@@ -57,11 +72,12 @@ def brainreg_register():
             value=DEFAULT_PARAMETERS["data_orientation"],
             label="data_orientation",
         ),
-        atlas_key=dict(
-            value=DEFAULT_PARAMETERS["atlas_key"], label="atlas_key"
-        ),
+        # atlas_key=dict(
+        #     value=DEFAULT_PARAMETERS["atlas_key"], label="atlas_key"
+        # ),
         registration_output_folder=dict(
-            value=DEFAULT_PARAMETERS["registration_output_folder"], mode='d',
+            value=DEFAULT_PARAMETERS["registration_output_folder"],
+            mode="d",
             label="registration_output_folder",
         ),
         affine_n_steps=dict(
@@ -107,8 +123,8 @@ def brainreg_register():
     )
     def widget(
         img_layer: "napari.layers.Image",
+        atlas_key: atlas_keys,
         data_orientation: str,
-        atlas_key: str,
         voxel_size_z: float,
         voxel_size_x: float,
         voxel_size_y: float,
@@ -183,7 +199,9 @@ def brainreg_register():
                 additional_images_downsample,
                 scaling,
                 load_parallel,
-            ) = initialise_brainreg(atlas_key, data_orientation, voxel_sizes)
+            ) = initialise_brainreg(
+                atlas_key.value, data_orientation, voxel_sizes
+            )
             target_brain = downsample_and_save_brain(img_layer, scaling)
             target_brain = bg.map_stack_to(
                 data_orientation, atlas.metadata["orientation"], target_brain
