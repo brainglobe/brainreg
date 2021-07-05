@@ -188,7 +188,7 @@ def brainreg_register():
             target_brain = bg.map_stack_to(
                 data_orientation, atlas.metadata["orientation"], target_brain
             )
-
+            sort_input_file = False
             paths = Paths(pathlib.Path(registration_output_folder))
             run_niftyreg(
                 registration_output_folder,
@@ -202,6 +202,7 @@ def brainreg_register():
                 niftyreg_args,
                 scaling,
                 load_parallel,
+                sort_input_file,
                 n_free_cpus,
             )
 
