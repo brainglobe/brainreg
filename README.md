@@ -1,10 +1,10 @@
-# brainreg-gui
+# brainreg-napari
 
-[![License](https://img.shields.io/pypi/l/brainreg-gui.svg?color=green)](https://github.com/stephenlenzi/brainreg-gui/raw/master/LICENSE)
-[![PyPI](https://img.shields.io/pypi/v/brainreg-gui.svg?color=green)](https://pypi.org/project/brainreg-gui)
-[![Python Version](https://img.shields.io/pypi/pyversions/brainreg-gui.svg?color=green)](https://python.org)
-[![tests](https://github.com/stephenlenzi/brainreg-gui/workflows/tests/badge.svg)](https://github.com/stephenlenzi/brainreg-gui/actions)
-[![codecov](https://codecov.io/gh/stephenlenzi/brainreg-gui/branch/master/graph/badge.svg)](https://codecov.io/gh/stephenlenzi/brainreg-gui)
+[![License](https://img.shields.io/pypi/l/brainreg-napari.svg?color=green)](https://github.com/stephenlenzi/brainreg-napari/raw/master/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/brainreg-napari.svg?color=green)](https://pypi.org/project/brainreg-napari)
+[![Python Version](https://img.shields.io/pypi/pyversions/brainreg-napari.svg?color=green)](https://python.org)
+[![tests](https://github.com/stephenlenzi/brainreg-napari/workflows/tests/badge.svg)](https://github.com/stephenlenzi/brainreg-napari/actions)
+[![codecov](https://codecov.io/gh/stephenlenzi/brainreg-napari/branch/master/graph/badge.svg)](https://codecov.io/gh/stephenlenzi/brainreg-napari)
 
 A simple plugin for running and viewing brainreg results
 
@@ -22,9 +22,9 @@ https://napari.org/docs/plugins/index.html
 
 ## Installation
 
-You can install `brainreg-gui` via [pip]:
+You can install `brainreg-napari` via [pip]:
 
-    pip install brainreg-gui
+    pip install brainreg-napari
 
 ## Contributing
 
@@ -34,7 +34,7 @@ the coverage at least stays the same before you submit a pull request.
 ## License
 
 Distributed under the terms of the [MIT] license,
-"brainreg-gui" is free and open source software
+"brainreg-napari" is free and open source software
 
 ## Issues
 
@@ -50,7 +50,7 @@ If you encounter any problems, please [file an issue] along with a detailed desc
 [Apache Software License 2.0]: http://www.apache.org/licenses/LICENSE-2.0
 [Mozilla Public License 2.0]: https://www.mozilla.org/media/MPL/2.0/index.txt
 [cookiecutter-napari-plugin]: https://github.com/napari/cookiecutter-napari-plugin
-[file an issue]: https://github.com/stephenlenzi/brainreg-gui/issues
+[file an issue]: https://github.com/stephenlenzi/brainreg-napari/issues
 [napari]: https://github.com/napari/napari
 [tox]: https://tox.readthedocs.io/en/latest/
 [pip]: https://pypi.org/project/pip/
