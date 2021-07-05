@@ -34,7 +34,6 @@ def brainreg_register():
         smoothing_sigma_floating=1,
         histogram_n_bins_floating=128,
         histogram_n_bins_reference=128,
-        sort_input_file=False,
     )
 
     @magicgui(
@@ -103,7 +102,6 @@ def brainreg_register():
             value=DEFAULT_PARAMETERS["histogram_n_bins_reference"],
             label="histogram_n_bins_reference",
         ),
-        sort_input_file=dict(value=False, label="sort input file"),
         reset_button=dict(widget_type="PushButton", text="Reset defaults"),
         # call_button=True,
     )
@@ -125,7 +123,6 @@ def brainreg_register():
         smoothing_sigma_floating: float,
         histogram_n_bins_floating: float,
         histogram_n_bins_reference: float,
-        sort_input_file: bool,
         reset_button,
     ):
         """
@@ -147,7 +144,6 @@ def brainreg_register():
         :param smoothing_sigma_floating:
         :param histogram_n_bins_floating:
         :param histogram_n_bins_reference:
-        :param sort_input_file:
         :return:
         """
 
@@ -206,7 +202,6 @@ def brainreg_register():
                 niftyreg_args,
                 scaling,
                 load_parallel,
-                sort_input_file,
                 n_free_cpus,
             )
 
