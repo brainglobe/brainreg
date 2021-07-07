@@ -1,8 +1,10 @@
+from collections import namedtuple
 from enum import Enum
 
 import napari
 from brainreg.utils.misc import log_metadata
 from brainreg_segment.atlas.utils import get_available_atlases
+from fancylog import fancylog
 from magicgui import magicgui
 import pathlib
 from brainreg.paths import Paths
@@ -11,6 +13,7 @@ from brainreg.utils.volume import calculate_volumes
 import bg_space as bg
 import logging
 from brainreg.backend.niftyreg.run import run_niftyreg
+import brainreg as program_for_log
 
 
 def get_atlas_dropdown():
@@ -19,9 +22,6 @@ def get_atlas_dropdown():
         atlas_dict.setdefault(k, k)
     atlas_keys = Enum("atlas_key", atlas_dict)
     return atlas_keys
-
-
-
 
 
 def brainreg_register():
@@ -33,9 +33,9 @@ def brainreg_register():
     )
 
     DEFAULT_PARAMETERS = dict(
-        voxel_size_z=5,
-        voxel_size_y=2,
-        voxel_size_x=2,
+        z_pixel_um=5,
+        y_pixel_um=2,
+        x_pixel_um=2,
         data_orientation="psl",
         atlas_key=get_atlas_dropdown(),
         registration_output_folder=pathlib.Path.home(),
@@ -53,18 +53,18 @@ def brainreg_register():
 
     @magicgui(
         call_button=True,
-        voxel_size_z=dict(
-            value=DEFAULT_PARAMETERS["voxel_size_z"],
+        z_pixel_um=dict(
+            value=DEFAULT_PARAMETERS["z_pixel_um"],
             label="Voxel size (z)",
             step=0.1,
         ),
-        voxel_size_y=dict(
-            value=DEFAULT_PARAMETERS["voxel_size_y"],
+        y_pixel_um=dict(
+            value=DEFAULT_PARAMETERS["y_pixel_um"],
             label="Voxel size (y)",
             step=0.1,
         ),
-        voxel_size_x=dict(
-            value=DEFAULT_PARAMETERS["voxel_size_x"],
+        x_pixel_um=dict(
+            value=DEFAULT_PARAMETERS["x_pixel_um"],
             label="Voxel size (x)",
             step=0.1,
         ),
@@ -122,9 +122,9 @@ def brainreg_register():
         img_layer: napari.layers.Image,
         atlas_key: get_atlas_dropdown(),
         data_orientation: str,
-        voxel_size_z: float,
-        voxel_size_x: float,
-        voxel_size_y: float,
+        z_pixel_um: float,
+        x_pixel_um: float,
+        y_pixel_um: float,
         registration_output_folder: pathlib.Path,
         affine_n_steps: int,
         affine_use_n_steps: int,
@@ -143,9 +143,9 @@ def brainreg_register():
         :param img_layer:
         :param data_orientation:
         :param atlas_key:
-        :param voxel_size_z:
-        :param voxel_size_x:
-        :param voxel_size_y:
+        :param z_pixel_um:
+        :param x_pixel_um:
+        :param y_pixel_um:
         :param registration_output_folder:
         :param affine_n_steps:
         :param affine_use_n_steps:
@@ -166,6 +166,16 @@ def brainreg_register():
             paths = p.glob('*.tiff')
             [viewer.open(str(p)) for p in paths]
 
+        def get_gui_logging_args():
+            args_dict = {}
+            args_dict.setdefault('image_paths', img_layer.source.path)
+            args_dict.setdefault('backend', 'niftyreg')
+
+            for name, value in DEFAULT_PARAMETERS.items():
+                args_dict.setdefault(name, str(getattr(widget, name).value))
+
+            return namedtuple("namespace", args_dict.keys())(*args_dict.values()), args_dict
+
         @thread_worker
         def run(
             affine_n_steps,
@@ -180,6 +190,8 @@ def brainreg_register():
             histogram_n_bins_reference,
         ):
 
+            paths = Paths(pathlib.Path(registration_output_folder))
+
             niftyreg_args = NiftyregArgs(
                 affine_n_steps,
                 affine_use_n_steps,
@@ -191,9 +203,21 @@ def brainreg_register():
                 -smoothing_sigma_floating,
                 histogram_n_bins_floating,
                 histogram_n_bins_reference,
+                debug=False
+            )
+            args_namedtuple, args_dict = get_gui_logging_args()
+            log_metadata(paths.metadata_path, args_dict)
+
+            fancylog.start_logging(
+                str(paths.registration_output_folder),
+                program_for_log,
+                variables=args_namedtuple,
+                verbose=niftyreg_args.debug,
+                log_header="BRAINREG LOG",
+                multiprocessing_aware=False,
             )
 
-            voxel_sizes = voxel_size_z, voxel_size_x, voxel_size_y
+            voxel_sizes = z_pixel_um, x_pixel_um, y_pixel_um
 
             (
                 n_free_cpus,
@@ -210,7 +234,6 @@ def brainreg_register():
                 data_orientation, atlas.metadata["orientation"], target_brain
             )
             sort_input_file = False
-            paths = Paths(pathlib.Path(registration_output_folder))
             run_niftyreg(
                 registration_output_folder,
                 paths,
@@ -267,3 +290,5 @@ def brainreg_register():
             getattr(widget, name).value = value
 
     return widget
+
+

@@ -83,6 +83,7 @@ class NiftyregArgs(object):
         smoothing_sigma_floating,
         histogram_n_bins_floating,
         histogram_n_bins_reference,
+        debug,
     ):
 
         self.affine_n_steps = affine_n_steps
@@ -95,3 +96,4 @@ class NiftyregArgs(object):
         self.smoothing_sigma_floating = smoothing_sigma_floating
         self.histogram_n_bins_floating = histogram_n_bins_floating
         self.histogram_n_bins_reference = histogram_n_bins_reference
+        self.debug = debug
