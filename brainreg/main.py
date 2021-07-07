@@ -6,7 +6,7 @@ import imio
 from imlib.general.system import get_num_processes
 
 from brainreg.backend.niftyreg.run import run_niftyreg
-
+from brainreg.backend.elastix.run import run_elastix
 from brainreg.utils.volume import calculate_volumes
 from brainreg.utils.boundaries import boundaries
 
@@ -60,18 +60,15 @@ def main(
     target_brain = bg.map_stack_to(
         data_orientation, atlas.metadata["orientation"], target_brain
     )
-
-    if backend == "niftyreg":
-        run_niftyreg(
+    if backend == "elastix":
+        run_elastix(
             paths.registration_output_folder,
             paths,
             atlas,
             target_brain,
-            n_processes,
             additional_images_downsample,
             data_orientation,
             atlas.metadata["orientation"],
-            niftyreg_args,
             scaling,
             load_parallel,
             sort_input_file,
@@ -79,22 +76,44 @@ def main(
             debug=debug,
         )
 
-    logging.info("Calculating volumes of each brain area")
-    calculate_volumes(
-        atlas,
-        paths.registered_atlas,
-        paths.registered_hemispheres,
-        paths.volume_csv_path,
-        # for all brainglobe atlases
-        left_hemisphere_value=1,
-        right_hemisphere_value=2,
-    )
+    elif backend == "niftyreg":
+        run_niftyreg(
+            paths.registration_output_folder,
+            paths,
+            atlas,
+            target_brain,
+            additional_images_downsample,
+            data_orientation,
+            atlas.metadata["orientation"],
+            scaling,
+            load_parallel,
+            sort_input_file,
+            n_free_cpus,
+            debug=debug,
+        )
+    else:
+        raise NotImplementedError(
+            f"Backend: {backend} is not yet implemented. Please choose "
+            f"'niftyreg' [Default] or 'elastix'"
+        )
 
-    logging.info("Generating boundary image")
-    boundaries(
-        paths.registered_atlas,
-        paths.boundaries_file_path,
-    )
+    if backend == "niftyreg":
+        logging.info("Calculating volumes of each brain area")
+        calculate_volumes(
+            atlas,
+            paths.registered_atlas,
+            paths.registered_hemispheres,
+            paths.volume_csv_path,
+            # for all brainglobe atlases
+            left_hemisphere_value=1,
+            right_hemisphere_value=2,
+        )
+
+        logging.info("Generating boundary image")
+        boundaries(
+            paths.registered_atlas,
+            paths.boundaries_file_path,
+        )
 
     logging.info(
         f"brainreg completed. Results can be found here: "
