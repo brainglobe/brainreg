@@ -163,7 +163,7 @@ def brainreg_register():
         def add_image_layers():
             registration_output_folder = getattr(widget, 'registration_output_folder').value
             p = pathlib.Path(registration_output_folder)
-            paths = p.glob('*.tiff')
+            paths = [list(p.glob(x))[0] for x in ['boundaries.tiff', 'downsampled.tiff', 'registered_atlas.tiff', 'registered_hemispheres.tiff']]
             [viewer.open(str(p)) for p in paths]
 
         def get_gui_logging_args():
