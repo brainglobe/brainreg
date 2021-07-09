@@ -1,7 +1,9 @@
+import json
 from collections import namedtuple
 from enum import Enum
 
 import napari
+from brainglobe_napari_io.cellfinder.reader_dir import load_registration, get_atlas
 from brainreg.utils.misc import log_metadata
 from brainreg_segment.atlas.utils import get_available_atlases
 from fancylog import fancylog
@@ -161,18 +163,40 @@ def brainreg_register():
         """
 
         def add_image_layers():
-            registration_output_folder = getattr(widget, 'registration_output_folder').value
-            p = pathlib.Path(registration_output_folder)
-            paths = [list(p.glob(x))[0] for x in ['boundaries.tiff', 'downsampled.tiff', 'registered_atlas.tiff', 'registered_hemispheres.tiff']]
-            [viewer.open(str(p)) for p in paths]
+            registration_directory = pathlib.Path(getattr(widget, 'registration_output_folder').value)
+            layers = []
+
+            if registration_directory.exists():
+                with open(registration_directory / "brainreg.json") as json_file:
+                    metadata = json.load(json_file)
+                layers = load_registration(layers, registration_directory, metadata)
+            viewer = getattr(widget, 'viewer').value
+            atlas_layer = napari.layers.Labels(layers[0][0], scale=layers[0][1]['scale'], name=layers[0][1]['name'])
+            boundaries_layer = napari.layers.Image(layers[1][0], scale=layers[1][1]['scale'], name=layers[1][1]['name'])
+            viewer.add_layer(atlas_layer)
+            viewer.add_layer(boundaries_layer)
 
         def get_gui_logging_args():
             args_dict = {}
             args_dict.setdefault('image_paths', img_layer.source.path)
             args_dict.setdefault('backend', 'niftyreg')
 
+            voxel_sizes=[]
+
+            for name in ['z_pixel_um', 'y_pixel_um', 'x_pixel_um']:
+                voxel_sizes.append(str(getattr(widget, name).value))
+            args_dict.setdefault("voxel_sizes", voxel_sizes)
+
             for name, value in DEFAULT_PARAMETERS.items():
-                args_dict.setdefault(name, str(getattr(widget, name).value))
+                if 'voxel' not in name:
+
+                    if name == 'atlas_key':
+                        args_dict.setdefault("atlas", str(getattr(widget, name).value.value))
+
+                    if name == 'data_orientation':
+                        args_dict.setdefault("orientation", str(getattr(widget, name).value))
+
+                    args_dict.setdefault(name, str(getattr(widget, name).value))
 
             return namedtuple("namespace", args_dict.keys())(*args_dict.values()), args_dict
 
