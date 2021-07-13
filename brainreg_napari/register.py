@@ -1,21 +1,24 @@
 import json
+import napari
+import pathlib
+import logging
+
+import bg_space as bg
+
 from collections import namedtuple
 from enum import Enum
-
-import napari
-from brainglobe_napari_io.cellfinder.reader_dir import load_registration, get_atlas
-from brainreg.utils.misc import log_metadata
-from brainreg_segment.atlas.utils import get_available_atlases
 from fancylog import fancylog
 from magicgui import magicgui
-import pathlib
+
+from brainglobe_napari_io.cellfinder.reader_dir import load_registration
+from brainreg_segment.atlas.utils import get_available_atlases
+
+import brainreg as program_for_log
+from brainreg.utils.misc import log_metadata
 from brainreg.paths import Paths
 from brainreg.utils.boundaries import boundaries
 from brainreg.utils.volume import calculate_volumes
-import bg_space as bg
-import logging
 from brainreg.backend.niftyreg.run import run_niftyreg
-import brainreg as program_for_log
 
 
 def get_atlas_dropdown():
@@ -163,42 +166,65 @@ def brainreg_register():
         """
 
         def add_image_layers():
-            registration_directory = pathlib.Path(getattr(widget, 'registration_output_folder').value)
+            registration_directory = pathlib.Path(
+                getattr(widget, "registration_output_folder").value
+            )
             layers = []
 
             if registration_directory.exists():
-                with open(registration_directory / "brainreg.json") as json_file:
+                with open(
+                    registration_directory / "brainreg.json"
+                ) as json_file:
                     metadata = json.load(json_file)
-                layers = load_registration(layers, registration_directory, metadata)
-            viewer = getattr(widget, 'viewer').value
-            atlas_layer = napari.layers.Labels(layers[0][0], scale=layers[0][1]['scale'], name=layers[0][1]['name'])
-            boundaries_layer = napari.layers.Image(layers[1][0], scale=layers[1][1]['scale'], name=layers[1][1]['name'])
+                layers = load_registration(
+                    layers, registration_directory, metadata
+                )
+            viewer = getattr(widget, "viewer").value
+            atlas_layer = napari.layers.Labels(
+                layers[0][0],
+                scale=layers[0][1]["scale"],
+                name=layers[0][1]["name"],
+            )
+            boundaries_layer = napari.layers.Image(
+                layers[1][0],
+                scale=layers[1][1]["scale"],
+                name=layers[1][1]["name"],
+            )
             viewer.add_layer(atlas_layer)
             viewer.add_layer(boundaries_layer)
 
         def get_gui_logging_args():
             args_dict = {}
-            args_dict.setdefault('image_paths', img_layer.source.path)
-            args_dict.setdefault('backend', 'niftyreg')
+            args_dict.setdefault("image_paths", img_layer.source.path)
+            args_dict.setdefault("backend", "niftyreg")
 
-            voxel_sizes=[]
+            voxel_sizes = []
 
-            for name in ['z_pixel_um', 'y_pixel_um', 'x_pixel_um']:
+            for name in ["z_pixel_um", "y_pixel_um", "x_pixel_um"]:
                 voxel_sizes.append(str(getattr(widget, name).value))
             args_dict.setdefault("voxel_sizes", voxel_sizes)
 
             for name, value in DEFAULT_PARAMETERS.items():
-                if 'pixel' not in name:
+                if "pixel" not in name:
 
-                    if name == 'atlas_key':
-                        args_dict.setdefault("atlas", str(getattr(widget, name).value.value))
+                    if name == "atlas_key":
+                        args_dict.setdefault(
+                            "atlas", str(getattr(widget, name).value.value)
+                        )
 
-                    if name == 'data_orientation':
-                        args_dict.setdefault("orientation", str(getattr(widget, name).value))
+                    if name == "data_orientation":
+                        args_dict.setdefault(
+                            "orientation", str(getattr(widget, name).value)
+                        )
 
-                    args_dict.setdefault(name, str(getattr(widget, name).value))
+                    args_dict.setdefault(
+                        name, str(getattr(widget, name).value)
+                    )
 
-            return namedtuple("namespace", args_dict.keys())(*args_dict.values()), args_dict
+            return (
+                namedtuple("namespace", args_dict.keys())(*args_dict.values()),
+                args_dict,
+            )
 
         @thread_worker
         def run(
@@ -227,7 +253,7 @@ def brainreg_register():
                 -smoothing_sigma_floating,
                 histogram_n_bins_floating,
                 histogram_n_bins_reference,
-                debug=False
+                debug=False,
             )
             args_namedtuple, args_dict = get_gui_logging_args()
             log_metadata(paths.metadata_path, args_dict)
@@ -314,5 +340,3 @@ def brainreg_register():
             getattr(widget, name).value = value
 
     return widget
-
-

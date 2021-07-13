@@ -16,15 +16,15 @@ requirements = [
 setup(
     name="brainreg-napari",
     version="0.0.1",
-    author="Stephen Lenzi",
-    author_email="stephen.lenzi@gmail.com",
+    author="Stephen Lenzi, Adam Tyson",
+    author_email="code@adamltyson.com",
     license="BSD-3-Clause",
-    description="GUI implementation of brainreg",
+    description="Multi-atlas whole-brain microscopy registration",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),
     include_package_data=True,
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     install_requires=requirements,
     extras_require={
         "dev": [
@@ -49,7 +49,6 @@ setup(
         "Intended Audience :: Science/Research",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
