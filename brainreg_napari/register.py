@@ -188,7 +188,7 @@ def brainreg_register():
             args_dict.setdefault("voxel_sizes", voxel_sizes)
 
             for name, value in DEFAULT_PARAMETERS.items():
-                if 'voxel' not in name:
+                if 'pixel' not in name:
 
                     if name == 'atlas_key':
                         args_dict.setdefault("atlas", str(getattr(widget, name).value.value))
