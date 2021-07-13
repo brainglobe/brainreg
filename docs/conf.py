@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# brainreg-gui documentation build configuration file, created by
+# brainreg-napari documentation build configuration file, created by
 # sphinx-quickstart on Thu Oct  1 00:43:18 2015.
 #
 # This file is execfile()d with the current directory set to its
@@ -46,7 +46,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "brainreg-gui"
+project = "brainreg-napari"
 copyright = "2015, Stephen Lenzi"
 author = "Stephen Lenzi"
 
@@ -258,7 +258,7 @@ man_pages = [
     (
         master_doc,
         "napari-cookiecutterplugin_name",
-        "brainreg-gui Documentation",
+        "brainreg-napari Documentation",
         [author],
         1,
     )
@@ -277,7 +277,7 @@ texinfo_documents = [
     (
         master_doc,
         "napari-cookiecutterplugin_name",
-        "brainreg-gui Documentation",
+        "brainreg-napari Documentation",
         author,
         "napari-cookiecutterplugin_name",
         "One line description of project.",
