@@ -15,7 +15,7 @@ requirements = [
 
 setup(
     name="brainreg-napari",
-    version="0.0.1",
+    version="0.0.2-rc0",
     author="Stephen Lenzi, Adam Tyson",
     author_email="code@adamltyson.com",
     license="BSD-3-Clause",
@@ -39,8 +39,14 @@ setup(
             "check-manifest",
         ]
     },
-    url="",
-    project_urls={},
+    url="https://brainglobe.info",
+    project_urls={
+        "Source Code": "https://github.com/brainglobe/brainreg-napari",
+        "Bug Tracker": "https://github.com/brainglobe/brainreg-napari/issues",
+        "Documentation": "https://docs.brainglobe.info/",
+        "User Support": "https://forum.image.sc/tag/brainglobe",
+        "Twitter": "https://twitter.com/brain_globe",
+    },
     classifiers=[
         "Development Status :: 4 - Beta",
         "Framework :: napari",
