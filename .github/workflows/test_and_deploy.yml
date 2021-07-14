@@ -59,10 +59,10 @@ jobs:
           pip install setuptools tox tox-gh-actions
 
       # this runs the platform-specific tests declared in tox.ini
-      - name: Test with tox
-        run: tox
-        env:
-          PLATFORM: ${{ matrix.platform }}
+#      - name: Test with tox
+#        run: tox
+#        env:
+#          PLATFORM: ${{ matrix.platform }}
 
       - name: Coverage
         uses: codecov/codecov-action@v1
