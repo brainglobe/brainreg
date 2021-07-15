@@ -337,6 +337,7 @@ def brainreg_register():
     @widget.reset_button.changed.connect
     def restore_defaults(event=None):
         for name, value in DEFAULT_PARAMETERS.items():
-            getattr(widget, name).value = value
+            if name != "atlas_key":
+                getattr(widget, name).value = value
 
     return widget
