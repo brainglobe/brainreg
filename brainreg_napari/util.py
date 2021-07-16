@@ -11,7 +11,6 @@ from imlib.general.system import get_num_processes
 def initialise_brainreg(atlas_key, data_orientation_key, voxel_sizes):
     scaling_rounding_decimals = 5
     n_free_cpus = 2
-    additional_images_downsample = None
     atlas = BrainGlobeAtlas(atlas_key)
     source_space = bg.AnatomicalSpace(data_orientation_key)
 
@@ -35,7 +34,6 @@ def initialise_brainreg(atlas_key, data_orientation_key, voxel_sizes):
         n_free_cpus,
         n_processes,
         atlas,
-        additional_images_downsample,
         scaling,
         load_parallel,
     )

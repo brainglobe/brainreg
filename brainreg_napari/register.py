@@ -21,6 +21,16 @@ from brainreg.utils.volume import calculate_volumes
 from brainreg.backend.niftyreg.run import run_niftyreg
 
 
+def get_layer_labels(widget):
+    return [layer._name for layer in widget.viewer.value.layers]
+
+
+def get_additional_images_downsample(widget):
+    names = [layer._name for layer in widget.viewer.value.layers.selected]
+    filenames = [layer._source for layer in widget.viewer.value.layers.selected]
+    return {str(k): str(v.path) for k, v in zip(names, filenames)}
+
+
 def get_atlas_dropdown():
     atlas_dict = {}
     for i, k in enumerate(get_available_atlases().keys()):
@@ -273,12 +283,17 @@ def brainreg_register():
                 n_free_cpus,
                 n_processes,
                 atlas,
-                additional_images_downsample,
                 scaling,
                 load_parallel,
             ) = initialise_brainreg(
                 atlas_key.value, data_orientation, voxel_sizes
             )
+
+            additional_images_downsample = get_additional_images_downsample(widget)
+
+
+            logging.info(f"Registering {img_layer._name}")
+
             target_brain = downsample_and_save_brain(img_layer, scaling)
             target_brain = bg.map_stack_to(
                 data_orientation, atlas.metadata["orientation"], target_brain
@@ -340,4 +355,6 @@ def brainreg_register():
             if name != "atlas_key":
                 getattr(widget, name).value = value
 
+
     return widget
+
