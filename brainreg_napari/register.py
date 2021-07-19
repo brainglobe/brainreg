@@ -26,8 +26,10 @@ def get_layer_labels(widget):
 
 
 def get_additional_images_downsample(widget):
-    names = [layer._name for layer in widget.viewer.value.layers.selected]
-    filenames = [layer._source for layer in widget.viewer.value.layers.selected]
+    names = [layer._name for layer in widget.viewer.value.layers.selection]
+    filenames = [
+        layer._source for layer in widget.viewer.value.layers.selection
+    ]
     return {str(k): str(v.path) for k, v in zip(names, filenames)}
 
 
@@ -289,8 +291,9 @@ def brainreg_register():
                 atlas_key.value, data_orientation, voxel_sizes
             )
 
-            additional_images_downsample = get_additional_images_downsample(widget)
-
+            additional_images_downsample = get_additional_images_downsample(
+                widget
+            )
 
             logging.info(f"Registering {img_layer._name}")
 
@@ -355,6 +358,4 @@ def brainreg_register():
             if name != "atlas_key":
                 getattr(widget, name).value = value
 
-
     return widget
-
