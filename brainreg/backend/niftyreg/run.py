@@ -7,6 +7,7 @@ import bg_space as bg
 import imio
 
 from imlib.general.system import delete_directory_contents
+from imlib.image.scale import scale_and_convert_to_16_bits
 
 from brainreg.utils import preprocess
 from brainreg.backend.niftyreg.paths import NiftyRegPaths
@@ -44,7 +45,10 @@ def run_niftyreg(
 
     save_nii(target_brain, atlas.resolution, niftyreg_paths.downsampled_brain)
 
-    imio.to_tiff(target_brain, paths.downsampled_brain_path)
+    imio.to_tiff(
+        scale_and_convert_to_16_bits(target_brain),
+        paths.downsampled_brain_path,
+    )
 
     target_brain = preprocess.filter_image(target_brain)
     save_nii(
