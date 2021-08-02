@@ -46,7 +46,6 @@ def main(
     load_parallel = n_processes > 1
 
     logging.info("Loading raw image data")
-
     target_brain = imio.load_any(
         target_brain_path,
         scaling[1],
