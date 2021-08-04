@@ -70,6 +70,8 @@ def brainreg_register():
 
     @magicgui(
         call_button=True,
+        img_layer=dict(label="Image layer",),
+        atlas_key=dict(label="Atlas",),
         z_pixel_um=dict(
             value=DEFAULT_PARAMETERS["z_pixel_um"],
             label="Voxel size (z)",
@@ -87,12 +89,12 @@ def brainreg_register():
         ),
         data_orientation=dict(
             value=DEFAULT_PARAMETERS["data_orientation"],
-            label="data_orientation",
+            label="Data orientation",
         ),
         registration_output_folder=dict(
             value=DEFAULT_PARAMETERS["registration_output_folder"],
             mode="d",
-            label="registration_output_folder",
+            label="Output directory",
         ),
         affine_n_steps=dict(
             value=DEFAULT_PARAMETERS["affine_n_steps"], label="affine_n_steps"
@@ -156,25 +158,84 @@ def brainreg_register():
         reset_button,
     ):
         """
-
-        :param img_layer:
-        :param data_orientation:
-        :param atlas_key:
-        :param z_pixel_um:
-        :param x_pixel_um:
-        :param y_pixel_um:
-        :param registration_output_folder:
-        :param affine_n_steps:
-        :param affine_use_n_steps:
-        :param freeform_n_steps:
-        :param freeform_use_n_steps:
-        :param bending_energy_weight:
-        :param grid_spacing:
-        :param smoothing_sigma_reference:
-        :param smoothing_sigma_floating:
-        :param histogram_n_bins_floating:
-        :param histogram_n_bins_reference:
-        :return:
+        Parameters
+        ----------
+        img_layer : napari.layers.Image
+             Image layer to be registered
+        atlas_key : str
+             Atlas to use for registration
+        data_orientation: str
+            Three characters describing the data orientation, e.g. "psl".
+            See docs for more details.
+        z_pixel_um : float
+            Size of your voxels in the axial dimension
+        y_pixel_um : float
+            Size of your voxels in the y direction (top to bottom)
+        x_pixel_um : float
+            Size of your voxels in the xdirection (left to right)
+        registration_output_folder: pathlib.Path
+            Where to save the registration output
+                affine_n_steps: int,
+        affine_n_steps: int
+             Registration starts with further downsampled versions of the
+             original data to optimize the global fit of the result and
+             prevent "getting stuck" in local minima of the similarity
+             function. This parameter determines how many downsampling steps
+             are being performed, with each step halving the data size along
+             each dimension.
+        affine_use_n_steps: int
+             Determines how many of the downsampling steps defined by
+             affine-_n_steps will have their registration computed. The
+              combination affine_n_steps=3, affine_use_n_steps=2 will e.g.
+              calculate 3 downsampled steps, each of which is half the size
+              of the previous one but only perform the registration on the
+              2 smallest resampling steps, skipping the full resolution data.
+               Can be used to save time if running the full resolution doesn't
+               result in noticeable improvements.
+        freeform_n_steps: int
+            Registration starts with further downsampled versions of the
+            original data to optimize the global fit of the result and prevent
+            "getting stuck" in local minima of the similarity function. This
+             parameter determines how many downsampling steps are being
+             performed, with each step halving the data size along each dimension.
+        freeform_use_n_steps: int
+            Determines how many of the downsampling steps defined by
+            freeform_n_steps will have their registration computed. The
+            combination freeform_n_steps=3, freeform_use_n_steps=2 will e.g.
+            calculate 3 downsampled steps, each of which is half the size of
+             the previous one but only perform the registration on the 2
+             smallest resampling steps, skipping the full resolution data.
+             Can be used to save time if running the full resolution doesn't
+             result in noticeable improvements
+        bending_energy_weight: float
+            Sets the bending energy, which is the coefficient of the penalty
+             term, preventing the freeform registration from over-fitting.
+             The range is between 0 and 1 (exclusive) with higher values
+             leading to more restriction of the registration.
+        grid_spacing: int
+            Sets the control point grid spacing in x, y & z.
+            Smaller grid spacing allows for more local deformations
+             but increases the risk of over-fitting.
+        smoothing_sigma_reference: int
+            Adds a Gaussian smoothing to the reference image (the one being
+            registered), with the sigma defined by the number. Positive
+            values are interpreted as real values in mm, negative values
+            are interpreted as distance in voxels.
+        smoothing_sigma_floating: float
+            Adds a Gaussian smoothing to the floating image (the one being
+            registered), with the sigma defined by the number. Positive
+            values are interpreted as real values in mm, negative values
+            are interpreted as distance in voxels.
+        histogram_n_bins_floating: float
+            Number of bins used for the generation of the histograms used
+            for the calculation of Normalized Mutual Information on the
+            floating image
+        histogram_n_bins_reference: float
+             Number of bins used for the generation of the histograms used
+             for the calculation of Normalized Mutual Information on the
+             reference image
+        reset_button :
+            Reset parameters to default
         """
 
         def add_image_layers():
