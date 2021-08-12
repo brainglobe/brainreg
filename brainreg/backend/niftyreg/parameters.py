@@ -164,4 +164,4 @@ class RegistrationParams:
 
         program_path = get_binary(nifty_reg_binaries_folder, program_name)
 
-        return program_path
+        return '"' + program_path + '"'
