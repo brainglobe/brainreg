@@ -12,7 +12,7 @@ data_dir = os.path.join(
     os.getcwd(),
     "tests",
     "data",
-    "brain",
+    "brain data",
 )
 
 test_niftyreg_output = os.path.join(
@@ -29,7 +29,7 @@ check_less_precise_pd = 1
 
 
 def test_registration_niftyreg(tmpdir):
-    output_directory = os.path.join(str(tmpdir), "output")
+    output_directory = os.path.join(str(tmpdir), "output dir")
     brainreg_args = [
         "brainreg",
         data_dir,
