@@ -18,7 +18,7 @@ from brainreg.backend.niftyreg.parser import niftyreg_parse
 import brainreg as program_for_log
 from brainreg.paths import Paths
 
-from gooey import Gooey
+from gooey import Gooey, GooeyParser
 
 
 temp_dir = tempfile.TemporaryDirectory()
@@ -26,7 +26,7 @@ temp_dir_path = temp_dir.name
 
 
 def register_cli_parser():
-    parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
+    parser = GooeyParser(formatter_class=ArgumentDefaultsHelpFormatter)
     parser = cli_parse(parser)
     parser = atlas_parse(parser)
     parser = backend_parse(parser)
@@ -46,12 +46,14 @@ def cli_parse(parser):
         type=str,
         help="Path to the directory of the image files. Can also be a text"
         "file pointing to the files.",
+        widget='FileChooser',
     )
 
     cli_parser.add_argument(
         dest="brainreg_directory",
         type=str,
         help="Directory to save the output",
+        widget='DirChooser',
     )
 
     cli_parser.add_argument(
@@ -62,6 +64,7 @@ def cli_parse(parser):
         nargs="+",
         help="Paths to N additional channels to downsample to the same "
         "coordinate space. ",
+        widget="MultiFileChooser",
     )
     cli_parser.add_argument(
         "--version",
@@ -106,6 +109,7 @@ def misc_parse(parser):
         default=4,
         help="The number of CPU cores on the machine to leave "
         "unused by the program to spare resources.",
+        widget="IntegerField",
     )
 
     misc_parser.add_argument(
@@ -176,7 +180,7 @@ def prep_registration(args):
     return args, additional_images_downsample
 
 
-@Gooey
+@Gooey(program_name='brainreg', default_size=(680, 630))
 def main():
     start_time = datetime.now()
     args = register_cli_parser().parse_args()
