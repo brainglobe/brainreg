@@ -18,6 +18,8 @@ from brainreg.backend.niftyreg.parser import niftyreg_parse
 import brainreg as program_for_log
 from brainreg.paths import Paths
 
+from gooey import Gooey
+
 
 temp_dir = tempfile.TemporaryDirectory()
 temp_dir_path = temp_dir.name
@@ -174,6 +176,7 @@ def prep_registration(args):
     return args, additional_images_downsample
 
 
+@Gooey
 def main():
     start_time = datetime.now()
     args = register_cli_parser().parse_args()
