@@ -76,7 +76,7 @@ def cli_parse(parser):
 
 
 def atlas_parse(parser):
-    atlas_parser = parser.add_argument_group("brainreg registration options")
+    atlas_parser = parser.add_argument_group("atlas options")
     atlas_parser.add_argument(
         "--atlas",
         dest="atlas",
