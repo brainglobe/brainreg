@@ -115,6 +115,13 @@ def misc_parse(parser):
     )
 
     misc_parser.add_argument(
+        "--save_original_orientation",
+        dest="save_original_orientation",
+        action="store_true",
+        help="Option to save the atlas annotations in the same orientation as the original data.",
+    )
+
+    misc_parser.add_argument(
         "--sort-input-file",
         dest="sort_input_file",
         action="store_true",
@@ -208,6 +215,7 @@ def main():
         additional_images_downsample=additional_images_downsample,
         backend=args.backend,
         debug=args.debug,
+        save_original_orientation=args.save_original_orientation,
     )
 
     logging.info("Finished. Total time taken: %s", datetime.now() - start_time)

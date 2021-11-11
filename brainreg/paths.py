@@ -20,6 +20,7 @@ class Paths:
         self.boundaries_file_path = self.make_reg_path("boundaries.tiff")
 
         self.registered_atlas = self.make_reg_path("registered_atlas.tiff")
+        self.registered_atlas_original_orientation = self.make_reg_path("registered_atlas_original_orientation.tiff")
         self.registered_hemispheres = self.make_reg_path(
             "registered_hemispheres.tiff"
         )
