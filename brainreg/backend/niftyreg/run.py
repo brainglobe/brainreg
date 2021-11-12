@@ -31,6 +31,7 @@ def run_niftyreg(
     sort_input_file,
     n_free_cpus,
     debug=False,
+    save_original_orientation=False,
 ):
 
     niftyreg_directory = os.path.join(registration_output_folder, "niftyreg")
@@ -108,6 +109,15 @@ def run_niftyreg(
         ),
         paths.registered_atlas,
     )
+
+    if save_original_orientation:
+        atlas = imio.load_any(niftyreg_paths.registered_atlas_path).astype(np.uint32, copy=False)
+        atlas_remaped = bg.map_stack_to(
+            ATLAS_ORIENTATION, DATA_ORIENTATION, atlas
+        ).astype(np.uint32, copy=False)
+        imio.to_tiff(atlas_remaped, paths.registered_atlas_original_orientation)
+
+
     imio.to_tiff(
         imio.load_any(niftyreg_paths.registered_hemispheres_img_path).astype(
             np.uint8, copy=False

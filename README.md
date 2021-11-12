@@ -77,6 +77,7 @@ brainreg /path/to/raw/data /path/to/output/directory -v 5 2 2 --orientation psl
 
 * `--n-free-cpus` The number of CPU cores on the machine to leave unused by the program to spare resources.
 * `--debug` Debug mode. Will increase verbosity of logging and save all intermediate files for diagnosis of software issues.
+* `--save_original_orientation` Option to save the registered atlas with the same orientation as the input data.
 
 ### Atlas
 

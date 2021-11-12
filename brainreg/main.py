@@ -26,6 +26,7 @@ def main(
     backend="niftyreg",
     scaling_rounding_decimals=5,
     debug=False,
+    save_original_orientation=False,
 ):
     atlas = BrainGlobeAtlas(atlas)
     source_space = bg.AnatomicalSpace(data_orientation)
@@ -76,6 +77,7 @@ def main(
             sort_input_file,
             n_free_cpus,
             debug=debug,
+            save_original_orientation=save_original_orientation,
         )
 
     logging.info("Calculating volumes of each brain area")
