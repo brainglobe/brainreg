@@ -25,7 +25,7 @@ requirements = [
 
 setup(
     name="brainreg",
-    version="0.2.4",
+    version="0.3.0-rc0",
     description="Automated 3D brain registration",
     long_description=long_description,
     long_description_content_type="text/markdown",
