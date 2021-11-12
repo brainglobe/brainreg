@@ -118,7 +118,8 @@ def misc_parse(parser):
         "--save_original_orientation",
         dest="save_original_orientation",
         action="store_true",
-        help="Option to save the atlas annotations in the same orientation as the original data.",
+        help="Option to save the atlas annotations in the same orientation "
+        "as the original data.",
     )
 
     misc_parser.add_argument(
