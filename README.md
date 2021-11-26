@@ -21,6 +21,8 @@ For segmentation of bulk structures in 3D space
 (e.g. injection sites, Neuropixels probes), please see 
 [brainreg-segment](https://github.com/brainglobe/brainreg-segment).
 
+**N.B. There is also a [napari plugin](https://github.com/brainglobe/brainreg-napari) if you'd rather use brainreg with a graphical user interface. Currently this interface is slightly limited compared to the command line tool**
+
 This software is at a very early stage, and was written with our data in mind. 
 Over time we hope to support other data types/formats. If you have any issues, please get in touch [on the forum](https://forum.image.sc/tag/brainglobe) or by 
 [raising an issue](https://github.com/brainglobe/brainreg/issues). 
