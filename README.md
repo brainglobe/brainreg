@@ -51,7 +51,7 @@ applied to the atlas.
  
 Full details of the process are in the 
 [original aMAP paper](https://www.nature.com/articles/ncomms11879).
-![process](https://raw.githubusercontent.com/SainsburyWellcomeCentre/amap-python/master/resources/reg_process.png)
+![reg_process](https://user-images.githubusercontent.com/13147259/143553945-a046e918-7614-4211-814c-fc840bb0159d.png)
 **Overview of the registration process**
 
 ### Citing brainreg
