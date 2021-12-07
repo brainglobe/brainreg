@@ -114,11 +114,11 @@ def run_niftyreg(
         registered_atlas = imio.load_any(
             niftyreg_paths.registered_atlas_path
         ).astype(np.uint32, copy=False)
-        atlas_remaped = bg.map_stack_to(
+        atlas_remapped = bg.map_stack_to(
             ATLAS_ORIENTATION, DATA_ORIENTATION, registered_atlas
         ).astype(np.uint32, copy=False)
         imio.to_tiff(
-            atlas_remaped, paths.registered_atlas_original_orientation
+            atlas_remapped, paths.registered_atlas_original_orientation
         )
 
     imio.to_tiff(
