@@ -1,0 +1,7 @@
+# Add labels from the EDAM Bioimaging ontology
+labels:
+  ontology: EDAM-BIOIMAGING:alpha06
+  terms:
+  - Image registration
+  - Affine registration
+  - Multi-channel
