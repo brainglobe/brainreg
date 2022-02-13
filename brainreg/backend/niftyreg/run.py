@@ -209,7 +209,8 @@ def run_niftyreg(
             )
         del atlas
 
-    if not debug:
-        logging.info("Deleting intermediate niftyreg files")
-        delete_directory_contents(niftyreg_directory)
-        os.rmdir(niftyreg_directory)
+    # Doesn't work on some windows installations (Permissions error)
+    # if not debug:
+    #     logging.info("Deleting intermediate niftyreg files")
+    #     delete_directory_contents(niftyreg_directory)
+    #     os.rmdir(niftyreg_directory)
