@@ -6,7 +6,7 @@ import numpy as np
 import bg_space as bg
 import imio
 
-from imlib.general.system import delete_directory_contents
+# from imlib.general.system import delete_directory_contents
 from imlib.image.scale import scale_and_convert_to_16_bits
 
 from brainreg.utils import preprocess
