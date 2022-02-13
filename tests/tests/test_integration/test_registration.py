@@ -63,7 +63,7 @@ def test_registration_niftyreg(tmpdir):
         "registered_atlas.tiff",
         "registered_hemispheres.tiff",
     ]
-    
+
     for image in image_list:
         are_images_equal(image, output_directory, test_niftyreg_output)
 
