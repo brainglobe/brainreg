@@ -130,6 +130,14 @@ def misc_parse(parser):
         "sorted as would be expected by a human and "
         "not purely alphabetically",
     )
+
+    misc_parser.add_argument(
+        "--gui",
+        dest="gui",
+        action="store_true",
+        help="If enabled, launches a graphical user interface for running brainreg.",
+    )
+
     return parser
 
 
