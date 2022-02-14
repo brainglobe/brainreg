@@ -1,3 +1,4 @@
+import sys
 import logging
 import tempfile
 from argparse import (
@@ -178,6 +179,12 @@ def prep_registration(args):
             additional_images_downsample[name] = images
 
     return args, additional_images_downsample
+
+
+# The Gooey GUI needs to be explicitly disabled.
+# This needs to run before the @Gooey decorator is called.
+if '--gui' not in sys.argv:
+    sys.argv.append('--ignore-gooey')
 
 
 @Gooey(program_name='brainreg', default_size=(680, 630))
