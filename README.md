@@ -26,9 +26,6 @@ This software is at a very early stage, and was written with our data in mind.
 Over time we hope to support other data types/formats. If you have any issues, please get in touch [on the forum](https://forum.image.sc/tag/brainglobe) or by 
 [raising an issue](https://github.com/brainglobe/brainreg/issues). 
 
-If you have any other questions, 
-please send an [email](mailto:code@adamltyson.com?subject=brainreg).
-
 ## Details
 brainreg is an update to 
 [amap](https://github.com/SainsburyWellcomeCentre/amap-python) (itself a port 
