@@ -20,6 +20,7 @@ requirements = [
     "napari[pyside2]>=0.3.7",
     "brainglobe-napari-io",
     "brainreg-segment>=0.0.2",
+    "opencv-python>=4.5.5.64",
 ]
 
 
