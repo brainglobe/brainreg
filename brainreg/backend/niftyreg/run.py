@@ -26,6 +26,7 @@ def run_niftyreg(
     DATA_ORIENTATION,
     ATLAS_ORIENTATION,
     niftyreg_args,
+    preprocessing_args,
     scaling,
     load_parallel,
     sort_input_file,
@@ -51,7 +52,7 @@ def run_niftyreg(
         paths.downsampled_brain_path,
     )
 
-    target_brain = preprocess.filter_image(target_brain)
+    target_brain = preprocess.filter_image(target_brain, preprocessing_args)
     save_nii(
         target_brain,
         atlas.resolution,
