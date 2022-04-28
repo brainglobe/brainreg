@@ -119,6 +119,14 @@ def misc_parse(parser):
     )
 
     misc_parser.add_argument(
+        "--brain_geometry",
+        default='full',
+        dest="brain_geometry",
+        help="Option to specify when the brain is not complete and which part it is. Currently brainreg supports full"
+             " ('full') brain, and half hemispheres ('hemisphere_l'/'hemisphere_r').",
+    )
+
+    misc_parser.add_argument(
         "--sort-input-file",
         dest="sort_input_file",
         action="store_true",
@@ -213,6 +221,7 @@ def main():
         backend=args.backend,
         debug=args.debug,
         save_original_orientation=args.save_original_orientation,
+        brain_geometry=args.brain_geometry,
     )
 
     logging.info("Finished. Total time taken: %s", datetime.now() - start_time)

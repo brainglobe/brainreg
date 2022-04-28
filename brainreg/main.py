@@ -24,6 +24,7 @@ def main(
     scaling_rounding_decimals=5,
     debug=False,
     save_original_orientation=False,
+    brain_geometry='full',
 ):
     atlas = BrainGlobeAtlas(atlas)
     source_space = bg.AnatomicalSpace(data_orientation)
@@ -75,6 +76,7 @@ def main(
             n_free_cpus,
             debug=debug,
             save_original_orientation=save_original_orientation,
+            brain_geometry=brain_geometry,
         )
 
     logging.info("Calculating volumes of each brain area")
@@ -86,6 +88,7 @@ def main(
         # for all brainglobe atlases
         left_hemisphere_value=1,
         right_hemisphere_value=2,
+        brain_geometry=brain_geometry
     )
 
     logging.info("Generating boundary image")
