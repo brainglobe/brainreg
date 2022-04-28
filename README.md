@@ -71,7 +71,8 @@ brainreg /path/to/raw/data /path/to/output/directory -v 5 2 2 --orientation psl
 ### Additional options
 
 * `-d` or `--downsample` Paths to N additional channels to downsample to the same coordinate space.
-* `--sort-input-file` If set to true, the input text file will be sorted using natural sorting. This means that the file paths will be sorted as would be expected by a human and not purely alphabetically
+* `--sort-input-file` If set to true, the input text file will be sorted using natural sorting. This means that the file paths will be sorted as would be expected by a human and not purely alphabetically.
+* `--brain_geometry` Can be one of `full` (default) for full brain registration, `hemisphere_l` for left hemisphere data-set and `hemisphere_r` for right hemisphere data-set.
 
 #### Misc options
 
