@@ -124,8 +124,8 @@ def misc_parse(parser):
         default="full",
         dest="brain_geometry",
         help="Option to specify when the brain is not complete and which part it is. Currently "
-             "brainreg supports full ('full') brain, and half hemispheres "
-             "('hemisphere_l'/'hemisphere_r').",
+        "brainreg supports full ('full') brain, and half hemispheres "
+        "('hemisphere_l'/'hemisphere_r').",
     )
 
     misc_parser.add_argument(
