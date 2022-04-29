@@ -87,18 +87,20 @@ def add_structure_volume_to_df(
         right_volume = counts_right[right_index] * voxel_volume
     except IndexError:
         # Disply a warning for missing area only on full brains.
-        if brain_geometry == 'full':
+        if brain_geometry == "full":
             logging.warning(
                 "Atlas value: {} not found in registered atlas. "
                 "Setting registered volume to 0.".format(atlas_value)
             )
         right_volume = 0
-    df_new_row = pd.DataFrame({
+    df_new_row = pd.DataFrame(
+        {
             "structure_name": [name],
             "left_volume_mm3": [left_volume],
             "right_volume_mm3": [right_volume],
             "total_volume_mm3": [left_volume + right_volume],
-        })
+        }
+    )
     df = pd.concat([df, df_new_row], ignore_index=True)
     return df
 
@@ -119,7 +121,7 @@ def calculate_volumes(
     output_file,
     left_hemisphere_value=2,
     right_hemisphere_value=1,
-    brain_geometry='full',
+    brain_geometry="full",
 ):
     (
         unique_vals_left,

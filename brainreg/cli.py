@@ -1,19 +1,20 @@
 import logging
 import tempfile
-from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from datetime import datetime
+from fancylog import fancylog
 from pathlib import Path
 
-from fancylog import fancylog
-from imlib.general.numerical import check_positive_int
 from imlib.general.system import ensure_directory_exists
+from imlib.general.numerical import check_positive_int
 
-import brainreg as program_for_log
 from brainreg import __version__
-from brainreg.backend.niftyreg.parser import niftyreg_parse
-from brainreg.main import main as register
-from brainreg.paths import Paths
 from brainreg.utils.misc import get_arg_groups, log_metadata
+from brainreg.main import main as register
+from brainreg.backend.niftyreg.parser import niftyreg_parse
+import brainreg as program_for_log
+from brainreg.paths import Paths
+
 
 temp_dir = tempfile.TemporaryDirectory()
 temp_dir_path = temp_dir.name
@@ -120,10 +121,10 @@ def misc_parse(parser):
 
     misc_parser.add_argument(
         "--brain_geometry",
-        default='full',
+        default="full",
         dest="brain_geometry",
         help="Option to specify when the brain is not complete and which part it is. Currently brainreg supports full"
-             " ('full') brain, and half hemispheres ('hemisphere_l'/'hemisphere_r').",
+        " ('full') brain, and half hemispheres ('hemisphere_l'/'hemisphere_r').",
     )
 
     misc_parser.add_argument(

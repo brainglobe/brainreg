@@ -44,11 +44,7 @@ setup(
     },
     python_requires=">=3.7",
     packages=find_packages(),
-    entry_points={
-        "console_scripts": [
-            "brainreg = brainreg.cli:main",
-        ]
-    },
+    entry_points={"console_scripts": ["brainreg = brainreg.cli:main"]},
     include_package_data=True,
     author="Adam Tyson, Charly Rousseau",
     author_email="code@adamltyson.com",

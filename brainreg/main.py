@@ -24,7 +24,7 @@ def main(
     scaling_rounding_decimals=5,
     debug=False,
     save_original_orientation=False,
-    brain_geometry='full',
+    brain_geometry="full",
 ):
     atlas = BrainGlobeAtlas(atlas)
     source_space = bg.AnatomicalSpace(data_orientation)
@@ -88,14 +88,11 @@ def main(
         # for all brainglobe atlases
         left_hemisphere_value=1,
         right_hemisphere_value=2,
-        brain_geometry=brain_geometry
+        brain_geometry=brain_geometry,
     )
 
     logging.info("Generating boundary image")
-    boundaries(
-        paths.registered_atlas,
-        paths.boundaries_file_path,
-    )
+    boundaries(paths.registered_atlas, paths.boundaries_file_path)
 
     logging.info(
         f"brainreg completed. Results can be found here: "
