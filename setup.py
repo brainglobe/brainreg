@@ -35,6 +35,7 @@ class cmake_build_ext(build_ext):
                 # Other intermediate static libraries are placed in a
                 # temporary build directory instead
                 f"-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY={self.build_temp}",
+                "-DUSE_OPENMP=OFF",
             ]
 
             # We can handle some platform-specific settings at our discretion
