@@ -133,7 +133,7 @@ def calculate_volumes(
 
     structures_reference_df = atlas.lookup_df
     voxel_volume = get_voxel_volume(atlas)
-    voxel_volume_in_mm = voxel_volume / (1000 ** 3)
+    voxel_volume_in_mm = voxel_volume / (1000**3)
     df = initialise_df(
         "structure_name",
         "left_volume_mm3",
