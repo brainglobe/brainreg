@@ -1,5 +1,6 @@
 import os
 from pkg_resources import resource_filename
+from brainreg import _nifty_reg_bin_dir
 
 
 def get_binary(binaries_folder, program_name):
@@ -8,4 +9,4 @@ def get_binary(binaries_folder, program_name):
 
 
 def get_niftyreg_binaries():
-    return resource_filename("brainreg", "nifty_reg/bin")
+    return _nifty_reg_bin_dir

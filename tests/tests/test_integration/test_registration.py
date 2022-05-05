@@ -3,21 +3,14 @@ import sys
 import platform
 import numpy as np
 import pandas as pd
+from pathlib import Path
 
 from imio.load import load_any
 
 from brainreg.cli import main as brainreg_run
 
-data_dir = os.path.join(
-    os.getcwd(),
-    "tests",
-    "data",
-    "brain data",
-)
-
-test_niftyreg_output = os.path.join(
-    os.getcwd(), "tests", "data", "registration_output", platform.system()
-)
+data_dir = Path(__file__).parent.parent.parent / "data" / "brain data"
+test_niftyreg_output = data_dir.parent / "registration_output"
 
 x_pix = "40"
 y_pix = "40"
@@ -32,7 +25,7 @@ def test_registration_niftyreg(tmpdir):
     output_directory = os.path.join(str(tmpdir), "output dir")
     brainreg_args = [
         "brainreg",
-        data_dir,
+        str(data_dir),
         output_directory,
         "-v",
         z_pix,
@@ -45,7 +38,7 @@ def test_registration_niftyreg(tmpdir):
         "--atlas",
         "allen_mouse_100um",
         "-d",
-        data_dir,
+        str(data_dir),
     ]
 
     sys.argv = brainreg_args
@@ -80,7 +73,7 @@ def test_registration_niftyreg(tmpdir):
             # "registered_hemispheres.tiff",
         ]
     for image in image_list:
-        are_images_equal(image, output_directory, test_niftyreg_output)
+        are_images_equal(image, output_directory, str(test_niftyreg_output))
 
     if platform.system() == "Linux":
         pd.testing.assert_frame_equal(
