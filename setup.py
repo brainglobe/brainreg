@@ -107,7 +107,6 @@ setup(
         ]
     },
     python_requires=">=3.7",
-    packages=find_packages(),
     entry_points={
         "console_scripts": [
             "brainreg = brainreg.cli:main",
@@ -130,7 +129,7 @@ setup(
     zip_safe=False,
     ext_modules=[
         CMakeExtension(
-            "niftyreg", Path(this_directory) / "brainreg" / "nifty_reg" / "src"
+            "niftyreg", Path(this_directory) / "src" / "brainreg" / "nifty_reg" / "src"
         )
     ],
     cmdclass={"build_ext": cmake_build_ext},
