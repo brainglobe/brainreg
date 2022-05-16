@@ -10,14 +10,18 @@ jobs:
 
   test:
     needs: lint
+    name: ${{ matrix.os }} py${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: [3.7, 3.8, 3.9]
-        exclude:
-          - {os: "windows-latest", python-version: "3.7"}
-          - {os: "windows-latest", python-version: "3.8"}
+        # Run all supported Python versions on linux
+        python-version: ["3.7", "3.8", "3.9"]
+        os: [ubuntu-latest]
+        # Include one windows run
+        include:
+        - os: windows-latest
+          python-version: "3.9"
+
     steps:
       - uses: actions/cache@v3
         with:
@@ -26,16 +30,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: Set up Python
         uses: actions/setup-python@v2
+      - uses: brainglobe/actions/test@v1
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install .[dev]
-      - name: Test
-        run: pytest
-      - name: Coverage
-        uses: codecov/codecov-action@v1
 
   deploy:
     needs: test
