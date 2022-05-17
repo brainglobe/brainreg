@@ -1,6 +1,7 @@
 import os
 import platform
 import sys
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -8,16 +9,15 @@ from imio.load import load_any
 
 from brainreg.cli import main as brainreg_run
 
-data_dir = os.path.join(
-    os.getcwd(),
-    "tests",
-    "data",
-    "brain data",
-)
+test_data_dir = Path(os.getcwd()) / "tests" / "data"
 
-test_niftyreg_output = os.path.join(
-    os.getcwd(), "tests", "data", "registration_output", platform.system()
+brain_data_dir = test_data_dir / "brain data"
+expected_niftyreg_output_dir = (
+    test_data_dir / "registration_output" / platform.system()
 )
+# Create a directory to save test data during pytest runs
+test_output_dir = test_data_dir / "test_output"
+test_output_dir.mkdir(exist_ok=True)
 
 x_pix = "40"
 y_pix = "40"
@@ -29,11 +29,10 @@ check_less_precise_pd = 1
 
 
 def test_registration_niftyreg(tmpdir):
-    output_directory = os.path.join(str(tmpdir), "output dir")
     brainreg_args = [
         "brainreg",
-        data_dir,
-        output_directory,
+        str(brain_data_dir),
+        str(test_output_dir),
         "-v",
         z_pix,
         y_pix,
@@ -45,7 +44,7 @@ def test_registration_niftyreg(tmpdir):
         "--atlas",
         "allen_mouse_100um",
         "-d",
-        data_dir,
+        str(brain_data_dir),
     ]
 
     sys.argv = brainreg_args
@@ -80,12 +79,14 @@ def test_registration_niftyreg(tmpdir):
             # "registered_hemispheres.tiff",
         ]
     for image in image_list:
-        are_images_equal(image, output_directory, test_niftyreg_output)
+        are_images_equal(image, test_output_dir, expected_niftyreg_output_dir)
 
     if platform.system() == "Linux":
         pd.testing.assert_frame_equal(
-            pd.read_csv(os.path.join(output_directory, "volumes.csv")),
-            pd.read_csv(os.path.join(test_niftyreg_output, "volumes.csv")),
+            pd.read_csv(os.path.join(test_output_dir, "volumes.csv")),
+            pd.read_csv(
+                os.path.join(expected_niftyreg_output_dir, "volumes.csv")
+            ),
         )
 
 
