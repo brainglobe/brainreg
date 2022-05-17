@@ -119,7 +119,7 @@ def remove_stripes(img_plane, stripes_direction="h"):
                 [image_center[0], image_center[1] - point_ind * first_harmonic]
             ])
     else:
-        raise NotImplemented("Can only automatically remove vertical or horizontal stripes")
+        raise NotImplementedError("Can only automatically remove vertical or horizontal stripes")
     points = np.asarray(points)
 
     filtered_fft_shift = ideal_notch_filter(img_fft, points)
