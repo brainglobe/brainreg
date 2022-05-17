@@ -5,6 +5,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pytest
 from imio.load import load_any
 
 from brainreg.cli import main as brainreg_run
@@ -28,7 +29,10 @@ absolute_tolerance = 10
 check_less_precise_pd = 1
 
 
-def test_registration_niftyreg(tmpdir):
+# This will do a single run of brainreg when pytest is run
+# The outputs are then tested in a separate test below
+@pytest.fixture(scope="session")
+def run_niftyreg():
     brainreg_args = [
         "brainreg",
         str(brain_data_dir),
@@ -50,8 +54,10 @@ def test_registration_niftyreg(tmpdir):
     sys.argv = brainreg_args
     brainreg_run()
 
-    # none of this testing is ideal, as results seem to vary between systems
-    image_list = [
+
+@pytest.mark.parametrize(
+    "image",
+    [
         "boundaries.tiff",
         "deformation_field_0.tiff",
         "deformation_field_1.tiff",
@@ -62,17 +68,17 @@ def test_registration_niftyreg(tmpdir):
         "downsampled_standard_brain data.tiff",
         "registered_atlas.tiff",
         "registered_hemispheres.tiff",
-    ]
-    for image in image_list:
-        are_images_equal(image, test_output_dir, expected_niftyreg_output_dir)
+    ],
+)
+def test_images_output(run_niftyreg, image):
+    are_images_equal(image, test_output_dir, expected_niftyreg_output_dir)
 
-    if platform.system() == "Linux":
-        pd.testing.assert_frame_equal(
-            pd.read_csv(os.path.join(test_output_dir, "volumes.csv")),
-            pd.read_csv(
-                os.path.join(expected_niftyreg_output_dir, "volumes.csv")
-            ),
-        )
+
+def test_volumes_output(run_niftyreg):
+    pd.testing.assert_frame_equal(
+        pd.read_csv(os.path.join(test_output_dir, "volumes.csv")),
+        pd.read_csv(os.path.join(expected_niftyreg_output_dir, "volumes.csv")),
+    )
 
 
 def are_images_equal(image_name, output_directory, test_output_directory):
