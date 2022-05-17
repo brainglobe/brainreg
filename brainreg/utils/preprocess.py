@@ -73,7 +73,12 @@ def pseudo_flatfield(img_plane, sigma=5):
 
 def ideal_notch_filter(fshift, points):
     """
+    Remove signature of periodic stripes in the Fourier domain.
 
+    :param fshift: image representation in Fourier domain, with low frequencies shifted to the center
+    :param points: coordinates of points corresponding to the striped artifact in Fourier space
+    :return: filtered Fourier image representation (fshift)
+    :rtype: np.array
     """
     d0 = 5.0  # cutoff frequency
     H, W = fshift.shape
@@ -89,11 +94,18 @@ def ideal_notch_filter(fshift, points):
 
 def remove_stripes(img_plane, stripes_direction="h"):
     """
+    Remove vertical or horizontal periodic striped artifacts from image plane.
 
+    Use stripes_direction="h" for horizontal stripes, stripes_direction="v" for vertical stripes.
+    Attempting to identify stripes' period using FFT of image plane
+    integrated over one dimension (axis 0 for vertical stripes, axis 1 for horizontal stripes)
+
+    :return: The filtered image
+    :rtype: np.array
     """
-    img_sum = np.sum(img_plane, axis=1)
+    img_sum = np.sum(img_plane, axis=(1 if stripes_direction == "h" else 0))
     fft_seq = np.abs(np.fft.rfft(img_sum))/img_sum.shape[0]
-    first_harmonic = np.argmax(fft_seq[10:]) + 10
+    first_harmonic = np.argmax(fft_seq[10:]) + 10  # lowest frequencies have extremely high magnitudes
     H, W = img_plane.shape
 
     # do 2D fft
@@ -134,7 +146,7 @@ def remove_stripes(img_plane, stripes_direction="h"):
 
 def denoise_fft(img_plane):
     """
-    Apply circular mask to the image in FFT domain.
+    Apply circular mask to the image in FFT domain, to keep low frequencies only.
     """
     H, W = img_plane.shape
     img_fft = np.fft.fft2(img_plane)/(W * H)
@@ -142,7 +154,7 @@ def denoise_fft(img_plane):
     img_fft = np.fft.fftshift(img_fft)
 
     center = [H//2, W//2]
-    r = 200  # TODO hardcoded, change to % of smallest dimension
+    r = int(min(H, W) / 3)
     x, y = np.ogrid[:H, :W]
     mask_area = (x - center[0])**2 + (y - center[1])**2 >= r**2
     img_fft[mask_area] = 0
@@ -156,10 +168,13 @@ def denoise_fft(img_plane):
 
 def subtract_background(img_plane):
     """
-    Subtract background from downsampled_standard.tif image, to compute overlap and nmi with atlas.
+    Create forground/background mask from image plane.
+
+    Experimental, might not work with some datasets!
 
     Mask is computed from denoised image with low cutoff frequency
     (blured signigicantly) for better thresholding.
+    In the mask, 1 = foreground, 0 = background.
     """
     img_lf = denoise_fft(img_plane)
     try:
@@ -172,13 +187,13 @@ def subtract_background(img_plane):
     kernel = morphology.disk(3)
     mask = (morphology.opening(mask, kernel)).astype(np.uint8)
     nb_components, output, stats, centroids = cv2.connectedComponentsWithStats(mask, connectivity=8)
-    sizes = stats[1:, -1]
-    nb_components -= 1
+    nb_components -= 1  # exclude background
+    if nb_components > 5:
+        nb_components = 5  # retain up to 5 largest components
+    final_mask = np.zeros_like(mask)
     for i in range(nb_components):
-        if sizes[i] < 12000:  # TODO hardcoded
-            mask[output == i + 1] = np.abs(mask[output == i + 1] - 1)
-
-    return mask
+        final_mask[output == i + 1] = 1
+    return final_mask
 
 
 def pre_process_fmost(img_plane):
