@@ -6,6 +6,15 @@ contributions:
     title: Atlas Registration
     python_name: brainreg_napari.register:brainreg_register
 
+  - id: brainreg-napari.SampleData
+    title: Sample data
+    python_name: brainreg_napari.sample_data:load_sample
+
   widgets:
   - command: brainreg-napari.Register
     display_name: Atlas Registration
+
+  sample_data:
+  - key: sample
+    display_name: Sample data
+    command: brainreg-napari.SampleData
