@@ -61,7 +61,4 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Operating System :: Microsoft :: Windows :: Windows 10",
     ],
-    entry_points={
-        "napari.plugin": ["brainreg-register = brainreg_napari.plugins"]
-    },
 )

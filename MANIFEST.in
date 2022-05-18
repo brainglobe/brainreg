@@ -4,3 +4,5 @@ include tox.ini
 
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
+
+include brainreg_napari/napari.yaml

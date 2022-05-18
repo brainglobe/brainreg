@@ -1,0 +1,11 @@
+name: brainreg-napari
+schema_version: 0.1.0
+contributions:
+  commands:
+  - id: brainreg-napari.Register
+    title: Atlas Registration
+    python_name: brainreg_napari.register:brainreg_register
+
+  widgets:
+  - command: brainreg-napari.Register
+    display_name: Atlas Registration
