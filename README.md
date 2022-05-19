@@ -5,7 +5,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 
 # brainreg-napari
-Napari plugin to run [brainreg](https://github.com/brainglobe/brainreg), 
+Napari plugin to run [brainreg](https://github.com/brainglobe/brainreg),
 developed by [Stephen Lenzi](https://github.com/stephenlenzi).
 
 ## Installation
@@ -14,39 +14,39 @@ pip install brainreg-napari
 ```
 
 ## Usage
-Documentation for the plugin is to come, but documentation for the original 
-brainreg can be found [here](https://docs.brainglobe.info/brainreg/introduction) 
-and a tutorial is [here](https://docs.brainglobe.info/brainreg/tutorial). 
+Documentation for the plugin is to come, but documentation for the original
+brainreg can be found [here](https://docs.brainglobe.info/brainreg/introduction)
+and a tutorial is [here](https://docs.brainglobe.info/brainreg/tutorial).
 
-For segmentation of bulk structures in 3D space 
-(e.g. injection sites, Neuropixels probes), please see 
+For segmentation of bulk structures in 3D space
+(e.g. injection sites, Neuropixels probes), please see
 [brainreg-segment](https://github.com/brainglobe/brainreg-segment).
 
-This software is at a very early stage, and was written with our data in mind. 
-Over time we hope to support other data types/formats. If you have any issues, please get in touch [on the forum](https://forum.image.sc/tag/brainglobe) or by 
-[raising an issue](https://github.com/brainglobe/brainreg/issues). 
+This software is at a very early stage, and was written with our data in mind.
+Over time we hope to support other data types/formats. If you have any issues, please get in touch [on the forum](https://forum.image.sc/tag/brainglobe) or by
+[raising an issue](https://github.com/brainglobe/brainreg/issues).
 
 ## Details
-brainreg is an update to 
-[amap](https://github.com/SainsburyWellcomeCentre/amap-python) (itself a port 
-of the [original Java software](https://www.nature.com/articles/ncomms11879)) 
-to include multiple registration backends, and to support the many atlases 
+brainreg is an update to
+[amap](https://github.com/SainsburyWellcomeCentre/amap-python) (itself a port
+of the [original Java software](https://www.nature.com/articles/ncomms11879))
+to include multiple registration backends, and to support the many atlases
 provided by [bg-atlasapi](https://github.com/brainglobe/bg-atlasapi).
 
 The aim of brainreg is to register the template brain
  (e.g. from the [Allen Reference Atlas](https://mouse.brain-map.org/static/atlas))
   to the sample image. Once this is complete, any other image in the template
-  space can be aligned with the sample (such as region annotations, for 
+  space can be aligned with the sample (such as region annotations, for
   segmentation of the sample image). The template to sample transformation
-  can also be inverted, allowing sample images to be aligned in a common 
+  can also be inverted, allowing sample images to be aligned in a common
   coordinate space.
-  
-To do this, the template and sample images are filtered, and then registered in 
-a three step process (reorientation, affine registration, and freeform 
+
+To do this, the template and sample images are filtered, and then registered in
+a three step process (reorientation, affine registration, and freeform
 registration.) The resulting transform from template to standard space is then
-applied to the atlas. 
- 
-Full details of the process are in the 
+applied to the atlas.
+
+Full details of the process are in the
 [original aMAP paper](https://www.nature.com/articles/ncomms11879).
 ![reg_process](https://user-images.githubusercontent.com/13147259/143553945-a046e918-7614-4211-814c-fc840bb0159d.png)
 **Overview of the registration process**
@@ -75,4 +75,3 @@ Lastly, if you can, please cite the BrainGlobe Atlas API that provided the atlas
 The BrainGlobe project is generously supported by the Sainsbury Wellcome Centre and the Institute of Neuroscience, Technical University of Munich, with funding from Wellcome, the Gatsby Charitable Foundation and the Munich Cluster for Systems Neurology - Synergy.
 
 <img src='https://brainglobe.info/images/logos_combined.png' width="550">
-

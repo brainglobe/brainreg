@@ -3,23 +3,19 @@ name: tests
 on: [push, pull_request]
 
 jobs:
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: brainglobe/actions/lint@v1
+
   manifest:
     name: Check Manifest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install check-manifest
-      - name: Check Manifest
-        run: check-manifest
+      - uses: brainglobe/actions/check_manifest@v1
 
   test:
+    needs: [linting, manifest]
     name: ${{ matrix.platform }} py${{ matrix.python-version }}
     runs-on: ${{ matrix.platform }}
     strategy:

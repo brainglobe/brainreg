@@ -1,11 +1,12 @@
 import logging
-import skimage.transform
-import numpy as np
-import bg_space as bg
 
-from tqdm import tqdm
-from bg_atlasapi import BrainGlobeAtlas
+import numpy as np
+import skimage.transform
 from imlib.general.system import get_num_processes
+from tqdm import tqdm
+
+import bg_space as bg
+from bg_atlasapi import BrainGlobeAtlas
 
 
 def initialise_brainreg(atlas_key, data_orientation_key, voxel_sizes):

@@ -1,0 +1,25 @@
+[tool.black]
+skip-string-normalization = false
+line-length = 79
+exclude = '''
+(
+  /(
+      \.eggs
+    | \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+)
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 79
+sections=["FUTURE","STDLIB","THIRDPARTY","BRAINGLOBE","FIRSTPARTY","LOCALFOLDER"]
+known_brainglobe=["brainreg", "brainreg_segment", "brainglobe_napari_io", "bg_space", "bg_atlasapi"]
