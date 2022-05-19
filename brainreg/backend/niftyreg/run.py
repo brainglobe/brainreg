@@ -1,19 +1,17 @@
-import os
 import logging
-
-import numpy as np
+import os
 
 import bg_space as bg
 import imio
-
+import numpy as np
 from imlib.general.system import delete_directory_contents
 from imlib.image.scale import scale_and_convert_to_16_bits
 
-from brainreg.utils import preprocess
+from brainreg.backend.niftyreg.parameters import RegistrationParams
 from brainreg.backend.niftyreg.paths import NiftyRegPaths
 from brainreg.backend.niftyreg.registration import BrainRegistration
-from brainreg.backend.niftyreg.parameters import RegistrationParams
 from brainreg.backend.niftyreg.utils import save_nii
+from brainreg.utils import preprocess
 
 
 def run_niftyreg(

@@ -1,7 +1,7 @@
 import os
 import platform
-from pkg_resources import resource_filename
 
+from pkg_resources import resource_filename
 
 __os_folder_names = {"Linux": "linux_x64", "Darwin": "osX", "Windows": "win64"}
 
