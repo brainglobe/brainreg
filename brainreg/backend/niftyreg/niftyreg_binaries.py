@@ -38,7 +38,7 @@ def get_binary(program_name: str) -> Path:
     """
     Get path to one of the niftyreg binaries.
 
-    If niftyreg is installed via. conda uses those binaries, otherwise falls
+    If niftyreg is installed via conda, use those binaries, otherwise fall
     back on bundled binaries.
     """
     if _CONDA_INSTALL_PATH is not None:
