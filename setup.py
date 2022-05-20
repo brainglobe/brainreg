@@ -17,7 +17,7 @@ requirements = [
     "imio",
     "fancylog",
     "imlib>=0.0.26",
-    "napari[pyside2]>=0.3.7",
+    "napari>=0.3.7",
     "brainglobe-napari-io",
     "brainreg-segment>=0.0.2",
 ]
