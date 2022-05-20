@@ -1,5 +1,5 @@
-import numpy as np
 import imio
+import numpy as np
 
 
 def save_nii(stack, atlas_pixel_sizes, dest_path):

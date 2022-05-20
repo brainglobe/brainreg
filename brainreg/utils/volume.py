@@ -5,10 +5,10 @@ registration_params
 Module to calculate volume of brain regions
 """
 
-import numpy as np
 import logging
 
 import imio
+import numpy as np
 from imlib.pandas.misc import initialise_df
 
 

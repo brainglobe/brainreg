@@ -1,6 +1,6 @@
 from brainreg.backend.niftyreg.niftyreg_binaries import (
-    get_niftyreg_binaries,
     get_binary,
+    get_niftyreg_binaries,
 )
 
 

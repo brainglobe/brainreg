@@ -1,9 +1,9 @@
 import os
-import sys
 import platform
+import sys
+
 import numpy as np
 import pandas as pd
-
 from imio.load import load_any
 
 from brainreg.cli import main as brainreg_run
