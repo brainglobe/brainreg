@@ -1,7 +1,4 @@
-from brainreg.backend.niftyreg.niftyreg_binaries import (
-    get_binary,
-    get_niftyreg_binaries,
-)
+from .niftyreg_binaries import get_binary
 
 
 class RegistrationParams:
@@ -143,7 +140,7 @@ class RegistrationParams:
         """
         return self.format_param_pairs(self.get_segmentation_params())
 
-    def __get_binary(self, program_type):
+    def __get_binary(self, program_type: str) -> str:
         """
         Get the path to the registration (from nifty_reg) program
         based on the type
@@ -160,8 +157,4 @@ class RegistrationParams:
             "transform": "reg_transform",
         }
         program_name = program_names[program_type]
-        nifty_reg_binaries_folder = get_niftyreg_binaries()
-
-        program_path = get_binary(nifty_reg_binaries_folder, program_name)
-
-        return '"' + program_path + '"'
+        return str(get_binary(program_name))
