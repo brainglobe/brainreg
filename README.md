@@ -51,6 +51,9 @@ Full details of the process are in the
 ![reg_process](https://user-images.githubusercontent.com/13147259/143553945-a046e918-7614-4211-814c-fc840bb0159d.png)
 **Overview of the registration process**
 
+## Contributing
+Contributions to brainreg-napari are more than welcome. Please see the [contributing guide](https://github.com/brainglobe/.github/blob/main/CONTRIBUTING.md).
+
 ### Citing brainreg
 
 If you find brainreg useful, and use it in your research, please let us know and also cite the paper:
