@@ -146,6 +146,8 @@ This is typically only used in other software, but you can enable it yourself:
 * In the `Plugin Sorter` window, select `napari_get_reader` from the `select hook...` dropdown box
 * Drag `brainreg_standard` (the atlas space viewer plugin) above `brainreg` (the normal plugin) to ensure that the atlas space plugin is used preferentially.
 
+### Contributing
+Contributions to brainreg are more than welcome. Please see the [contributing guide](https://github.com/brainglobe/.github/blob/main/CONTRIBUTING.md).
 
 ### Citing brainreg
 
