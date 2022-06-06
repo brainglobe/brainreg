@@ -16,9 +16,6 @@ brain_data_dir = test_data_dir / "brain data"
 expected_niftyreg_output_dir = (
     test_data_dir / "registration_output" / platform.system()
 )
-# Create a directory to save test data during pytest runs
-test_output_dir = test_data_dir / "test_output"
-test_output_dir.mkdir(exist_ok=True)
 
 x_pix = "40"
 y_pix = "40"
@@ -32,7 +29,8 @@ check_less_precise_pd = 1
 # This will do a single run of brainreg when pytest is run
 # The outputs are then tested in a separate test below
 @pytest.fixture(scope="session")
-def run_niftyreg():
+def niftyreg_output_path(tmp_path_factory):
+    test_output_dir = tmp_path_factory.mktemp("output_dir")
     brainreg_args = [
         "brainreg",
         str(brain_data_dir),
@@ -53,6 +51,7 @@ def run_niftyreg():
 
     sys.argv = brainreg_args
     brainreg_run()
+    return test_output_dir
 
 
 @pytest.mark.parametrize(
@@ -70,13 +69,13 @@ def run_niftyreg():
         "registered_hemispheres.tiff",
     ],
 )
-def test_images_output(run_niftyreg, image):
-    are_images_equal(image, test_output_dir, expected_niftyreg_output_dir)
+def test_images_output(niftyreg_output_path, image):
+    are_images_equal(image, niftyreg_output_path, expected_niftyreg_output_dir)
 
 
-def test_volumes_output(run_niftyreg):
+def test_volumes_output(niftyreg_output_path):
     pd.testing.assert_frame_equal(
-        pd.read_csv(os.path.join(test_output_dir, "volumes.csv")),
+        pd.read_csv(os.path.join(niftyreg_output_path, "volumes.csv")),
         pd.read_csv(os.path.join(expected_niftyreg_output_dir, "volumes.csv")),
     )
 
