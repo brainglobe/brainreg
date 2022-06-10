@@ -5,7 +5,10 @@ import pooch
 from napari.types import LayerData
 from skimage.io import imread
 
-base_url = "https://raw.githubusercontent.com/brainglobe/brainreg/master/tests/data/brain%20data"
+base_url = (
+    "https://raw.githubusercontent.com/brainglobe/brainreg/master/"
+    "tests/data/brain%20data"
+)
 
 
 def load_sample() -> List[LayerData]:
@@ -19,4 +22,6 @@ def load_sample() -> List[LayerData]:
         data.append(imread(file))
 
     data = np.stack(data, axis=0)
-    return [(data, {"name": 'Sample brain'}), ]
+    return [
+        (data, {"name": "Sample brain"}),
+    ]
