@@ -1,24 +1,22 @@
 import json
-import napari
-import pathlib
 import logging
-
-import bg_space as bg
-
+import pathlib
 from collections import namedtuple
 from enum import Enum
+
+import napari
 from fancylog import fancylog
 from magicgui import magicgui
 
-from brainglobe_napari_io.cellfinder.reader_dir import load_registration
-from brainreg_segment.atlas.utils import get_available_atlases
-
+import bg_space as bg
 import brainreg as program_for_log
-from brainreg.utils.misc import log_metadata
+from brainglobe_napari_io.cellfinder.reader_dir import load_registration
+from brainreg.backend.niftyreg.run import run_niftyreg
 from brainreg.paths import Paths
 from brainreg.utils.boundaries import boundaries
+from brainreg.utils.misc import log_metadata
 from brainreg.utils.volume import calculate_volumes
-from brainreg.backend.niftyreg.run import run_niftyreg
+from brainreg_segment.atlas.utils import get_available_atlases
 
 
 def get_layer_labels(widget):
@@ -43,10 +41,11 @@ def get_atlas_dropdown():
 
 def brainreg_register():
     from napari._qt.qthreading import thread_worker
+
     from brainreg_napari.util import (
-        initialise_brainreg,
-        downsample_and_save_brain,
         NiftyregArgs,
+        downsample_and_save_brain,
+        initialise_brainreg,
     )
 
     DEFAULT_PARAMETERS = dict(
@@ -70,8 +69,12 @@ def brainreg_register():
 
     @magicgui(
         call_button=True,
-        img_layer=dict(label="Image layer",),
-        atlas_key=dict(label="Atlas",),
+        img_layer=dict(
+            label="Image layer",
+        ),
+        atlas_key=dict(
+            label="Atlas",
+        ),
         z_pixel_um=dict(
             value=DEFAULT_PARAMETERS["z_pixel_um"],
             label="Voxel size (z)",
@@ -197,7 +200,8 @@ def brainreg_register():
             original data to optimize the global fit of the result and prevent
             "getting stuck" in local minima of the similarity function. This
              parameter determines how many downsampling steps are being
-             performed, with each step halving the data size along each dimension.
+             performed, with each step halving the data size along each
+             dimension.
         freeform_use_n_steps: int
             Determines how many of the downsampling steps defined by
             freeform_n_steps will have their registration computed. The
