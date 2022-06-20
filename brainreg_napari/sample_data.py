@@ -36,6 +36,7 @@ def load_test_brain() -> List[LayerData]:
                 data.append(imread(tif))
 
     data = np.stack(data, axis=0)
+    meta = {"voxel_size": [50, 40, 40], "data_orientation": "psl"}
     return [
-        (data, {"name": "Sample brain"}),
+        (data, {"name": "Sample brain", "metadata": meta}, "image"),
     ]
