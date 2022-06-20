@@ -16,7 +16,7 @@ POOCH_REGISTRY = pooch.create(
         f"raw/{data_commit_sha}/brainreg/"
     ),
     registry={
-        "test_brain.zip": "7bcfbc45bb40358cd8811e5264ca0a2367976db90bcefdcd67adf533e0162b5f"  # NoQA
+        "test_brain.zip": "7bcfbc45bb40358cd8811e5264ca0a2367976db90bcefdcd67adf533e0162b5f"  # noqa: E501
     },
 )
 
