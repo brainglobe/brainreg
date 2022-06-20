@@ -7,8 +7,8 @@ contributions:
     python_name: brainreg_napari.register:brainreg_register
 
   - id: brainreg-napari.SampleData
-    title: Sample data
-    python_name: brainreg_napari.sample_data:load_sample
+    title: Low resolution brain
+    python_name: brainreg_napari.sample_data:load_test_brain
 
   widgets:
   - command: brainreg-napari.Register
@@ -16,5 +16,5 @@ contributions:
 
   sample_data:
   - key: sample
-    display_name: Sample data
+    display_name: Low resolution brain
     command: brainreg-napari.SampleData

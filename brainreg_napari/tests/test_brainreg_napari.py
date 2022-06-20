@@ -1,5 +1,6 @@
+import napari
+
 from brainreg_napari.register import brainreg_register
-from brainreg_napari.sample_data import load_test_brain
 
 
 def test_add_detect_widget(make_napari_viewer):
@@ -11,11 +12,15 @@ def test_add_detect_widget(make_napari_viewer):
     viewer.window.add_dock_widget(widget)
 
 
-def test_get_sample_data():
+def test_napari_sample_data(make_napari_viewer):
     """
-    Check that fetching the test brain works.
+    Check that loading the sample data via napari works.
     """
-    layer_data_list = load_test_brain()
-    layer_data = layer_data_list[0]
-    assert layer_data[0].shape == (270, 193, 271)
-    assert layer_data[2] == "image"
+    viewer = make_napari_viewer()
+
+    assert len(viewer.layers) == 0
+    viewer.open_sample("brainreg-napari", "sample")
+    assert len(viewer.layers) == 1
+    new_layer = viewer.layers[0]
+    assert isinstance(new_layer, napari.layers.Image)
+    assert new_layer.data.shape == (270, 193, 271)
