@@ -1,3 +1,4 @@
+import zipfile
 from typing import List
 
 import numpy as np
@@ -5,21 +6,34 @@ import pooch
 from napari.types import LayerData
 from skimage.io import imread
 
-base_url = (
-    "https://raw.githubusercontent.com/brainglobe/brainreg/master/"
-    "tests/data/brain%20data"
+# git SHA for version of sample data to download
+data_commit_sha = "72b73c52f19cee2173467ecdca60747a60e5fb95"
+
+POOCH_REGISTRY = pooch.create(
+    path=pooch.os_cache("brainreg_napari"),
+    base_url=(
+        "https://gin.g-node.org/cellfinder/data/"
+        f"raw/{data_commit_sha}/brainreg/"
+    ),
+    registry={
+        "test_brain.zip": "7bcfbc45bb40358cd8811e5264ca0a2367976db90bcefdcd67adf533e0162b5f"  # NoQA
+    },
 )
 
 
-def load_sample() -> List[LayerData]:
+def load_test_brain() -> List[LayerData]:
     """
-    Load some sample data.
+    Load test brain data.
     """
     data = []
-    for i in range(270):
-        url = f"{base_url}/image_{str(i).zfill(4)}.tif"
-        file = pooch.retrieve(url=url, known_hash=None)
-        data.append(imread(file))
+    brain_zip = POOCH_REGISTRY.fetch("test_brain.zip")
+
+    with zipfile.ZipFile(brain_zip, mode="r") as archive:
+        for i in range(270):
+            with archive.open(
+                f"test_brain/image_{str(i).zfill(4)}.tif"
+            ) as tif:
+                data.append(imread(tif))
 
     data = np.stack(data, axis=0)
     return [
