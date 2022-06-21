@@ -7,8 +7,8 @@ This example:
 - loads the brainreg-napari registration plugin
 - opens the napari viewer
 """
-import numpy as np
 import napari
+import numpy as np
 from napari.layers import Layer
 
 from brainreg_napari.sample_data import load_test_brain
@@ -17,7 +17,7 @@ viewer = napari.Viewer()
 
 layer_data = load_test_brain()[0]
 # Set sensible contrast limits for viewing the brain
-layer_data[1]['contrast_limits'] = np.percentile(layer_data[0], [0, 99.5])
+layer_data[1]["contrast_limits"] = np.percentile(layer_data[0], [0, 99.5])
 # Add data to napari
 viewer.add_layer(Layer.create(*layer_data))
 
