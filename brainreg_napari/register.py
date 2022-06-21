@@ -3,6 +3,7 @@ import logging
 import pathlib
 from collections import namedtuple
 from enum import Enum
+from typing import Dict
 
 import napari
 from fancylog import fancylog
@@ -23,12 +24,16 @@ def get_layer_labels(widget):
     return [layer._name for layer in widget.viewer.value.layers]
 
 
-def get_additional_images_downsample(widget):
-    names = [layer._name for layer in widget.viewer.value.layers.selection]
-    filenames = [
-        layer._source for layer in widget.viewer.value.layers.selection
-    ]
-    return {str(k): str(v.path) for k, v in zip(names, filenames)}
+def get_additional_images_downsample(widget) -> Dict[str, str]:
+    """
+    For any selected layers loaded from a file, get a mapping from
+    layer name -> layer file path.
+    """
+    images = {}
+    for layer in widget.viewer.value.layers.selection:
+        if layer._source.path is not None:
+            images[layer._name] = str(layer._source.path)
+    return images
 
 
 def get_atlas_dropdown():
