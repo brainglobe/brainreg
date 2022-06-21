@@ -2,8 +2,8 @@ import numpy as np
 from tqdm import trange
 from skimage import morphology
 from skimage.filters import threshold_triangle
+from skimage.measure import label, regionprops
 from scipy.ndimage import binary_fill_holes, gaussian_filter
-import cv2
 from imlib.image.scale import scale_and_convert_to_16_bits
 
 
@@ -186,13 +186,13 @@ def subtract_background(img_plane):
     mask = (binary_fill_holes(mask)).astype(np.uint8)
     kernel = morphology.disk(3)
     mask = (morphology.opening(mask, kernel)).astype(np.uint8)
-    nb_components, output, stats, centroids = cv2.connectedComponentsWithStats(mask, connectivity=8)
-    nb_components -= 1  # exclude background
-    if nb_components > 5:
-        nb_components = 5  # retain up to 5 largest components
+    label_image = label(mask)
+    rp = regionprops(label_image)
+    rp = sorted(rp, key=lambda x: x.area, reverse=True)
     final_mask = np.zeros_like(mask)
-    for i in range(nb_components):
-        final_mask[output == i + 1] = 1
+    for i in range(min([5, len(rp)])):  # retain up to 5 largest components
+        for c in rp[i].coords:
+            final_mask[c[0], c[1]] = 1
     return final_mask
 
 
