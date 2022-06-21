@@ -12,6 +12,7 @@ requirements = [
     "napari-ndtiffs",
     "brainglobe-napari-io",
     "brainreg",
+    "pooch>1",  # For sample data
 ]
 
 setup(
