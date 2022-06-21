@@ -3,6 +3,7 @@ import logging
 import pathlib
 from collections import namedtuple
 from enum import Enum
+from typing import Dict
 
 import napari
 from fancylog import fancylog
@@ -23,12 +24,16 @@ def get_layer_labels(widget):
     return [layer._name for layer in widget.viewer.value.layers]
 
 
-def get_additional_images_downsample(widget):
-    names = [layer._name for layer in widget.viewer.value.layers.selection]
-    filenames = [
-        layer._source for layer in widget.viewer.value.layers.selection
-    ]
-    return {str(k): str(v.path) for k, v in zip(names, filenames)}
+def get_additional_images_downsample(widget) -> Dict[str, str]:
+    """
+    For any selected layers loaded from a file, get a mapping from
+    layer name -> layer file path.
+    """
+    images = {}
+    for layer in widget.viewer.value.layers.selection:
+        if layer._source.path is not None:
+            images[layer._name] = str(layer._source.path)
+    return images
 
 
 def get_atlas_dropdown():
@@ -159,6 +164,7 @@ def brainreg_register():
         histogram_n_bins_floating: float,
         histogram_n_bins_reference: float,
         reset_button,
+        block: bool = False,
     ):
         """
         Parameters
@@ -240,6 +246,10 @@ def brainreg_register():
              reference image
         reset_button :
             Reset parameters to default
+        block : bool
+            If `True`, registration will block execution when called. By
+            default this is `False` to avoid blocking the napari GUI, but
+            is set to `True` in the tests.
         """
 
         def add_image_layers():
@@ -416,6 +426,8 @@ def brainreg_register():
         )
         worker.returned.connect(add_image_layers)
         worker.start()
+        if block:
+            worker.await_workers()
 
     @widget.reset_button.changed.connect
     def restore_defaults(event=None):

@@ -1,4 +1,5 @@
 import logging
+from dataclasses import dataclass
 
 import numpy as np
 import skimage.transform
@@ -69,30 +70,20 @@ def downsample_and_save_brain(img_layer, scaling):
     return downsampled_array
 
 
-class NiftyregArgs(object):
-    def __init__(
-        self,
-        affine_n_steps,
-        affine_use_n_steps,
-        freeform_n_steps,
-        freeform_use_n_steps,
-        bending_energy_weight,
-        grid_spacing,
-        smoothing_sigma_reference,
-        smoothing_sigma_floating,
-        histogram_n_bins_floating,
-        histogram_n_bins_reference,
-        debug,
-    ):
+@dataclass
+class NiftyregArgs:
+    """
+    Class for niftyreg arguments.
+    """
 
-        self.affine_n_steps = affine_n_steps
-        self.affine_use_n_steps = affine_use_n_steps
-        self.freeform_n_steps = freeform_n_steps
-        self.freeform_use_n_steps = freeform_use_n_steps
-        self.bending_energy_weight = bending_energy_weight
-        self.grid_spacing = grid_spacing
-        self.smoothing_sigma_reference = smoothing_sigma_reference
-        self.smoothing_sigma_floating = smoothing_sigma_floating
-        self.histogram_n_bins_floating = histogram_n_bins_floating
-        self.histogram_n_bins_reference = histogram_n_bins_reference
-        self.debug = debug
+    affine_n_steps: int
+    affine_use_n_steps: int
+    freeform_n_steps: int
+    freeform_use_n_steps: int
+    bending_energy_weight: float
+    grid_spacing: float
+    smoothing_sigma_reference: float
+    smoothing_sigma_floating: float
+    histogram_n_bins_floating: float
+    histogram_n_bins_reference: float
+    debug: bool
