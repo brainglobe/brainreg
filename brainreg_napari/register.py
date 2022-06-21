@@ -159,6 +159,7 @@ def brainreg_register():
         histogram_n_bins_floating: float,
         histogram_n_bins_reference: float,
         reset_button,
+        block: bool = False,
     ):
         """
         Parameters
@@ -240,6 +241,10 @@ def brainreg_register():
              reference image
         reset_button :
             Reset parameters to default
+        block : bool
+            If `True`, registration will block execution when called. By
+            default this is `False` to avoid blocking the napari GUI, but
+            is set to `True` in the tests.
         """
 
         def add_image_layers():
@@ -416,6 +421,8 @@ def brainreg_register():
         )
         worker.returned.connect(add_image_layers)
         worker.start()
+        if block:
+            worker.await_workers()
 
     @widget.reset_button.changed.connect
     def restore_defaults(event=None):
