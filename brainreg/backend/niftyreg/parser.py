@@ -1,4 +1,4 @@
-from imlib.general.numerical import check_positive_int, check_positive_float
+from imlib.general.numerical import check_positive_float, check_positive_int
 
 
 def niftyreg_parse(parser):

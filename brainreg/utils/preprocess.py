@@ -1,10 +1,10 @@
+from imlib.image.scale import scale_and_convert_to_16_bits
 import numpy as np
-from tqdm import trange
+from scipy.ndimage import binary_fill_holes, gaussian_filter
 from skimage import morphology
 from skimage.filters import threshold_triangle
 from skimage.measure import label, regionprops
-from scipy.ndimage import binary_fill_holes, gaussian_filter
-from imlib.image.scale import scale_and_convert_to_16_bits
+from tqdm import trange
 
 
 def filter_image(brain, preprocessing_args=None):
@@ -179,7 +179,7 @@ def subtract_background(img_plane):
     img_lf = denoise_fft(img_plane)
     try:
         thr = threshold_triangle(img_lf)
-    except:  # attempt to get argmax of an empty sequence
+    except ValueError:  # attempt to get argmax of an empty sequence
         return np.zeros_like(img_plane).astype(np.uint16)
 
     mask = (img_lf > thr).astype(np.uint8)

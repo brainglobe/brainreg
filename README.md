@@ -9,39 +9,39 @@
 
 # brainreg
 
-brainreg is an update to 
-[amap](https://github.com/SainsburyWellcomeCentre/amap_python) (itself a port 
-of the [original Java software](https://www.nature.com/articles/ncomms11879)) 
-to include multiple registration backends, and to support the many atlases 
+brainreg is an update to
+[amap](https://github.com/SainsburyWellcomeCentre/amap_python) (itself a port
+of the [original Java software](https://www.nature.com/articles/ncomms11879))
+to include multiple registration backends, and to support the many atlases
 provided by [bg-atlasapi](https://github.com/brainglobe/bg-atlasapi).
 
-Documentation can be found [here](https://docs.brainglobe.info/brainreg/introduction) 
-and a tutorial is [here](https://docs.brainglobe.info/brainreg/tutorial). 
-For segmentation of bulk structures in 3D space 
-(e.g. injection sites, Neuropixels probes), please see 
+Documentation can be found [here](https://docs.brainglobe.info/brainreg/introduction)
+and a tutorial is [here](https://docs.brainglobe.info/brainreg/tutorial).
+For segmentation of bulk structures in 3D space
+(e.g. injection sites, Neuropixels probes), please see
 [brainreg-segment](https://github.com/brainglobe/brainreg-segment).
 
 **N.B. There is also a [napari plugin](https://github.com/brainglobe/brainreg-napari) if you'd rather use brainreg with a graphical user interface. Currently this interface is slightly limited compared to the command line tool**
 
-This software is at a very early stage, and was written with our data in mind. 
-Over time we hope to support other data types/formats. If you have any issues, please get in touch [on the forum](https://forum.image.sc/tag/brainglobe) or by 
-[raising an issue](https://github.com/brainglobe/brainreg/issues). 
+This software is at a very early stage, and was written with our data in mind.
+Over time we hope to support other data types/formats. If you have any issues, please get in touch [on the forum](https://forum.image.sc/tag/brainglobe) or by
+[raising an issue](https://github.com/brainglobe/brainreg/issues).
 
 ## Details
 The aim of brainreg is to register the template brain
  (e.g. from the [Allen Reference Atlas](https://mouse.brain-map.org/static/atlas))
   to the sample image. Once this is complete, any other image in the template
-  space can be aligned with the sample (such as region annotations, for 
+  space can be aligned with the sample (such as region annotations, for
   segmentation of the sample image). The template to sample transformation
-  can also be inverted, allowing sample images to be aligned in a common 
+  can also be inverted, allowing sample images to be aligned in a common
   coordinate space.
-  
-To do this, the template and sample images are filtered, and then registered in 
-a three step process (reorientation, affine registration, and freeform 
+
+To do this, the template and sample images are filtered, and then registered in
+a three step process (reorientation, affine registration, and freeform
 registration.) The resulting transform from template to standard space is then
-applied to the atlas. 
- 
-Full details of the process are in the 
+applied to the atlas.
+
+Full details of the process are in the
 [original aMAP paper](https://www.nature.com/articles/ncomms11879).
 ![reg_process](https://user-images.githubusercontent.com/13147259/143553945-a046e918-7614-4211-814c-fc840bb0159d.png)
 
@@ -111,7 +111,7 @@ If the origin of your data \(first, top left voxel\) is the most anterior, super
 
 To change how the actual registration performs, see [Registration parameters](https://docs.brainglobe.info/brainreg/user-guide/parameters)
 
-Full command-line arguments are available with `brainreg -h`, but please 
+Full command-line arguments are available with `brainreg -h`, but please
 [get in touch](mailto:adam.tyson@ucl.ac.uk?subject=brainreg) if you have any questions.
 
 
@@ -121,7 +121,7 @@ brainreg comes with a plugin ([brainglobe-napari-io](https://github.com/brainglo
 
 ##### Sample space
 Open napari and drag your brainreg output directory (the one with the log file) onto the napari window.
-    
+
 Various images should then open, including:
 * `Registered image` - the image used for registration, downsampled to atlas resolution
 * `atlas_name` - e.g. `allen_mouse_25um` the atlas labels, warped to your sample brain
@@ -137,8 +137,8 @@ _N.B. If you use a high resolution atlas (such as `allen_mouse_10um`), then the 
 
 
 ##### Atlas space
-`napari-brainreg` also comes with an additional plugin, for visualising your data 
-in atlas space. 
+`napari-brainreg` also comes with an additional plugin, for visualising your data
+in atlas space.
 
 This is typically only used in other software, but you can enable it yourself:
 * Open napari
@@ -146,6 +146,8 @@ This is typically only used in other software, but you can enable it yourself:
 * In the `Plugin Sorter` window, select `napari_get_reader` from the `select hook...` dropdown box
 * Drag `brainreg_standard` (the atlas space viewer plugin) above `brainreg` (the normal plugin) to ensure that the atlas space plugin is used preferentially.
 
+### Contributing
+Contributions to brainreg are more than welcome. Please see the [contributing guide](https://github.com/brainglobe/.github/blob/main/CONTRIBUTING.md).
 
 ### Citing brainreg
 

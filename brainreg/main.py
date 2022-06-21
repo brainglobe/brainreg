@@ -2,15 +2,12 @@ import logging
 
 import bg_space as bg
 import imio
-
+from bg_atlasapi import BrainGlobeAtlas
 from imlib.general.system import get_num_processes
 
 from brainreg.backend.niftyreg.run import run_niftyreg
-
-from brainreg.utils.volume import calculate_volumes
 from brainreg.utils.boundaries import boundaries
-
-from bg_atlasapi import BrainGlobeAtlas
+from brainreg.utils.volume import calculate_volumes
 
 
 def main(
