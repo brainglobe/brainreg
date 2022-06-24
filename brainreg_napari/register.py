@@ -327,19 +327,7 @@ def brainreg_register():
             )
 
         @thread_worker
-        def run(
-            affine_n_steps,
-            affine_use_n_steps,
-            freeform_n_steps,
-            freeform_use_n_steps,
-            bending_energy_weight,
-            grid_spacing,
-            smoothing_sigma_reference,
-            smoothing_sigma_floating,
-            histogram_n_bins_floating,
-            histogram_n_bins_reference,
-        ):
-
+        def run():
             paths = Paths(pathlib.Path(registration_output_folder))
 
             niftyreg_args = NiftyregArgs(
@@ -425,18 +413,7 @@ def brainreg_register():
                 f"{paths.registration_output_folder}"
             )
 
-        worker = run(
-            affine_n_steps,
-            affine_use_n_steps,
-            freeform_n_steps,
-            freeform_use_n_steps,
-            bending_energy_weight,
-            grid_spacing,
-            smoothing_sigma_reference,
-            smoothing_sigma_floating,
-            histogram_n_bins_floating,
-            histogram_n_bins_reference,
-        )
+        worker = run()
         worker.returned.connect(load_registration_as_layers)
         worker.start()
         if block:
