@@ -50,5 +50,24 @@ def test_workflow(make_napari_viewer, tmp_path):
         pixel_widget = getattr(widget, f"{dim}_pixel_um")
         pixel_widget.value = brain_layer.metadata["voxel_size"][i]
 
+    assert len(viewer.layers) == 1
+
     # Run registration
     widget(block=True)
+
+    # Check that layers have been added
+    assert len(viewer.layers) == 3
+    # Check layers have expected type/name
+    labels = viewer.layers[1]
+    assert isinstance(labels, napari.layers.Labels)
+    assert labels.name == "example_mouse_100um"
+    for key in ["orientation", "atlas"]:
+        # There are lots of other keys in the metadata, but just check
+        # for a couple here.
+        assert (
+            key in labels.metadata
+        ), f"Missing key '{key}' from labels metadata"
+
+    boundaries = viewer.layers[2]
+    assert isinstance(boundaries, napari.layers.Image)
+    assert boundaries.name == "Boundaries"

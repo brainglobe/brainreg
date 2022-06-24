@@ -36,19 +36,8 @@ def add_image_layers(
             metadata = json.load(json_file)
         layers = load_registration(layers, registration_directory, metadata)
 
-    atlas_layer = napari.layers.Labels(
-        layers[0][0],
-        scale=layers[0][1]["scale"],
-        name=layers[0][1]["name"],
-    )
-    boundaries_layer = napari.layers.Image(
-        layers[1][0],
-        scale=layers[1][1]["scale"],
-        name=layers[1][1]["name"],
-    )
-
-    viewer.add_layer(atlas_layer)
-    viewer.add_layer(boundaries_layer)
+    for layer in layers:
+        viewer.add_layer(napari.layers.Layer.create(*layer))
 
 
 def get_layer_labels(widget):
@@ -326,6 +315,7 @@ def brainreg_register():
                 args_dict,
             )
 
+        @thread_worker
         def run():
             paths = Paths(pathlib.Path(registration_output_folder))
 
@@ -412,13 +402,15 @@ def brainreg_register():
                 f"{paths.registration_output_folder}"
             )
 
-        if block:
-            run()
-            load_registration_as_layers()
-        else:
-            worker = thread_worker(worker)()
+        worker = run()
+        if not block:
             worker.returned.connect(load_registration_as_layers)
-            worker.start()
+
+        worker.start()
+
+        if block:
+            worker.await_workers()
+            load_registration_as_layers()
 
     @widget.reset_button.changed.connect
     def restore_defaults(event=None):
