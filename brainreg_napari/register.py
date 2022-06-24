@@ -326,7 +326,6 @@ def brainreg_register():
                 args_dict,
             )
 
-        @thread_worker
         def run():
             paths = Paths(pathlib.Path(registration_output_folder))
 
@@ -413,11 +412,13 @@ def brainreg_register():
                 f"{paths.registration_output_folder}"
             )
 
-        worker = run()
-        worker.returned.connect(load_registration_as_layers)
-        worker.start()
         if block:
-            worker.await_workers()
+            run()
+            load_registration_as_layers()
+        else:
+            worker = thread_worker(worker)()
+            worker.returned.connect(load_registration_as_layers)
+            worker.start()
 
     @widget.reset_button.changed.connect
     def restore_defaults(event=None):
