@@ -21,8 +21,8 @@ from brainreg.utils.volume import calculate_volumes
 from brainreg_segment.atlas.utils import get_available_atlases
 
 
-def add_image_layers(
-    viewer: napari.Viewer, registration_directory: pathlib.Path
+def add_registered_image_layers(
+    viewer: napari.Viewer, *, registration_directory: pathlib.Path
 ) -> None:
     """
     Read in saved registration data and add as layers to the
@@ -280,7 +280,9 @@ def brainreg_register():
             registration_directory = pathlib.Path(
                 getattr(widget, "registration_output_folder").value
             )
-            add_image_layers(viewer, registration_directory)
+            add_registered_image_layers(
+                viewer, registration_directory=registration_directory
+            )
 
         def get_gui_logging_args():
             args_dict = {}
