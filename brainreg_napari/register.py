@@ -30,11 +30,15 @@ def add_registered_image_layers(
     """
     layers: List[LayerDataTuple] = []
 
-    meta_file = registration_directory / "brainreg.json"
+    meta_file = (registration_directory / "brainreg.json").resolve()
     if meta_file.exists():
         with open(meta_file) as json_file:
             metadata = json.load(json_file)
         layers = load_registration(layers, registration_directory, metadata)
+    else:
+        raise FileNotFoundError(
+            f"'brainreg.json' file not found in {registration_directory}"
+        )
 
     for layer in layers:
         viewer.add_layer(napari.layers.Layer.create(*layer))

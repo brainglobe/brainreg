@@ -1,6 +1,10 @@
 import napari
+import pytest
 
-from brainreg_napari.register import brainreg_register
+from brainreg_napari.register import (
+    add_registered_image_layers,
+    brainreg_register,
+)
 
 
 def test_add_detect_widget(make_napari_viewer):
@@ -71,3 +75,13 @@ def test_workflow(make_napari_viewer, tmp_path):
     boundaries = viewer.layers[2]
     assert isinstance(boundaries, napari.layers.Image)
     assert boundaries.name == "Boundaries"
+
+
+def test_add_layers_errors(tmp_path, make_napari_viewer):
+    """
+    Check that an error is raised if registration metadata isn't present when
+    trying to add registered images to a napari viewer.
+    """
+    viewer = make_napari_viewer()
+    with pytest.raises(FileNotFoundError):
+        add_registered_image_layers(viewer, registration_directory=tmp_path)
