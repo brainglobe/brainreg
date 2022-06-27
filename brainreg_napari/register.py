@@ -3,7 +3,7 @@ import logging
 import pathlib
 from collections import namedtuple
 from enum import Enum
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 import napari
 from fancylog import fancylog
@@ -23,10 +23,17 @@ from brainreg_segment.atlas.utils import get_available_atlases
 
 def add_registered_image_layers(
     viewer: napari.Viewer, *, registration_directory: pathlib.Path
-) -> None:
+) -> Tuple[napari.layers.Image, napari.layers.Labels]:
     """
     Read in saved registration data and add as layers to the
     napari viewer.
+
+    Returns
+    -------
+    boundaries :
+        Registered boundaries.
+    labels :
+        Registered brain regions.
     """
     layers: List[LayerDataTuple] = []
 
@@ -40,8 +47,9 @@ def add_registered_image_layers(
             f"'brainreg.json' file not found in {registration_directory}"
         )
 
-    for layer in layers:
-        viewer.add_layer(napari.layers.Layer.create(*layer))
+    boundaries = viewer.add_layer(napari.layers.Layer.create(*layers[0]))
+    labels = viewer.add_layer(napari.layers.Layer.create(*layers[1]))
+    return boundaries, labels
 
 
 def get_layer_labels(widget):
