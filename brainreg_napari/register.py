@@ -3,11 +3,12 @@ import logging
 import pathlib
 from collections import namedtuple
 from enum import Enum
-from typing import Dict
+from typing import Dict, List, Tuple
 
 import napari
 from fancylog import fancylog
 from magicgui import magicgui
+from napari.types import LayerDataTuple
 
 import bg_space as bg
 import brainreg as program_for_log
@@ -18,6 +19,37 @@ from brainreg.utils.boundaries import boundaries
 from brainreg.utils.misc import log_metadata
 from brainreg.utils.volume import calculate_volumes
 from brainreg_segment.atlas.utils import get_available_atlases
+
+
+def add_registered_image_layers(
+    viewer: napari.Viewer, *, registration_directory: pathlib.Path
+) -> Tuple[napari.layers.Image, napari.layers.Labels]:
+    """
+    Read in saved registration data and add as layers to the
+    napari viewer.
+
+    Returns
+    -------
+    boundaries :
+        Registered boundaries.
+    labels :
+        Registered brain regions.
+    """
+    layers: List[LayerDataTuple] = []
+
+    meta_file = (registration_directory / "brainreg.json").resolve()
+    if meta_file.exists():
+        with open(meta_file) as json_file:
+            metadata = json.load(json_file)
+        layers = load_registration(layers, registration_directory, metadata)
+    else:
+        raise FileNotFoundError(
+            f"'brainreg.json' file not found in {registration_directory}"
+        )
+
+    boundaries = viewer.add_layer(napari.layers.Layer.create(*layers[0]))
+    labels = viewer.add_layer(napari.layers.Layer.create(*layers[1]))
+    return boundaries, labels
 
 
 def get_layer_labels(widget):
@@ -252,33 +284,17 @@ def brainreg_register():
             is set to `True` in the tests.
         """
 
-        def add_image_layers():
+        def load_registration_as_layers() -> None:
+            """
+            Load the saved registration data into napari layers.
+            """
+            viewer = getattr(widget, "viewer").value
             registration_directory = pathlib.Path(
                 getattr(widget, "registration_output_folder").value
             )
-            layers = []
-
-            if registration_directory.exists():
-                with open(
-                    registration_directory / "brainreg.json"
-                ) as json_file:
-                    metadata = json.load(json_file)
-                layers = load_registration(
-                    layers, registration_directory, metadata
-                )
-            viewer = getattr(widget, "viewer").value
-            atlas_layer = napari.layers.Labels(
-                layers[0][0],
-                scale=layers[0][1]["scale"],
-                name=layers[0][1]["name"],
+            add_registered_image_layers(
+                viewer, registration_directory=registration_directory
             )
-            boundaries_layer = napari.layers.Image(
-                layers[1][0],
-                scale=layers[1][1]["scale"],
-                name=layers[1][1]["name"],
-            )
-            viewer.add_layer(atlas_layer)
-            viewer.add_layer(boundaries_layer)
 
         def get_gui_logging_args():
             args_dict = {}
@@ -314,19 +330,7 @@ def brainreg_register():
             )
 
         @thread_worker
-        def run(
-            affine_n_steps,
-            affine_use_n_steps,
-            freeform_n_steps,
-            freeform_use_n_steps,
-            bending_energy_weight,
-            grid_spacing,
-            smoothing_sigma_reference,
-            smoothing_sigma_floating,
-            histogram_n_bins_floating,
-            histogram_n_bins_reference,
-        ):
-
+        def run():
             paths = Paths(pathlib.Path(registration_output_folder))
 
             niftyreg_args = NiftyregArgs(
@@ -412,22 +416,15 @@ def brainreg_register():
                 f"{paths.registration_output_folder}"
             )
 
-        worker = run(
-            affine_n_steps,
-            affine_use_n_steps,
-            freeform_n_steps,
-            freeform_use_n_steps,
-            bending_energy_weight,
-            grid_spacing,
-            smoothing_sigma_reference,
-            smoothing_sigma_floating,
-            histogram_n_bins_floating,
-            histogram_n_bins_reference,
-        )
-        worker.returned.connect(add_image_layers)
+        worker = run()
+        if not block:
+            worker.returned.connect(load_registration_as_layers)
+
         worker.start()
+
         if block:
             worker.await_workers()
+            load_registration_as_layers()
 
     @widget.reset_button.changed.connect
     def restore_defaults(event=None):
