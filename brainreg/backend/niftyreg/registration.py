@@ -1,7 +1,6 @@
 import logging
 
-
-from imlib.general.system import safe_execute_command, SafeExecuteCommandError
+from imlib.general.system import SafeExecuteCommandError, safe_execute_command
 
 
 class RegistrationError(Exception):
