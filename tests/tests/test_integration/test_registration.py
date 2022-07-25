@@ -12,7 +12,7 @@ from brainreg.cli import main as brainreg_run
 
 test_data_dir = Path(os.getcwd()) / "tests" / "data"
 
-brain_data_dir = test_data_dir / "brain data"
+brain_data_dir = test_data_dir / "input" / "brain"
 expected_niftyreg_output_dir = (
     test_data_dir / "registration_output" / platform.system()
 )
@@ -62,9 +62,9 @@ def niftyreg_output_path(tmp_path_factory):
         "deformation_field_1.tiff",
         "deformation_field_2.tiff",
         "downsampled.tiff",
-        "downsampled_brain data.tiff",
+        "downsampled_brain.tiff",
         "downsampled_standard.tiff",
-        "downsampled_standard_brain data.tiff",
+        "downsampled_standard_brain.tiff",
         "registered_atlas.tiff",
         "registered_hemispheres.tiff",
     ],

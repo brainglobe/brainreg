@@ -4,6 +4,7 @@ import os
 import bg_space as bg
 import imio
 import numpy as np
+from bg_atlasapi import BrainGlobeAtlas
 from imlib.general.system import delete_directory_contents
 from imlib.image.scale import scale_and_convert_to_16_bits
 
@@ -13,17 +14,16 @@ from brainreg.backend.niftyreg.registration import BrainRegistration
 from brainreg.backend.niftyreg.utils import save_nii
 from brainreg.utils import preprocess
 
-from bg_atlasapi import BrainGlobeAtlas
-
 
 def crop_atlas(atlas, brain_geometry):
 
     atlas_cropped = BrainGlobeAtlas(atlas.atlas_name)
 
+    # crop the hemisphere missing from the data
     if brain_geometry == "hemisphere_l":
-        ind = atlas_cropped.left_hemisphere_value
-    elif brain_geometry == "hemisphere_r":
         ind = atlas_cropped.right_hemisphere_value
+    elif brain_geometry == "hemisphere_r":
+        ind = atlas_cropped.left_hemisphere_value
 
     atlas_cropped.reference[atlas_cropped.hemispheres == ind] = 0
     atlas_cropped.annotation[atlas_cropped.hemispheres == ind] = 0
