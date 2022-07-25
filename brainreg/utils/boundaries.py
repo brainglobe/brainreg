@@ -19,7 +19,4 @@ def boundaries(registered_atlas, boundaries_out_path):
         np.int8, copy=False
     )
     logging.debug("Saving segmentation boundary image")
-    imio.to_tiff(
-        boundaries_image,
-        boundaries_out_path,
-    )
+    imio.to_tiff(boundaries_image, boundaries_out_path)

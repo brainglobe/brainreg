@@ -13,6 +13,23 @@ from brainreg.backend.niftyreg.registration import BrainRegistration
 from brainreg.backend.niftyreg.utils import save_nii
 from brainreg.utils import preprocess
 
+from bg_atlasapi import BrainGlobeAtlas
+
+
+def crop_atlas(atlas, brain_geometry):
+
+    atlas_cropped = BrainGlobeAtlas(atlas.atlas_name)
+
+    if brain_geometry == "hemisphere_l":
+        ind = atlas_cropped.left_hemisphere_value
+    elif brain_geometry == "hemisphere_r":
+        ind = atlas_cropped.right_hemisphere_value
+
+    atlas_cropped.reference[atlas_cropped.hemispheres == ind] = 0
+    atlas_cropped.annotation[atlas_cropped.hemispheres == ind] = 0
+
+    return atlas_cropped
+
 
 def run_niftyreg(
     registration_output_folder,
@@ -30,18 +47,29 @@ def run_niftyreg(
     n_free_cpus,
     debug=False,
     save_original_orientation=False,
+    brain_geometry="full",
 ):
 
     niftyreg_directory = os.path.join(registration_output_folder, "niftyreg")
 
     niftyreg_paths = NiftyRegPaths(niftyreg_directory)
 
+    if brain_geometry != "full":
+        atlas_cropped = crop_atlas(atlas, brain_geometry)
+        save_nii(
+            atlas_cropped.annotation,
+            atlas.resolution,
+            niftyreg_paths.annotations,
+        )
+        reference = preprocess.filter_image(atlas_cropped.reference)
+    else:
+        save_nii(
+            atlas.annotation, atlas.resolution, niftyreg_paths.annotations
+        )
+        reference = preprocess.filter_image(atlas.reference)
+
     save_nii(atlas.hemispheres, atlas.resolution, niftyreg_paths.hemispheres)
-    save_nii(atlas.annotation, atlas.resolution, niftyreg_paths.annotations)
-
-    reference = preprocess.filter_image(atlas.reference)
     save_nii(reference, atlas.resolution, niftyreg_paths.brain_filtered)
-
     save_nii(target_brain, atlas.resolution, niftyreg_paths.downsampled_brain)
 
     imio.to_tiff(
@@ -51,9 +79,7 @@ def run_niftyreg(
 
     target_brain = preprocess.filter_image(target_brain)
     save_nii(
-        target_brain,
-        atlas.resolution,
-        niftyreg_paths.downsampled_filtered,
+        target_brain, atlas.resolution, niftyreg_paths.downsampled_filtered
     )
 
     logging.info("Registering")
@@ -71,9 +97,7 @@ def run_niftyreg(
         histogram_n_bins_reference=niftyreg_args.histogram_n_bins_reference,
     )
     brain_reg = BrainRegistration(
-        niftyreg_paths,
-        registration_params,
-        n_processes=n_processes,
+        niftyreg_paths, registration_params, n_processes=n_processes
     )
 
     logging.info("Starting affine registration")
@@ -158,8 +182,7 @@ def run_niftyreg(
                 registration_output_folder, f"downsampled_{name}.tiff"
             )
             tmp_downsampled_brain_path = os.path.join(
-                niftyreg_paths.niftyreg_directory,
-                f"downsampled_{name}.nii",
+                niftyreg_paths.niftyreg_directory, f"downsampled_{name}.nii"
             )
             downsampled_brain_standard_path = os.path.join(
                 registration_output_folder, f"downsampled_standard_{name}.tiff"
@@ -185,9 +208,7 @@ def run_niftyreg(
             ).astype(np.uint16, copy=False)
 
             save_nii(
-                downsampled_brain,
-                atlas.resolution,
-                tmp_downsampled_brain_path,
+                downsampled_brain, atlas.resolution, tmp_downsampled_brain_path
             )
 
             imio.to_tiff(downsampled_brain, downsampled_brain_path)
@@ -195,8 +216,7 @@ def run_niftyreg(
             logging.info("Transforming to standard space")
 
             brain_reg.transform_to_standard_space(
-                tmp_downsampled_brain_path,
-                tmp_downsampled_brain_standard_path,
+                tmp_downsampled_brain_path, tmp_downsampled_brain_standard_path
             )
 
             imio.to_tiff(
