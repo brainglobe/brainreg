@@ -6,12 +6,16 @@ from enum import Enum
 from typing import Dict, List, Tuple
 
 import napari
+import numpy as np
 from fancylog import fancylog
 from magicgui import magicgui
+from napari._qt.qthreading import thread_worker
 from napari.types import LayerDataTuple
+from napari.utils.notifications import show_info
 
 import bg_space as bg
 import brainreg as program_for_log
+from bg_atlasapi import BrainGlobeAtlas
 from brainglobe_napari_io.cellfinder.reader_dir import load_registration
 from brainreg.backend.niftyreg.run import run_niftyreg
 from brainreg.paths import Paths
@@ -19,6 +23,12 @@ from brainreg.utils.boundaries import boundaries
 from brainreg.utils.misc import log_metadata
 from brainreg.utils.volume import calculate_volumes
 from brainreg_segment.atlas.utils import get_available_atlases
+
+from brainreg_napari.util import (
+    NiftyregArgs,
+    downsample_and_save_brain,
+    initialise_brainreg,
+)
 
 
 def add_registered_image_layers(
@@ -76,20 +86,24 @@ def get_atlas_dropdown():
     return atlas_keys
 
 
-def brainreg_register():
-    from napari._qt.qthreading import thread_worker
+def get_brain_geometry_dropdown():
+    geometry_dict = {
+        "Full brain": "full",
+        "Right hemisphere": "hemisphere_r",
+        "Left hemisphere": "hemisphere_l",
+    }
+    return Enum("geometry_keys", geometry_dict)
 
-    from brainreg_napari.util import (
-        NiftyregArgs,
-        downsample_and_save_brain,
-        initialise_brainreg,
-    )
+
+def brainreg_register():
 
     DEFAULT_PARAMETERS = dict(
         z_pixel_um=5,
         y_pixel_um=2,
         x_pixel_um=2,
         data_orientation="psl",
+        brain_geometry=get_brain_geometry_dropdown(),
+        save_original_orientation=False,
         atlas_key=get_atlas_dropdown(),
         registration_output_folder=pathlib.Path.home(),
         affine_n_steps=6,
@@ -102,6 +116,7 @@ def brainreg_register():
         smoothing_sigma_floating=1,
         histogram_n_bins_floating=128,
         histogram_n_bins_reference=128,
+        debug=False,
     )
 
     @magicgui(
@@ -131,10 +146,17 @@ def brainreg_register():
             value=DEFAULT_PARAMETERS["data_orientation"],
             label="Data orientation",
         ),
+        brain_geometry=dict(
+            label="Brain geometry",
+        ),
         registration_output_folder=dict(
             value=DEFAULT_PARAMETERS["registration_output_folder"],
             mode="d",
             label="Output directory",
+        ),
+        save_original_orientation=dict(
+            value=DEFAULT_PARAMETERS["save_original_orientation"],
+            label="Save original orientation",
         ),
         affine_n_steps=dict(
             value=DEFAULT_PARAMETERS["affine_n_steps"], label="affine_n_steps"
@@ -174,17 +196,26 @@ def brainreg_register():
             value=DEFAULT_PARAMETERS["histogram_n_bins_reference"],
             label="histogram_n_bins_reference",
         ),
+        debug=dict(
+            value=DEFAULT_PARAMETERS["debug"],
+            label="Debug mode",
+        ),
         reset_button=dict(widget_type="PushButton", text="Reset defaults"),
+        check_orientation_button=dict(
+            widget_type="PushButton", text="Check orientation"
+        ),
     )
     def widget(
         viewer: napari.Viewer,
         img_layer: napari.layers.Image,
         atlas_key: get_atlas_dropdown(),
         data_orientation: str,
+        brain_geometry: get_brain_geometry_dropdown(),
         z_pixel_um: float,
         x_pixel_um: float,
         y_pixel_um: float,
         registration_output_folder: pathlib.Path,
+        save_original_orientation: bool,
         affine_n_steps: int,
         affine_use_n_steps: int,
         freeform_n_steps: int,
@@ -195,7 +226,9 @@ def brainreg_register():
         smoothing_sigma_floating: float,
         histogram_n_bins_floating: float,
         histogram_n_bins_reference: float,
+        debug: bool,
         reset_button,
+        check_orientation_button,
         block: bool = False,
     ):
         """
@@ -208,6 +241,9 @@ def brainreg_register():
         data_orientation: str
             Three characters describing the data orientation, e.g. "psl".
             See docs for more details.
+        brain_geometry: str
+            To allow brain sub-volumes to be processed. Choose whether your
+            data is a whole brain or a single hemisphere.
         z_pixel_um : float
             Size of your voxels in the axial dimension
         y_pixel_um : float
@@ -217,6 +253,10 @@ def brainreg_register():
         registration_output_folder: pathlib.Path
             Where to save the registration output
                 affine_n_steps: int,
+        save_original_orientation: bool
+            Option to save annotations with the same orientation as the input
+             data. Use this if you plan to map
+            segmented objects outside brainglobe/tools.
         affine_n_steps: int
              Registration starts with further downsampled versions of the
              original data to optimize the global fit of the result and
@@ -276,7 +316,16 @@ def brainreg_register():
              Number of bins used for the generation of the histograms used
              for the calculation of Normalized Mutual Information on the
              reference image
-        reset_button :
+        debug: bool
+            Activate debug mode (save intermediate steps).
+        check_orientation_button:
+            Interactively check the input orientation by comparing the average
+            projection along each axis.  The top row of displayed images are
+            the projections of the reference atlas. The bottom row are the
+            projections of the aligned input data. If the two rows are
+            similarly oriented, the orientation is correct. If not, change
+            the orientation and try again.
+        reset_button:
             Reset parameters to default
         block : bool
             If `True`, registration will block execution when called. By
@@ -395,6 +444,8 @@ def brainreg_register():
                 load_parallel,
                 sort_input_file,
                 n_free_cpus,
+                save_original_orientation=save_original_orientation,
+                brain_geometry=brain_geometry.value,
             )
 
             logging.info("Calculating volumes of each brain area")
@@ -429,7 +480,104 @@ def brainreg_register():
     @widget.reset_button.changed.connect
     def restore_defaults(event=None):
         for name, value in DEFAULT_PARAMETERS.items():
-            if name != "atlas_key":
+            if name not in ["atlas_key", "brain_geometry"]:
                 getattr(widget, name).value = value
+
+    @widget.check_orientation_button.changed.connect
+    def check_orientation(event=None):
+        """
+        Function used to check that the input orientation is correct.
+        To do so it transforms the input data into the requested atlas
+        orientation, compute the average projection and displays it alongside
+        the atlas. It is then easier for the user to identify which dimension
+        should be swapped and avoid running the pipeline on wrongly aligned
+        data.
+        """
+
+        if getattr(widget, "img_layer").value is None:
+            show_info("Raw data must be loaded before checking orientation.")
+            return widget
+
+        # Get viewer object
+        viewer = getattr(widget, "viewer").value
+
+        brain_geometry = getattr(widget, "brain_geometry").value
+
+        # Remove previous average projection layer if needed
+        ind_pop = []
+        for i, layer in enumerate(viewer.layers):
+            if layer.name in [
+                "Ref. proj. 0",
+                "Ref. proj. 1",
+                "Ref. proj. 2",
+                "Input proj. 0",
+                "Input proj. 1",
+                "Input proj. 2",
+            ]:
+                ind_pop.append(i)
+            else:
+                layer.visible = False
+        for index in ind_pop[::-1]:
+            del viewer.layers[index]
+
+        # Load atlas and gather data
+        atlas = BrainGlobeAtlas("allen_mouse_25um")
+        if brain_geometry.value == "hemisphere_l":
+            atlas.reference[
+                atlas.hemispheres == atlas.left_hemisphere_value
+            ] = 0
+        elif brain_geometry.value == "hemisphere_r":
+            atlas.reference[
+                atlas.hemispheres == atlas.right_hemisphere_value
+            ] = 0
+        input_orientation = getattr(widget, "data_orientation").value
+        data = getattr(widget, "img_layer").value.data
+        # Transform data to atlas orientation from user input
+        data_remapped = bg.map_stack_to(
+            input_orientation, atlas.orientation, data
+        )
+
+        # Compute average projection of atlas and remapped data
+        u_proj = []
+        u_proja = []
+        s = []
+        for i in range(3):
+            u_proj.append(np.mean(data_remapped, axis=i))
+            u_proja.append(np.mean(atlas.reference, axis=i))
+            s.append(u_proja[-1].shape[0])
+        s = np.max(s)
+
+        # Display all projections with somewhat consistent scaling
+        viewer.add_image(u_proja[0], name="Ref. proj. 0")
+        viewer.add_image(
+            u_proja[1], translate=[0, u_proja[0].shape[1]], name="Ref. proj. 1"
+        )
+        viewer.add_image(
+            u_proja[2],
+            translate=[0, u_proja[0].shape[1] + u_proja[1].shape[1]],
+            name="Ref. proj. 2",
+        )
+
+        s1 = u_proja[0].shape[0] / u_proj[0].shape[0]
+        s2 = u_proja[0].shape[1] / u_proj[0].shape[1]
+        viewer.add_image(
+            u_proj[0], translate=[s, 0], name="Input proj. 0", scale=[s1, s2]
+        )
+        s1 = u_proja[1].shape[0] / u_proj[1].shape[0]
+        s2 = u_proja[1].shape[1] / u_proj[1].shape[1]
+        viewer.add_image(
+            u_proj[1],
+            translate=[s, u_proja[0].shape[1]],
+            name="Input proj. 1",
+            scale=[s1, s2],
+        )
+        s1 = u_proja[2].shape[0] / u_proj[2].shape[0]
+        s2 = u_proja[2].shape[1] / u_proj[2].shape[1]
+        viewer.add_image(
+            u_proj[2],
+            translate=[s, u_proja[0].shape[1] + u_proja[1].shape[1]],
+            name="Input proj. 2",
+            scale=[s1, s2],
+        )
 
     return widget
