@@ -14,7 +14,9 @@ pip install brainreg-napari
 ```
 
 ## Usage
-Documentation for the plugin is to come, but documentation for the original
+Documentation for the plugin can be found 
+[here](https://docs.brainglobe.info/brainreg-napari/introduction), and for 
+more detail, documentation for the original
 brainreg can be found [here](https://docs.brainglobe.info/brainreg/introduction)
 and a tutorial is [here](https://docs.brainglobe.info/brainreg/tutorial).
 
