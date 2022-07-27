@@ -3,6 +3,7 @@
 [![Wheel](https://img.shields.io/pypi/wheel/brainreg-napari.svg)](https://pypi.org/project/brainreg-napari)
 [![Development Status](https://img.shields.io/pypi/status/brainreg-napari.svg)](https://github.com/brainglobe/brainreg-napari)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+[![codecov](https://codecov.io/gh/brainglobe/brainreg-napari/branch/master/graph/badge.svg?token=HEBXJPLD2S)](https://codecov.io/gh/brainglobe/brainreg-napari)
 
 # brainreg-napari
 Napari plugin to run [brainreg](https://github.com/brainglobe/brainreg),
