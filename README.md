@@ -4,7 +4,7 @@
 [![Development Status](https://img.shields.io/pypi/status/brainreg.svg)](https://github.com/brainglobe/brainreg)
 [![Tests](https://img.shields.io/github/workflow/status/brainglobe/brainreg/tests)](
     https://github.com/brainglobe/brainreg/actions)
-[![Coverage Status](https://coveralls.io/repos/github/brainglobe/brainreg/badge.svg?branch=master)](https://coveralls.io/github/brainglobe/brainreg?branch=master)
+[![codecov](https://codecov.io/gh/brainglobe/brainreg/branch/master/graph/badge.svg?token=FbPgwBIGnd)](https://codecov.io/gh/brainglobe/brainreg)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 
 # brainreg
