@@ -14,10 +14,10 @@ def filter_image(brain, preprocessing_args=None):
     :rtype: np.array
     """
     brain = brain.astype(np.float64, copy=False)
-    if preprocessing_args and preprocessing_args.preprocessing == "none":
+    if preprocessing_args and preprocessing_args.preprocessing == "skip":
         pass
     elif preprocessing_args and preprocessing_args.preprocessing == "fmost":
-        for i in trange(brain.shape[0], desc="filtering", unit="plane"):  # only coronal plane because of stripes
+        for i in trange(brain.shape[0], desc="filtering", unit="plane"):
             brain[i,:,:] = pre_process_fmost(brain[i,:,:])
     else:  # default pre-processing
         for i in trange(brain.shape[-1], desc="filtering", unit="plane"):
@@ -92,18 +92,17 @@ def ideal_notch_filter(fshift, points):
     return fshift
 
 
-def remove_stripes(img_plane, stripes_direction="h"):
+def remove_stripes(img_plane):
     """
-    Remove vertical or horizontal periodic striped artifacts from image plane.
+    Remove horizontal periodic striped artifacts from image plane.
 
-    Use stripes_direction="h" for horizontal stripes, stripes_direction="v" for vertical stripes.
     Attempting to identify stripes' period using FFT of image plane
-    integrated over one dimension (axis 0 for vertical stripes, axis 1 for horizontal stripes)
+    integrated over one dimension (axis 1 for horizontal stripes)
 
     :return: The filtered image
     :rtype: np.array
     """
-    img_sum = np.sum(img_plane, axis=(1 if stripes_direction == "h" else 0))
+    img_sum = np.sum(img_plane, axis=1)
     fft_seq = np.abs(np.fft.rfft(img_sum))/img_sum.shape[0]
     first_harmonic = np.argmax(fft_seq[10:]) + 10  # lowest frequencies have extremely high magnitudes
     H, W = img_plane.shape
@@ -116,22 +115,12 @@ def remove_stripes(img_plane, stripes_direction="h"):
     # filter shifted fft
     points = []
     image_center = (H // 2, W // 2)
-    if stripes_direction == "h":
-        # compute points on vertical axis of symmetry
-        for point_ind in range(1, image_center[0] // first_harmonic):
-            points.extend([
-                [image_center[0] + point_ind * first_harmonic, image_center[1]],
-                [image_center[0] - point_ind * first_harmonic, image_center[1]]
-            ])
-    elif stripes_direction == "v":
-        # compute points on horizontal axis of symmetry
-        for point_ind in range(1, image_center[1] // first_harmonic):
-            points.extend([
-                [image_center[0], image_center[1] + point_ind * first_harmonic],
-                [image_center[0], image_center[1] - point_ind * first_harmonic]
-            ])
-    else:
-        raise NotImplementedError("Can only automatically remove vertical or horizontal stripes")
+    # compute points on vertical axis of symmetry
+    for point_ind in range(1, image_center[0] // first_harmonic):
+        points.extend([
+            [image_center[0] + point_ind * first_harmonic, image_center[1]],
+            [image_center[0] - point_ind * first_harmonic, image_center[1]]
+        ])
     points = np.asarray(points)
 
     filtered_fft_shift = ideal_notch_filter(img_fft, points)
@@ -144,60 +133,68 @@ def remove_stripes(img_plane, stripes_direction="h"):
     return img_plane
 
 
-def denoise_fft(img_plane):
+def subtract_background_iterative(img):
     """
-    Apply circular mask to the image in FFT domain, to keep low frequencies only.
+    Compute foreground/background mask by iteratively changing the threshold.
+
+    :param img: image plane
+    :return: mask (0 = background, 1 = foreground)
     """
-    H, W = img_plane.shape
-    img_fft = np.fft.fft2(img_plane)/(W * H)
 
-    img_fft = np.fft.fftshift(img_fft)
+    max_iterations = 100
+    max_components = 3
+    min_percent_zeros = 20  # layer in the middle of the brain
+    max_percent_zeros = 95  # layer at the edge of the brain
+    threshold_step = 0.15
 
-    center = [H//2, W//2]
-    r = int(min(H, W) / 3)
-    x, y = np.ogrid[:H, :W]
-    mask_area = (x - center[0])**2 + (y - center[1])**2 >= r**2
-    img_fft[mask_area] = 0
+    def compute_mask(img, thr):
+        mask = (img > thr).astype(np.uint8)
+        mask = (binary_fill_holes(mask)).astype(np.uint8)
+        kernel = morphology.disk(3)
+        mask = (morphology.opening(mask, kernel)).astype(np.uint8)
+        return mask
 
-    img_fft = np.fft.ifftshift(img_fft)
-    out_ifft = np.fft.ifft2(img_fft)
-
-    img_plane = (np.real(out_ifft) * W * H)
-    return img_plane
-
-
-def subtract_background(img_plane):
-    """
-    Create forground/background mask from image plane.
-
-    Experimental, might not work with some datasets!
-
-    Mask is computed from denoised image with low cutoff frequency
-    (blured signigicantly) for better thresholding.
-    In the mask, 1 = foreground, 0 = background.
-    """
-    img_lf = denoise_fft(img_plane)
+    img_pixels = img.shape[0] * img.shape[1]
+    percent0 = 0
+    img = img.astype(np.float32)
     try:
-        thr = threshold_triangle(img_lf)
+        threshold = threshold_triangle(img)
     except ValueError:  # attempt to get argmax of an empty sequence
-        return np.zeros_like(img_plane).astype(np.uint16)
+        return np.zeros_like(img).astype(np.uint8)
 
-    mask = (img_lf > thr).astype(np.uint8)
-    mask = (binary_fill_holes(mask)).astype(np.uint8)
-    kernel = morphology.disk(3)
-    mask = (morphology.opening(mask, kernel)).astype(np.uint8)
+    iteration = 0
+    while percent0 < min_percent_zeros:
+        # Increase threshold
+        if iteration > max_iterations:
+            return np.zeros_like(img)
+        threshold = threshold + threshold_step * threshold
+        mask = None
+        mask = compute_mask(img, threshold)
+        percent0 = (mask[mask == 0].shape[0]) / img_pixels * 100
+        iteration += 1
+
+    while percent0 > max_percent_zeros:
+        # Decrease threshold
+        if iteration > max_iterations:
+            return np.zeros_like(img)
+        threshold = threshold - threshold_step * threshold
+        mask = None
+        mask = compute_mask(img, threshold)
+        percent0 = (mask[mask == 0].shape[0]) / img_pixels * 100
+        iteration += 1
+
     label_image = label(mask)
     rp = regionprops(label_image)
     rp = sorted(rp, key=lambda x: x.area, reverse=True)
     final_mask = np.zeros_like(mask)
-    for i in range(min([5, len(rp)])):  # retain up to 5 largest components
+    for i in range(min([max_components, len(rp)])):
         for c in rp[i].coords:
             final_mask[c[0], c[1]] = 1
     return final_mask
 
 
 def pre_process_fmost(img_plane):
-    foreground_mask = subtract_background(img_plane)
     img_plane = remove_stripes(img_plane)
+    foreground_mask = subtract_background_iterative(img_plane)
     img_plane[foreground_mask == 0] = 0
     return img_plane

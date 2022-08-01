@@ -83,11 +83,6 @@ def run_niftyreg(
         target_brain, atlas.resolution, niftyreg_paths.downsampled_filtered
     )
 
-    imio.to_tiff(
-        scale_and_convert_to_16_bits(target_brain),
-        paths.downsampled_filtered_brain_path,
-    )
-
     logging.info("Registering")
 
     registration_params = RegistrationParams(

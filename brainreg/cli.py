@@ -186,9 +186,10 @@ def preprocessing_parser(parser):
         "--pre-processing",
         dest="preprocessing",
         type=str,
+        default="default",
         required=False,
         help="Pre-processing method to be applied before registration. "
-        "Possible values: none, default, fmost."
+        "Possible values: skip, default, fmost."
     )
 
     return parser

@@ -14,7 +14,6 @@ class Paths:
 
     def make_reg_paths(self):
         self.downsampled_brain_path = self.make_reg_path("downsampled.tiff")
-        self.downsampled_filtered_brain_path = self.make_reg_path("downsampled_filtered.tiff")
         self.downsampled_brain_standard_space = self.make_reg_path(
             "downsampled_standard.tiff"
         )
