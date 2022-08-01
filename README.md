@@ -4,7 +4,7 @@
 [![Development Status](https://img.shields.io/pypi/status/brainreg.svg)](https://github.com/brainglobe/brainreg)
 [![Tests](https://img.shields.io/github/workflow/status/brainglobe/brainreg/tests)](
     https://github.com/brainglobe/brainreg/actions)
-[![Coverage Status](https://coveralls.io/repos/github/brainglobe/brainreg/badge.svg?branch=master)](https://coveralls.io/github/brainglobe/brainreg?branch=master)
+[![codecov](https://codecov.io/gh/brainglobe/brainreg/branch/master/graph/badge.svg?token=FbPgwBIGnd)](https://codecov.io/gh/brainglobe/brainreg)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 
 # brainreg
@@ -71,7 +71,8 @@ brainreg /path/to/raw/data /path/to/output/directory -v 5 2 2 --orientation psl
 ### Additional options
 
 * `-d` or `--downsample` Paths to N additional channels to downsample to the same coordinate space.
-* `--sort-input-file` If set to true, the input text file will be sorted using natural sorting. This means that the file paths will be sorted as would be expected by a human and not purely alphabetically
+* `--sort-input-file` If set to true, the input text file will be sorted using natural sorting. This means that the file paths will be sorted as would be expected by a human and not purely alphabetically.
+* `--brain_geometry` Can be one of `full` (default) for full brain registration, `hemisphere_l` for left hemisphere data-set and `hemisphere_r` for right hemisphere data-set.
 
 #### Misc options
 

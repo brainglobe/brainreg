@@ -52,7 +52,7 @@ def despeckle_by_opening(img_plane, radius=2):
     :rtype: np.array
     """
     kernel = morphology.disk(radius)
-    morphology.opening(img_plane, out=img_plane, selem=kernel)
+    morphology.opening(img_plane, out=img_plane, footprint=kernel)
     return img_plane
 
 
