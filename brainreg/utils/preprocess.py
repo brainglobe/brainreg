@@ -1,5 +1,5 @@
-from imlib.image.scale import scale_and_convert_to_16_bits
 import numpy as np
+from imlib.image.scale import scale_and_convert_to_16_bits
 from scipy.ndimage import binary_fill_holes, gaussian_filter
 from skimage import morphology
 from skimage.filters import threshold_triangle
@@ -18,7 +18,7 @@ def filter_image(brain, preprocessing_args=None):
         pass
     elif preprocessing_args and preprocessing_args.preprocessing == "fmost":
         for i in trange(brain.shape[0], desc="filtering", unit="plane"):
-            brain[i,:,:] = pre_process_fmost(brain[i,:,:])
+            brain[i, :, :] = pre_process_fmost(brain[i, :, :])
     else:  # default pre-processing
         for i in trange(brain.shape[-1], desc="filtering", unit="plane"):
             brain[..., i] = filter_plane(brain[..., i])
@@ -75,8 +75,10 @@ def ideal_notch_filter(fshift, points):
     """
     Remove signature of periodic stripes in the Fourier domain.
 
-    :param fshift: image representation in Fourier domain, with low frequencies shifted to the center
-    :param points: coordinates of points corresponding to the striped artifact in Fourier space
+    :param fshift: image representation in Fourier domain,
+    with low frequencies shifted to the center
+    :param points: coordinates of points corresponding to
+    the striped artifact in Fourier space
     :return: filtered Fourier image representation (fshift)
     :rtype: np.array
     """
@@ -85,8 +87,8 @@ def ideal_notch_filter(fshift, points):
     u, v = np.ogrid[:H, :W]
     for d in range(len(points)):
         u0, v0 = points[d]
-        mask1 = (u - u0)**2 + (v - v0)**2 <= d0
-        mask2 = (u + u0)**2 + (v + v0)**2 <= d0
+        mask1 = (u - u0) ** 2 + (v - v0) ** 2 <= d0
+        mask2 = (u + u0) ** 2 + (v + v0) ** 2 <= d0
         fshift[mask1] = 0
         fshift[mask2] = 0
     return fshift
@@ -103,8 +105,10 @@ def remove_stripes(img_plane):
     :rtype: np.array
     """
     img_sum = np.sum(img_plane, axis=1)
-    fft_seq = np.abs(np.fft.rfft(img_sum))/img_sum.shape[0]
-    first_harmonic = np.argmax(fft_seq[10:]) + 10  # lowest frequencies have extremely high magnitudes
+    fft_seq = np.abs(np.fft.rfft(img_sum)) / img_sum.shape[0]
+    first_harmonic = (
+        np.argmax(fft_seq[10:]) + 10
+    )  # lowest frequencies have extremely high magnitudes
     H, W = img_plane.shape
 
     # do 2D fft
@@ -117,10 +121,18 @@ def remove_stripes(img_plane):
     image_center = (H // 2, W // 2)
     # compute points on vertical axis of symmetry
     for point_ind in range(1, image_center[0] // first_harmonic):
-        points.extend([
-            [image_center[0] + point_ind * first_harmonic, image_center[1]],
-            [image_center[0] - point_ind * first_harmonic, image_center[1]]
-        ])
+        points.extend(
+            [
+                [
+                    image_center[0] + point_ind * first_harmonic,
+                    image_center[1],
+                ],
+                [
+                    image_center[0] - point_ind * first_harmonic,
+                    image_center[1],
+                ],
+            ]
+        )
     points = np.asarray(points)
 
     filtered_fft_shift = ideal_notch_filter(img_fft, points)
@@ -129,7 +141,7 @@ def remove_stripes(img_plane):
     img_fft = np.fft.ifftshift(filtered_fft_shift)
     # do inverse fft
     out_ifft = np.fft.ifft2(img_fft)
-    img_plane = (np.abs(out_ifft) * W * H)
+    img_plane = np.abs(out_ifft) * W * H
     return img_plane
 
 
