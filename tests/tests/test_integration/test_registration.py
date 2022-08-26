@@ -42,7 +42,7 @@ def whole_brain_output_path(tmp_path_factory):
         "0",
         "--atlas",
         "allen_mouse_100um",
-        "-d",
+        "-a",
         str(whole_brain_data_dir),
     ]
 
