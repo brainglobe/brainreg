@@ -49,9 +49,9 @@ def cli_parse(parser):
     )
 
     cli_parser.add_argument(
-        "-d",
-        "--downsample",
-        dest="downsample_images",
+        "-a",
+        "--additional",
+        dest="additional_images",
         type=str,
         nargs="+",
         help="Paths to N additional channels to downsample to the same "
@@ -181,8 +181,8 @@ def prep_registration(args):
     ensure_directory_exists(args.brainreg_directory)
 
     additional_images_downsample = {}
-    if args.downsample_images:
-        for idx, images in enumerate(args.downsample_images):
+    if args.additional_images:
+        for idx, images in enumerate(args.additional_images):
             name = Path(images).name
             additional_images_downsample[name] = images
 
