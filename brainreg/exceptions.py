@@ -1,6 +1,6 @@
 import os
 import traceback as tb
-from os.path import isdir, join
+from os.path import isdir
 
 
 class LoadFileException(Exception):
