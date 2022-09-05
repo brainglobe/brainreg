@@ -26,7 +26,7 @@ class LoadFileException(Exception):
                 tb.format_tb(base_error.__traceback__) + [base_error.__str__()]
             )
             super().__init__(
-                f"{origional_traceback}\nFile at {target_brain_path} failed to load. Full traceback above."
+                f"{origional_traceback}\nFile at {target_brain_path} failed to load. Ensure all image files contain the same number of pixels. Full traceback above."
             )
 
     def path_is_folder_with_one_tiff(self, target_brain_path):
