@@ -127,6 +127,9 @@ def misc_parse(parser):
         " Currently brainreg supports full ('full') brain, "
         "and half hemispheres "
         "('hemisphere_l'/'hemisphere_r').",
+        choices=['full',
+                 'hemisphere_l',
+                 'hemisphere_r']
     )
 
     misc_parser.add_argument(
@@ -195,7 +198,7 @@ def main():
     arg_groups = get_arg_groups(args, register_cli_parser())
 
     args, additional_images_downsample = prep_registration(args)
-
+    
     paths = Paths(args.brainreg_directory)
 
     log_metadata(paths.metadata_path, args)
