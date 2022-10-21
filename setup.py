@@ -18,9 +18,6 @@ requirements = [
     "imio",
     "fancylog",
     "imlib>=0.0.26",
-    "napari[pyside2]>=0.3.7",
-    "brainglobe-napari-io",
-    "brainreg-segment>=0.0.2",
 ]
 
 
@@ -32,6 +29,11 @@ setup(
     long_description_content_type="text/markdown",
     install_requires=requirements,
     extras_require={
+        "napari": [
+            "napari[pyside2]>=0.3.7",
+            "brainglobe-napari-io",
+            "brainreg-segment>=0.0.2",
+        ],
         "dev": [
             "black",
             "pytest-cov",
@@ -40,7 +42,7 @@ setup(
             "bump2version",
             "pre-commit",
             "flake8",
-        ]
+        ],
     },
     python_requires=">=3.7",
     packages=find_packages(),
