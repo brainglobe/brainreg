@@ -30,7 +30,7 @@ setup(
     install_requires=requirements,
     extras_require={
         "napari": [
-            "napari[pyside2]>=0.3.7",
+            "napari[pyside2]",
             "brainglobe-napari-io",
             "brainreg-segment>=0.0.2",
         ],
