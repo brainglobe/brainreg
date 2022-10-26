@@ -16,13 +16,14 @@ mismatched_dims_data_dir = (
 )
 test_output = test_data_dir / "test_output"
 
+
 @pytest.fixture(scope="session")
 def test_output_dir(tmp_path_factory):
     test_output_dir = tmp_path_factory.mktemp("output_dir")
     return test_output_dir
 
-def get_default_brainreg_args(data_dir,
-                              test_output_dir):
+
+def get_default_brainreg_args(data_dir, test_output_dir):
     return [
         "brainreg",
         str(data_dir),
@@ -39,9 +40,12 @@ def get_default_brainreg_args(data_dir,
 
 
 def test_mismatched_dims_error(test_output_dir):
-    """"""
-    brainreg_args = get_default_brainreg_args(mismatched_dims_data_dir,
-                                              test_output_dir)
+    """
+    Test case in which images files are not the same dimensions.
+    """
+    brainreg_args = get_default_brainreg_args(
+        mismatched_dims_data_dir, test_output_dir
+    )
     sys.argv = brainreg_args
 
     with pytest.raises(LoadFileException) as e:
@@ -56,9 +60,13 @@ def test_mismatched_dims_error(test_output_dir):
 
 
 def test_one_2d_tiff_error(test_output_dir):
-    """"""
-    brainreg_args = get_default_brainreg_args(one_2d_tiff_data_dir,
-                                              test_output_dir)
+    """
+    Test case in which a single 2D image is in the folder,
+    which is not supported.
+    """
+    brainreg_args = get_default_brainreg_args(
+        one_2d_tiff_data_dir, test_output_dir
+    )
     sys.argv = brainreg_args
 
     with pytest.raises(LoadFileException) as e:
@@ -72,14 +80,20 @@ def test_one_2d_tiff_error(test_output_dir):
 
 
 def test_one_3d_tiff_error(test_output_dir):
-    """"""
-    brainreg_args = get_default_brainreg_args(one_3d_tiff_data_dir,
-                                              test_output_dir)
+    """
+    Test the case in which the dir contains a 3D Tiff that
+    should be specified by passing the filename not folder.
+    """
+    brainreg_args = get_default_brainreg_args(
+        one_3d_tiff_data_dir, test_output_dir
+    )
     sys.argv = brainreg_args
 
     with pytest.raises(LoadFileException) as e:
         brainreg_run()
 
     assert (
-        e.value.message == "Attempted to loadx directory containing a single two dimensional .tiff file. Pass a folder containing 3D tiff file or multiple 2D .tiff files."
+        e.value.message == "Attempted to load directory containing a single "
+        "two dimensional .tiff file. Pass a folder containing "
+        "3D tiff file or multiple 2D .tiff files."
     )
