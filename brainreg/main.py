@@ -62,7 +62,7 @@ def main(
 
     if target_brain.size == 0:
         raise LoadFileException(
-            target_brain_path, base_error=None, error_type="one_tiff"
+            target_brain_path, base_error=None, error_type="one_2d_tiff"
         )
 
     target_brain = bg.map_stack_to(
