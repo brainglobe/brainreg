@@ -119,3 +119,6 @@ venv.bak/
 *.~lock.*
 
 tests/data/test_output
+
+
+*.DS_Store
