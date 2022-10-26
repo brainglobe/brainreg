@@ -14,22 +14,32 @@ class LoadFileException(Exception):
     including the full traceback
     """
 
-    def __init__(self, target_brain_path, base_error):
+    def __init__(self, target_brain_path, base_error, error_type=None):
 
-        if self.path_is_folder_with_one_tiff(target_brain_path):
+        if error_type == "one_2d_tiff":
             super().__init__(
-                "Attempted to load directory containing single .tiff file. "
-                "For 3D tiff, pass the full path including filename"
+                "Attempted to load directory containing single two dimensional "
+                ".tiff file. Please pass a folder containing "
+                "3D tiff file or multiple 2D .tiff files "
             )
-        else:
-            origional_traceback = "".join(
-                tb.format_tb(base_error.__traceback__) + [base_error.__str__()]
-            )
-            super().__init__(
-                f"{origional_traceback}\nFile at {target_brain_path} "
-                f"failed to load. Ensure all image files contain the "
-                f"same number of pixels. Full traceback above."
-            )
+
+        elif error_type is None:
+
+            if self.path_is_folder_with_one_tiff(target_brain_path):
+                super().__init__(
+                    "Attempted to load directory containing single .tiff file. "
+                    "For 3D tiff, pass the full path including filename"
+                )
+            else:
+                origional_traceback = "".join(
+                    tb.format_tb(base_error.__traceback__)
+                    + [base_error.__str__()]
+                )
+                super().__init__(
+                    f"{origional_traceback}\nFile at {target_brain_path} "
+                    f"failed to load. Ensure all image files contain the "
+                    f"same number of pixels. Full traceback above."
+                )
 
     def path_is_folder_with_one_tiff(self, target_brain_path):
         """
