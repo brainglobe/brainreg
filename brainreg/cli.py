@@ -127,6 +127,7 @@ def misc_parse(parser):
         " Currently brainreg supports full ('full') brain, "
         "and half hemispheres "
         "('hemisphere_l'/'hemisphere_r').",
+        choices=["full", "hemisphere_l", "hemisphere_r"],
     )
 
     misc_parser.add_argument(
