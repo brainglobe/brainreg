@@ -10,7 +10,7 @@ from brainreg.exceptions import LoadFileException
 test_data_dir = Path(os.getcwd()) / "tests" / "data"
 
 one_2d_tiff_data_dir = test_data_dir / "input" / "exceptions" / "one_2d_tiff"
-one_3d_tiff_data_dir = test_data_dir / "input" / "exceptions" / "one_2d_tiff"
+one_3d_tiff_data_dir = test_data_dir / "input" / "exceptions" / "one_3d_tiff"
 mismatched_dims_data_dir = (
     test_data_dir / "input" / "exceptions" / "mismatched_dims"
 )
@@ -93,7 +93,7 @@ def test_one_3d_tiff_error(test_output_dir):
         brainreg_run()
 
     assert (
-        e.value.message == "Attempted to load directory containing a single "
-        "two dimensional .tiff file. Pass a folder containing "
-        "3D tiff file or multiple 2D .tiff files."
+        e.value.message == "Attempted to load directory containing single .tiff file.",
+                           "For 3D tiff, pass the full path including filename.",
+
     )
