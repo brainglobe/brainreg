@@ -190,7 +190,7 @@ def preprocessing_parser(parser):
         default="default",
         required=False,
         help="Pre-processing method to be applied before registration. "
-        "Possible values: skip, default, fmost.",
+        "Possible values: skip, default.",
     )
 
     return parser
