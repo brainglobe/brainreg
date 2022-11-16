@@ -9,16 +9,24 @@ from brainreg.cli import main as brainreg_run
 
 from .utils import check_images_same, check_volumes_equal
 
+if platform.system() == "Darwin":
+    if platform.machine() == "x86_64":
+        test_dir = "Darwin_intel"
+    else:
+        test_dir = "Darwin_arm"
+else:
+    test_dir = platform.system()
+
 test_data_dir = Path(os.getcwd()) / "tests" / "data"
 
 whole_brain_data_dir = test_data_dir / "input" / "brain"
 whole_brain_expected_output_dir = (
-    test_data_dir / "registration_output" / platform.system()
+    test_data_dir / "registration_output" / test_dir
 )
 
 hemisphere_data_dir = test_data_dir / "input" / "hemisphere_l"
 hemisphere_expected_output_dir = (
-    test_data_dir / "registration_output" / "hemisphere_l" / platform.system()
+    test_data_dir / "registration_output" / "hemisphere_l" / test_dir
 )
 
 whole_brain_voxel_sizes = ("50", "40", "40")
@@ -42,7 +50,7 @@ def whole_brain_output_path(tmp_path_factory):
         "0",
         "--atlas",
         "allen_mouse_100um",
-        "-d",
+        "-a",
         str(whole_brain_data_dir),
     ]
 

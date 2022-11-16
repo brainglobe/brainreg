@@ -1,5 +1,6 @@
 import logging
 import os
+from pathlib import Path
 
 import bg_space as bg
 import imio
@@ -179,18 +180,26 @@ def run_niftyreg(
         for name, filename in additional_images_downsample.items():
             logging.info(f"Processing: {name}")
 
+            name_to_save = (
+                Path(name).stem
+                if name.lower().endswith((".tiff", ".tif"))
+                else name
+            )
+
             downsampled_brain_path = os.path.join(
-                registration_output_folder, f"downsampled_{name}.tiff"
+                registration_output_folder, f"downsampled_{name_to_save}.tiff"
             )
             tmp_downsampled_brain_path = os.path.join(
-                niftyreg_paths.niftyreg_directory, f"downsampled_{name}.nii"
+                niftyreg_paths.niftyreg_directory,
+                f"downsampled_{name_to_save}.nii",
             )
             downsampled_brain_standard_path = os.path.join(
-                registration_output_folder, f"downsampled_standard_{name}.tiff"
+                registration_output_folder,
+                f"downsampled_standard_{name_to_save}.tiff",
             )
             tmp_downsampled_brain_standard_path = os.path.join(
                 niftyreg_paths.niftyreg_directory,
-                f"downsampled_standard_{name}.nii",
+                f"downsampled_standard_{name_to_save}.nii",
             )
 
             # do the tiff part at the beginning

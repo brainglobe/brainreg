@@ -18,20 +18,22 @@ requirements = [
     "imio",
     "fancylog",
     "imlib>=0.0.26",
-    "napari[pyside2]>=0.3.7",
-    "brainglobe-napari-io",
-    "brainreg-segment>=0.0.2",
 ]
 
 
 setup(
     name="brainreg",
-    version="0.3.2",
+    version="0.4.0-rc0",
     description="Automated 3D brain registration",
     long_description=long_description,
     long_description_content_type="text/markdown",
     install_requires=requirements,
     extras_require={
+        "napari": [
+            "napari[pyside2]",
+            "brainglobe-napari-io",
+            "brainreg-segment>=0.0.2",
+        ],
         "dev": [
             "black",
             "pytest-cov",
@@ -40,7 +42,7 @@ setup(
             "bump2version",
             "pre-commit",
             "flake8",
-        ]
+        ],
     },
     python_requires=">=3.7",
     packages=find_packages(),
@@ -50,12 +52,12 @@ setup(
     author_email="code@adamltyson.com",
     classifiers=[
         "Development Status :: 3 - Alpha",
-        "Operating System :: POSIX :: Linux",
-        "Operating System :: Microsoft :: Windows :: Windows 10",
+        "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
     ],
