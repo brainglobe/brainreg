@@ -94,6 +94,6 @@ def test_one_3d_tiff_error(test_output_dir):
 
     assert (
         e.value.message
-        == "Attempted to load directory containing single .tiff file."
+        == "Attempted to load directory containing single .tiff file. "
         "For 3D tiff, pass the full path including filename."
     )
