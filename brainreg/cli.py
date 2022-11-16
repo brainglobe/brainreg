@@ -28,6 +28,7 @@ def register_cli_parser():
     parser = pixel_parser(parser)
     parser = geometry_parser(parser)
     parser = misc_parse(parser)
+    parser = preprocessing_parser(parser)
 
     return parser
 
@@ -177,6 +178,24 @@ def geometry_parser(parser):
     return parser
 
 
+def preprocessing_parser(parser):
+    preprocessing_opt_parser = parser.add_argument_group(
+        "Pre-processing options"
+    )
+
+    preprocessing_opt_parser.add_argument(
+        "--pre-processing",
+        dest="preprocessing",
+        type=str,
+        default="default",
+        required=False,
+        help="Pre-processing method to be applied before registration. "
+        "Possible values: skip, default.",
+    )
+
+    return parser
+
+
 def prep_registration(args):
     logging.debug("Making registration directory")
     ensure_directory_exists(args.brainreg_directory)
@@ -219,6 +238,7 @@ def main():
         paths,
         args.voxel_sizes,
         arg_groups["NiftyReg registration backend options"],
+        arg_groups["Pre-processing options"],
         sort_input_file=args.sort_input_file,
         n_free_cpus=args.n_free_cpus,
         additional_images_downsample=additional_images_downsample,

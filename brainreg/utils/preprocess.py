@@ -5,15 +5,18 @@ from skimage import morphology
 from tqdm import trange
 
 
-def filter_image(brain):
+def filter_image(brain, preprocessing_args=None):
     """
     Filter a 3D image to allow registration
     :return: The filtered brain
     :rtype: np.array
     """
     brain = brain.astype(np.float64, copy=False)
-    for i in trange(brain.shape[-1], desc="filtering", unit="plane"):
-        brain[..., i] = filter_plane(brain[..., i])
+    if preprocessing_args and preprocessing_args.preprocessing == "skip":
+        pass
+    else:  # default pre-processing
+        for i in trange(brain.shape[-1], desc="filtering", unit="plane"):
+            brain[..., i] = filter_plane(brain[..., i])
     brain = scale_and_convert_to_16_bits(brain)
     return brain
 
