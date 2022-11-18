@@ -59,14 +59,23 @@ def test_mismatched_dims_error(test_output_dir):
     )
 
 
-def test_one_2d_tiff_error(test_output_dir):
+@pytest.mark.parametrize("file_type", ["loads_1_dim", "loads_no_dim"])
+def test_one_2d_tiff_error(test_output_dir, file_type):
     """
     Test case in which a single 2D image is in the folder,
     which is not supported.
+
+    Some tiffs load as a zero-size array, wheras others
+    load as a 2D array (well, 3D array with a singleton).
+    Test both cases here.
     """
     brainreg_args = get_default_brainreg_args(
-        one_2d_tiff_data_dir, test_output_dir
+        one_2d_tiff_data_dir / file_type, test_output_dir
     )
+
+    if file_type == "loads_1_dim":
+        brainreg_args[-1] = "allen_mouse_50um"
+
     sys.argv = brainreg_args
 
     with pytest.raises(LoadFileException) as e:
