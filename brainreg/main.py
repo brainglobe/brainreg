@@ -2,6 +2,7 @@ import logging
 
 import bg_space as bg
 import imio
+import numpy as np
 from bg_atlasapi import BrainGlobeAtlas
 from imlib.general.system import get_num_processes
 
@@ -60,7 +61,7 @@ def main(
     except ValueError as error:
         raise LoadFileException(target_brain_path, error) from None
 
-    if target_brain.size == 0:
+    if target_brain.size == 0 or np.min(target_brain.shape) == 1:
         raise LoadFileException(
             target_brain_path, base_error=None, error_type="one_2d_tiff"
         )
