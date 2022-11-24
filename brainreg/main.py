@@ -6,6 +6,7 @@ from bg_atlasapi import BrainGlobeAtlas
 from imlib.general.system import get_num_processes
 
 from brainreg.backend.niftyreg.run import run_niftyreg
+from brainreg.exceptions import LoadFileException, path_is_folder_with_one_tiff
 from brainreg.utils.boundaries import boundaries
 from brainreg.utils.volume import calculate_volumes
 
@@ -27,6 +28,9 @@ def main(
     save_original_orientation=False,
     brain_geometry="full",
 ):
+    if path_is_folder_with_one_tiff(target_brain_path):
+        raise LoadFileException("single_tiff")
+
     atlas = BrainGlobeAtlas(atlas)
     source_space = bg.AnatomicalSpace(data_orientation)
 
@@ -46,15 +50,19 @@ def main(
     load_parallel = n_processes > 1
 
     logging.info("Loading raw image data")
-    target_brain = imio.load_any(
-        target_brain_path,
-        scaling[1],
-        scaling[2],
-        scaling[0],
-        load_parallel=load_parallel,
-        sort_input_file=sort_input_file,
-        n_free_cpus=n_free_cpus,
-    )
+
+    try:
+        target_brain = imio.load_any(
+            target_brain_path,
+            scaling[1],
+            scaling[2],
+            scaling[0],
+            load_parallel=load_parallel,
+            sort_input_file=sort_input_file,
+            n_free_cpus=n_free_cpus,
+        )
+    except ValueError as error:
+        raise LoadFileException(None, error) from None
 
     target_brain = bg.map_stack_to(
         data_orientation, atlas.metadata["orientation"], target_brain
