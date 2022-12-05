@@ -53,6 +53,12 @@ Full details of the process are in the
 pip install brainreg
 ```
 
+To install napari and plugins to visualise data:
+```bash
+pip install brainreg[napari]
+```
+
+**N.B. If you are using macOS, please run `conda install -c conda-forge niftyreg` to ensure all dependencies are installed.**
 ## Usage
 
 ### Basic usage
