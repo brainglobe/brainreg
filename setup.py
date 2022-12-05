@@ -31,6 +31,7 @@ setup(
     extras_require={
         "napari": [
             "napari[pyside2]",
+            "brainreg-napari",
             "brainglobe-napari-io",
             "brainreg-segment>=0.0.2",
         ],
@@ -54,7 +55,6 @@ setup(
         "Development Status :: 3 - Alpha",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
