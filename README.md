@@ -50,12 +50,12 @@ Full details of the process are in the
 
 ## Installation
 ```bash
-pip install brainreg
+pip install brainreg[napari]
 ```
 
-To install napari and plugins to visualise data:
+To only install the command line tool with no GUI (e.g. to run brainreg on an HPC cluster), just run:
 ```bash
-pip install brainreg[napari]
+pip install brainreg
 ```
 
 **N.B. If you are using macOS, please run `conda install -c conda-forge niftyreg` to ensure all dependencies are installed.**
