@@ -31,6 +31,7 @@ setup(
     extras_require={
         "napari": [
             "napari[pyside2]",
+            "brainreg-napari",
             "brainglobe-napari-io",
             "brainreg-segment>=0.0.2",
         ],
