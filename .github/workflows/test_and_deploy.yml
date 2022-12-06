@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         # Run all supported Python versions on linux
-        python-version: ["3.8", "3.9"]
+        python-version: ["3.8", "3.9", "3.10"]
         os: [ubuntu-latest]
         # Test on Windows and macOS on only one OS to save time (and CI minutes)
         include:
