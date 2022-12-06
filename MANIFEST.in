@@ -3,10 +3,12 @@ include README.md
 include tox.ini
 include brainreg_napari/napari.yaml
 include .napari/config.yml
+include CITATION.CFF
 
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
 
 recursive-exclude .napari *
 exclude .pre-commit-config.yaml
+exclude .flake8
 recursive-exclude examples *

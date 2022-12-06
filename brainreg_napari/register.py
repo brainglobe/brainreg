@@ -30,6 +30,8 @@ from brainreg_napari.util import (
     initialise_brainreg,
 )
 
+PRE_PROCESSING_ARGS = None
+
 
 def add_registered_image_layers(
     viewer: napari.Viewer, *, registration_directory: pathlib.Path
@@ -440,6 +442,7 @@ def brainreg_register():
                 data_orientation,
                 atlas.metadata["orientation"],
                 niftyreg_args,
+                PRE_PROCESSING_ARGS,
                 scaling,
                 load_parallel,
                 sort_input_file,

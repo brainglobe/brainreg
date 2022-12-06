@@ -1,4 +1,77 @@
+[project]
+name = "brainreg-napari"
+authors = [{name = "Adam Tyson, Stephen Lenzi", email= "code@adamltyson.com"}]
+description = "Multi-atlas whole-brain microscopy registration"
+readme = "README.md"
+requires-python = ">=3.8.0"
+dynamic = ["version"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: napari",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Operating System :: OS Independent",
+    ]
+
+license = {text = "BSD-3-Clause"}
+dependencies = [
+    "napari",
+    "napari-plugin-engine >= 0.1.4",
+    "magicgui",
+    "qtpy",
+    "brainglobe-napari-io",
+    "brainreg",
+    "brainreg-segment",
+    "pooch>1",  # For sample data
+]
+
+[project.optional-dependencies]
+dev = [
+        "black",
+        "pytest-cov",
+        "pytest",
+        "pytest-qt",
+        "napari",
+        "pyqt5",
+        "tox",
+        "gitpython",
+        "coverage>=5.0.3",
+        "bump2version",
+        "pre-commit",
+        "flake8",
+        "check-manifest",
+        "setuptools_scm",
+]
+
+[project.urls]
+homepage = "https://brainglobe.info"
+bug_tracker = "https://github.com/brainglobe/brainreg-napari/issues"
+documentation = "https://docs.brainglobe.info/brainreg-napari"
+source_code = "https://github.com/brainglobe/brainreg-napari"
+user_support = "https://forum.image.sc/tag/brainglobe"
+twitter = "https://twitter.com/brain_globe"
+
+[project.entry-points."napari.manifest"]
+brainreg-napari = "brainreg_napari:napari.yaml"
+
+[build-system]
+requires = [
+    "setuptools>=45",
+    "wheel",
+    "setuptools_scm[toml]>=6.2",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+
 [tool.black]
+target-version = ['py38', 'py39', 'py310']
 skip-string-normalization = false
 line-length = 79
 exclude = '''
@@ -8,10 +81,7 @@ exclude = '''
     | \.git
     | \.hg
     | \.mypy_cache
-    | \.tox
-    | \.venv
     | _build
-    | buck-out
     | build
     | dist
   )/
