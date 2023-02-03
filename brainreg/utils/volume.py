@@ -69,7 +69,6 @@ def add_structure_volume_to_df(
     voxel_volume,
     brain_geometry,
 ):
-
     name = atlas_value_to_name(atlas_value, structures_reference_df)
 
     try:

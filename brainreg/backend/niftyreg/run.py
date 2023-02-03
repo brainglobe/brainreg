@@ -17,7 +17,6 @@ from brainreg.utils import preprocess
 
 
 def crop_atlas(atlas, brain_geometry):
-
     atlas_cropped = BrainGlobeAtlas(atlas.atlas_name)
 
     # crop the hemisphere missing from the data
@@ -51,7 +50,6 @@ def run_niftyreg(
     save_original_orientation=False,
     brain_geometry="full",
 ):
-
     niftyreg_directory = os.path.join(registration_output_folder, "niftyreg")
 
     niftyreg_paths = NiftyRegPaths(niftyreg_directory)
