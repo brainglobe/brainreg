@@ -43,7 +43,6 @@ class LoadFileException(Exception):
     """
 
     def __init__(self, error_type=None, base_error=None):
-
         if error_type == "single_tiff":
             self.message = (
                 "Attempted to load directory containing a "
@@ -54,7 +53,6 @@ class LoadFileException(Exception):
             )
 
         else:
-
             origional_traceback = "".join(
                 tb.format_tb(base_error.__traceback__) + [base_error.__str__()]
             )
