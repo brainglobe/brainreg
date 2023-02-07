@@ -1,6 +1,6 @@
 from os import path
 
-from setuptools import find_packages, setup
+from setuptools import setup
 
 this_directory = path.abspath(path.dirname(__file__))
 with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
@@ -46,7 +46,7 @@ setup(
         ],
     },
     python_requires=">=3.8",
-    packages=find_packages(),
+    package_dir={"": "src"},
     entry_points={"console_scripts": ["brainreg = brainreg.cli:main"]},
     include_package_data=True,
     author="Adam Tyson, Charly Rousseau",
