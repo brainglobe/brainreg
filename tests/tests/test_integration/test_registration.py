@@ -17,7 +17,7 @@ if platform.system() == "Darwin":
 else:
     test_dir = platform.system()
 
-test_data_dir = Path(os.getcwd()) / "tests" / "data"
+test_data_dir = Path(__file__).parent.parent.parent / "data"
 
 whole_brain_data_dir = test_data_dir / "input" / "brain"
 whole_brain_expected_output_dir = (
