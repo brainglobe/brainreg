@@ -1,21 +1,10 @@
 [tool.black]
+target-version = ['py38', 'py39', 'py310']
+skip-string-normalization = false
 line-length = 79
-include = '\.pyi?$'
-exclude = '''
-/(
-    \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | _build
-  | buck-out
-  | build
-  | dist
-)/
-'''
 
-
-[tool.isort]
-profile = "black"
-line_length = 79
+[tool.ruff]
+line-length = 79
+exclude = ["__init__.py","build",".eggs"]
+select = ["I", "E", "F"]
+fix = true
