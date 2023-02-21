@@ -9,15 +9,11 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 requirements = [
     "bg-atlasapi",
     "bg-space",
-    "numpy",
-    "configparser",
-    "scikit-image",
-    "multiprocessing-logging",
-    "configobj",
-    "slurmio",
-    "imio",
     "fancylog",
+    "imio",
     "imlib>=0.0.26",
+    "numpy",
+    "scikit-image",
 ]
 
 
