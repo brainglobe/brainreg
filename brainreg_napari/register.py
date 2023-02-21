@@ -5,16 +5,10 @@ from collections import namedtuple
 from enum import Enum
 from typing import Dict, List, Tuple
 
-import napari
-import numpy as np
-from fancylog import fancylog
-from magicgui import magicgui
-from napari._qt.qthreading import thread_worker
-from napari.types import LayerDataTuple
-from napari.utils.notifications import show_info
-
 import bg_space as bg
 import brainreg as program_for_log
+import napari
+import numpy as np
 from bg_atlasapi import BrainGlobeAtlas
 from brainglobe_napari_io.cellfinder.reader_dir import load_registration
 from brainreg.backend.niftyreg.run import run_niftyreg
@@ -23,6 +17,11 @@ from brainreg.utils.boundaries import boundaries
 from brainreg.utils.misc import log_metadata
 from brainreg.utils.volume import calculate_volumes
 from brainreg_segment.atlas.utils import get_available_atlases
+from fancylog import fancylog
+from magicgui import magicgui
+from napari._qt.qthreading import thread_worker
+from napari.types import LayerDataTuple
+from napari.utils.notifications import show_info
 
 from brainreg_napari.util import (
     NiftyregArgs,
@@ -98,7 +97,6 @@ def get_brain_geometry_dropdown():
 
 
 def brainreg_register():
-
     DEFAULT_PARAMETERS = dict(
         z_pixel_um=5,
         y_pixel_um=2,
@@ -360,7 +358,6 @@ def brainreg_register():
 
             for name, value in DEFAULT_PARAMETERS.items():
                 if "pixel" not in name:
-
                     if name == "atlas_key":
                         args_dict.setdefault(
                             "atlas", str(getattr(widget, name).value.value)

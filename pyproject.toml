@@ -74,22 +74,9 @@ build-backend = "setuptools.build_meta"
 target-version = ['py38', 'py39', 'py310']
 skip-string-normalization = false
 line-length = 79
-exclude = '''
-(
-  /(
-      \.eggs
-    | \.git
-    | \.hg
-    | \.mypy_cache
-    | _build
-    | build
-    | dist
-  )/
-)
-'''
 
-[tool.isort]
-profile = "black"
-line_length = 79
-sections=["FUTURE","STDLIB","THIRDPARTY","BRAINGLOBE","FIRSTPARTY","LOCALFOLDER"]
-known_brainglobe=["brainreg", "brainreg_segment", "brainglobe_napari_io", "bg_space", "bg_atlasapi"]
+[tool.ruff]
+line-length = 79
+exclude = ["__init__.py","build",".eggs"]
+select = ["I", "E", "F"]
+fix = true
