@@ -2,6 +2,9 @@
 addopts = "--cov=brainreg"
 filterwarnings = [
     "error",
+    # Emitted by scikit-image on import, see https://github.com/scikit-image/scikit-image/issues/6663
+    # This filter should be removed when scikit-image 0.20 is released
+    "ignore:`np.bool8` is a deprecated alias for `np.bool_`",
 ]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
