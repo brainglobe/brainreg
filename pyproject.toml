@@ -1,3 +1,66 @@
+[project]
+name = "brainreg"
+description = "Automated 3D brain registration"
+readme = "README.md"
+authors = [
+    {name = "Adam Tyson, Charly Rousseau", email = "code@adamltyson.com"},
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "bg-atlasapi",
+    "bg-space",
+    "fancylog",
+    "imio",
+    "imlib>=0.0.26",
+    "numpy",
+    "scikit-image",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+napari = [
+    "brainglobe-napari-io",
+    "brainreg-napari",
+    "brainreg-segment>=0.0.2",
+    "napari[pyside2]",
+]
+dev = [
+    "black",
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+]
+
+[project.scripts]
+brainreg = "brainreg.cli:main"
+
+[build-system]
+requires = [
+    "setuptools>=45",
+    "wheel",
+    "setuptools_scm[toml]>=6.2",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["src/brainreg*"]
+
+[tool.setuptools_scm]
+
 [tool.pytest.ini_options]
 addopts = "--cov=brainreg"
 filterwarnings = [
@@ -19,7 +82,7 @@ markers = [
 ]
 
 [tool.black]
-target-version = ['py38', 'py39', 'py310']
+target-version = ['py38', 'py39', 'py310', 'py311']
 skip-string-normalization = false
 line-length = 79
 
