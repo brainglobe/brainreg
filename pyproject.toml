@@ -8,6 +8,7 @@ filterwarnings = [
     # Emitted by nptyping, see https://github.com/ramonhagenaars/nptyping/issues/102
     # for upstream issue
     "ignore:`np.object0` is a deprecated alias for ``np.object0`",
+    "ignore:`np.int0` is a deprecated alias for `np.intp`",
 ]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
