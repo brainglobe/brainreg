@@ -11,6 +11,7 @@ filterwarnings = [
     "ignore:`np.int0` is a deprecated alias for `np.intp`",
     "ignore:`np.uint0` is a deprecated alias for `np.uintp`",
     "ignore:`np.void0` is a deprecated alias for `np.void`",
+    "ignore:`np.bytes0` is a deprecated alias for `np.bytes_`",
 ]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
