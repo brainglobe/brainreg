@@ -9,6 +9,7 @@ filterwarnings = [
     # for upstream issue
     "ignore:`np.object0` is a deprecated alias for ``np.object0`",
     "ignore:`np.int0` is a deprecated alias for `np.intp`",
+    "ignore:`np.uint0` is a deprecated alias for `np.uintp`",
 ]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
