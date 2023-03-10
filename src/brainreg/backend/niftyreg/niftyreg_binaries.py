@@ -3,8 +3,6 @@ import platform
 from pathlib import Path
 from typing import Optional
 
-from pkg_resources import resource_filename
-
 __os_folder_names = {"Linux": "linux_x64", "Darwin": "osX", "Windows": "win64"}
 
 try:
@@ -44,5 +42,7 @@ def get_binary(program_name: str) -> Path:
     if _CONDA_INSTALL_PATH is not None:
         return _CONDA_INSTALL_PATH / program_name
     else:
-        binaries_folder = resource_filename("brainreg", "bin/nifty_reg")
+        binaries_folder = (
+            Path(__file__).parent.parent.parent / "bin" / "nifty_reg"
+        )
         return Path(binaries_folder) / os_folder_name / program_name
