@@ -33,20 +33,15 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-        "black",
-        "pytest-cov",
-        "pytest",
-        "pytest-qt",
-        "napari",
-        "pyqt5",
-        "tox",
-        "gitpython",
-        "coverage>=5.0.3",
-        "bump2version",
-        "pre-commit",
-        "flake8",
         "check-manifest",
+        "gitpython",
+        "napari[pyqt5]",
+        "pre-commit",
+        "pytest",
+        "pytest-cov",
+        "pytest-qt",
         "setuptools_scm",
+        "tox",
 ]
 
 [project.urls]
