@@ -521,7 +521,7 @@ def brainreg_register():
             del viewer.layers[index]
 
         # Load atlas and gather data
-        atlas = BrainGlobeAtlas("allen_mouse_25um")
+        atlas = BrainGlobeAtlas(widget.atlas_key.value.name)
         if brain_geometry.value == "hemisphere_l":
             atlas.reference[
                 atlas.hemispheres == atlas.left_hemisphere_value
