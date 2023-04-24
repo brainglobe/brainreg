@@ -19,8 +19,10 @@ jobs:
         include:
         - os: ubuntu-latest
           python-version: "3.11"
+        # Run macos tests with niftyreg installed from conda
         - os: macos-latest
           python-version: "3.10"
+          tox-args: "-e py310-conda"
         - os: windows-latest
           python-version: "3.9"
         - os: ubuntu-latest
@@ -34,6 +36,7 @@ jobs:
       - uses: neuroinformatics-unit/actions/test@v1
         with:
           python-version: ${{ matrix.python-version }}
+          tox-args: ${{ matrix.tox-args }}
 
   deploy:
     needs: test
