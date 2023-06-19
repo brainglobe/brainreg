@@ -171,4 +171,3 @@ Lastly, if you can, please cite the BrainGlobe Atlas API that provided the atlas
 >Claudi, F., Petrucco, L., Tyson, A. L., Branco, T., Margrie, T. W. and Portugues, R. (2020). BrainGlobe Atlas API: a common interface for neuroanatomical atlases. Journal of Open Source Software, 5(54), 2668, https://doi.org/10.21105/joss.02668
 
 **Don't forget to cite the developers of the atlas that you used (e.g. the Allen Brain Atlas)!**
-
