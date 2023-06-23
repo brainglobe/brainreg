@@ -15,11 +15,7 @@ pip install brainreg-napari
 ```
 
 ## Usage
-Documentation for the plugin can be found
-[here](https://docs.brainglobe.info/brainreg-napari/introduction), and for
-more detail, documentation for the original
-brainreg can be found [here](https://docs.brainglobe.info/brainreg/introduction)
-and a tutorial is [here](https://docs.brainglobe.info/brainreg/tutorial).
+Documentation and tutorials for the plugin can be found [here](https://brainglobe.info/documentation/brainreg/index.html).
 
 For segmentation of bulk structures in 3D space
 (e.g. injection sites, Neuropixels probes), please see
@@ -55,7 +51,7 @@ Full details of the process are in the
 **Overview of the registration process**
 
 ## Contributing
-Contributions to brainreg-napari are more than welcome. Please see the [contributing guide](https://github.com/brainglobe/.github/blob/main/CONTRIBUTING.md).
+Contributions to brainreg-napari are more than welcome. Please see the [developers guide](https://brainglobe.info/developers/index.html).
 
 ### Citing brainreg
 
@@ -72,9 +68,3 @@ Lastly, if you can, please cite the BrainGlobe Atlas API that provided the atlas
 >Claudi, F., Petrucco, L., Tyson, A. L., Branco, T., Margrie, T. W. and Portugues, R. (2020). BrainGlobe Atlas API: a common interface for neuroanatomical atlases. Journal of Open Source Software, 5(54), 2668, https://doi.org/10.21105/joss.02668
 
 **Don't forget to cite the developers of the atlas that you used (e.g. the Allen Brain Atlas)!**
-
-
----
-The BrainGlobe project is generously supported by the Sainsbury Wellcome Centre and the Institute of Neuroscience, Technical University of Munich, with funding from Wellcome, the Gatsby Charitable Foundation and the Munich Cluster for Systems Neurology - Synergy.
-
-<img src='https://brainglobe.info/images/logos_combined.png' width="550">
