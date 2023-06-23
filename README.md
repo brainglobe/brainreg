@@ -15,8 +15,8 @@ of the [original Java software](https://www.nature.com/articles/ncomms11879))
 to include multiple registration backends, and to support the many atlases
 provided by [bg-atlasapi](https://github.com/brainglobe/bg-atlasapi).
 
-Documentation can be found [here](https://docs.brainglobe.info/brainreg/introduction)
-and a tutorial is [here](https://docs.brainglobe.info/brainreg/tutorial).
+Documentation can be found [here](https://brainglobe.info/documentation/brainreg/index.html).
+
 For segmentation of bulk structures in 3D space
 (e.g. injection sites, Neuropixels probes), please see
 [brainreg-segment](https://github.com/brainglobe/brainreg-segment).
@@ -72,7 +72,7 @@ brainreg /path/to/raw/data /path/to/output/directory -v 5 2 2 --orientation psl
 * Path to the directory of the images. (Can also be a text file pointing to the files\)
 * Output directory for all intermediate and final results
 
-**You must also specify the voxel sizes, see [Specifying voxel size](https://docs.brainglobe.info/cellfinder/image-orientation#voxel-sizes)**
+**You must also specify the voxel sizes, see [Specifying voxel size](https://brainglobe.info/documentation/general/image-definition.html#voxel-sizes)**
 
 ### Additional options
 
@@ -116,10 +116,10 @@ If the origin of your data \(first, top left voxel\) is the most anterior, super
 
 ### Registration options
 
-To change how the actual registration performs, see [Registration parameters](https://docs.brainglobe.info/brainreg/user-guide/parameters)
+To change how the actual registration performs, see [Registration parameters](https://brainglobe.info/documentation/brainreg/user-guide/parameters.html)
 
 Full command-line arguments are available with `brainreg -h`, but please
-[get in touch](mailto:adam.tyson@ucl.ac.uk?subject=brainreg) if you have any questions.
+[get in touch](mailto:code@adamltyson.com?subject=brainreg) if you have any questions.
 
 
 ### Visualisation
@@ -154,7 +154,7 @@ This is typically only used in other software, but you can enable it yourself:
 * Drag `brainreg_standard` (the atlas space viewer plugin) above `brainreg` (the normal plugin) to ensure that the atlas space plugin is used preferentially.
 
 ### Contributing
-Contributions to brainreg are more than welcome. Please see the [contributing guide](https://github.com/brainglobe/.github/blob/main/CONTRIBUTING.md).
+Contributions to brainreg are more than welcome. Please see the [developers guide](https://brainglobe.info/developers/index.html).
 
 ### Citing brainreg
 
@@ -171,10 +171,3 @@ Lastly, if you can, please cite the BrainGlobe Atlas API that provided the atlas
 >Claudi, F., Petrucco, L., Tyson, A. L., Branco, T., Margrie, T. W. and Portugues, R. (2020). BrainGlobe Atlas API: a common interface for neuroanatomical atlases. Journal of Open Source Software, 5(54), 2668, https://doi.org/10.21105/joss.02668
 
 **Don't forget to cite the developers of the atlas that you used (e.g. the Allen Brain Atlas)!**
-
-
-
----
-The BrainGlobe project is generously supported by the Sainsbury Wellcome Centre and the Institute of Neuroscience, Technical University of Munich, with funding from Wellcome, the Gatsby Charitable Foundation and the Munich Cluster for Systems Neurology - Synergy.
-
-<img src='https://brainglobe.info/images/logos_combined.png' width="550">
