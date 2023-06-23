@@ -6,8 +6,8 @@ import bg_space as bg
 import imio
 import numpy as np
 from bg_atlasapi import BrainGlobeAtlas
-from imlib.general.system import delete_directory_contents
-from imlib.image.scale import scale_and_convert_to_16_bits
+from brainglobe_utils.general.system import delete_directory_contents
+from brainglobe_utils.image.scale import scale_and_convert_to_16_bits
 
 from brainreg.backend.niftyreg.parameters import RegistrationParams
 from brainreg.backend.niftyreg.paths import NiftyRegPaths

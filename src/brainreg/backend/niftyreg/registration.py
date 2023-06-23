@@ -1,6 +1,9 @@
 import logging
 
-from imlib.general.system import SafeExecuteCommandError, safe_execute_command
+from brainglobe_utils.general.system import (
+    SafeExecuteCommandError,
+    safe_execute_command,
+)
 
 
 class RegistrationError(Exception):

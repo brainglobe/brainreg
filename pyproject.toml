@@ -22,7 +22,7 @@ dependencies = [
     "bg-space",
     "fancylog",
     "imio",
-    "imlib>=0.0.26",
+    "brainglobe-utils",
     "numpy",
     "scikit-image",
 ]

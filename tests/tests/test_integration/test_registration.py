@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 import pytest
+
 from brainreg.cli import main as brainreg_run
 
 from .utils import check_images_same, check_volumes_equal

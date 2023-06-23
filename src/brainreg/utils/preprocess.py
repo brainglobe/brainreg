@@ -1,5 +1,5 @@
 import numpy as np
-from imlib.image.scale import scale_and_convert_to_16_bits
+from brainglobe_utils.image.scale import scale_and_convert_to_16_bits
 from scipy.ndimage import gaussian_filter
 from skimage import morphology
 from tqdm import trange

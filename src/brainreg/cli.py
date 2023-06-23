@@ -4,9 +4,9 @@ from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 from datetime import datetime
 from pathlib import Path
 
+from brainglobe_utils.general.numerical import check_positive_int
+from brainglobe_utils.general.system import ensure_directory_exists
 from fancylog import fancylog
-from imlib.general.numerical import check_positive_int
-from imlib.general.system import ensure_directory_exists
 
 import brainreg as program_for_log
 from brainreg import __version__
