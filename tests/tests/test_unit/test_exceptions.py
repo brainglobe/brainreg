@@ -2,7 +2,6 @@ import sys
 from pathlib import Path
 
 import pytest
-
 from brainreg.cli import main as brainreg_run
 from brainreg.exceptions import LoadFileException
 
