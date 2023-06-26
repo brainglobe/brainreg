@@ -28,6 +28,7 @@ dependencies = [
     "brainglobe-napari-io",
     "brainreg",
     "brainreg-segment",
+    "brainglobe-utils",
     "pooch>1",  # For sample data
 ]
 

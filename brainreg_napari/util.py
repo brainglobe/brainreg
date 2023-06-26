@@ -5,7 +5,7 @@ import bg_space as bg
 import numpy as np
 import skimage.transform
 from bg_atlasapi import BrainGlobeAtlas
-from imlib.general.system import get_num_processes
+from brainglobe_utils.general.system import get_num_processes
 from tqdm import tqdm
 
 
