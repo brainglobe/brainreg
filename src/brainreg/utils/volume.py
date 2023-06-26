@@ -10,7 +10,7 @@ import logging
 import imio
 import numpy as np
 import pandas as pd
-from imlib.pandas.misc import initialise_df
+from brainglobe_utils.pandas.misc import initialise_df
 
 
 class UnknownAtlasValue(Exception):

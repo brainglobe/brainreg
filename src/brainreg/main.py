@@ -3,7 +3,7 @@ import logging
 import bg_space as bg
 import imio
 from bg_atlasapi import BrainGlobeAtlas
-from imlib.general.system import get_num_processes
+from brainglobe_utils.general.system import get_num_processes
 
 from brainreg.backend.niftyreg.run import run_niftyreg
 from brainreg.exceptions import LoadFileException, path_is_folder_with_one_tiff
