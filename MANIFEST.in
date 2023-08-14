@@ -1,1 +1,17 @@
+include LICENSE
+include README.md
+
 prune tests
+exclude tox.ini
+
+exclude *.yaml
+exclude *.yml
+
+recursive-include src *.dll
+recursive-include src *.exe
+recursive-include src *.txt
+
+recursive-exclude src *.zip
+
+recursive-include src/brainreg/bin/nifty_reg/linux_x64 *
+recursive-include src/brainreg/bin/nifty_reg/osX *
