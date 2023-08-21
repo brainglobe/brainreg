@@ -2,13 +2,9 @@ import os
 from pathlib import Path
 from typing import Tuple
 
-import pytest
-
 from brainreg.backend.niftyreg.niftyreg_binaries import (
     _CONDA_NIFTYREG_BINARY_PATH,
     get_binary,
-)
-from brainreg.backend.niftyreg.niftyreg_binaries import (
     packaged_binaries_folder,
 )
 
@@ -41,7 +37,7 @@ def test_conda_with_niftyreg():
         # We are not in a conda envrionment
         # _CONDA_NIFTYREG_BINARY_PATH should be none
         assert (
-            _CONDA_NIFTYREG_BINARY_PATH is None
+            _CONDA_NIFTYREG_BINARY_PATH == None
         ), f"Not in a conda environment but _CONDA_NIFTYREG_BINARY_PATH is non-None: {_CONDA_NIFTYREG_BINARY_PATH}"
 
         using_packaged_binaries, bin_folder = packaged_binaries_are_used()

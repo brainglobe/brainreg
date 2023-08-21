@@ -48,9 +48,50 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+  test-with-conda:
+    needs: [linting, manifest]
+    name: Test conda-install, on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        - os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Setup mamba environment with niftyreg install
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          init-shell: bash
+          environment-name: niftyreg-env
+          create-args: >-
+            python=3.11
+      
+      - name: Install package into environment
+        shell: bash
+        run: |
+          pip install .[dev]
+      
+      - name: Run backend tests (no conda binaries)
+        shell: bash
+        run: |
+          pytest -v tests/tests/test_backend
+      
+      - name: Install niftyreg with conda
+        shell: bash
+        run: |
+          mamba install niftyreg
+      
+      - name: Run backend tests(conda binaries present)
+        shell: bash
+        run: |
+          pytest -v tests/tests/test_backend
+
   build_sdist_wheel:
     name: Build source distribution and wheel
-    needs: [test]
+    needs: [test, test-with-conda]
     if: github.event_name == 'push' && github.ref_type == 'tag'
     runs-on: ubuntu-latest
     steps:
