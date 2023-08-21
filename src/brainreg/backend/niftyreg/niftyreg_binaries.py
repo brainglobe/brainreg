@@ -67,8 +67,8 @@ def get_binary(program_name: str) -> Path:
         bin_path = packaged_binaries_folder / os_folder_name / program_name
 
     # Append exe label to Windows executables
-    # It looks like subprocess is actually able to cope without the .exe appended,
-    # but just to be safe we'll include it on Windows OS calls
+    # It looks like subprocess is actually able to cope without the .exe
+    # appended, but just to be safe we'll include it on Windows OS calls
     if _IS_WINDOWS_OS:
         bin_path = bin_path.parent / f"{bin_path.stem}.exe"
     return bin_path
