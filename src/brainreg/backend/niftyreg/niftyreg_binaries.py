@@ -16,7 +16,12 @@ except KeyError:
 
 _IS_WINDOWS_OS = os_system_name == "Windows"
 
-def conda_install_path() -> Optional[Path]:
+packaged_binaries_folder = (
+    Path(__file__).parent.parent.parent / "bin" / "nifty_reg"
+)
+
+
+def conda_niftyreg_path() -> Optional[Path]:
     """
     If a conda install of niftyreg is available, return the directory
     containing the niftyreg binaries.
@@ -46,7 +51,7 @@ def conda_install_path() -> Optional[Path]:
     return None
 
 
-_CONDA_INSTALL_PATH = conda_install_path()
+_CONDA_NIFTYREG_BINARY_PATH = conda_niftyreg_path()
 
 
 def get_binary(program_name: str) -> Path:
@@ -56,17 +61,14 @@ def get_binary(program_name: str) -> Path:
     If niftyreg is installed via conda, use those binaries, otherwise fall
     back on bundled binaries.
     """
-    if _CONDA_INSTALL_PATH is not None:
-        bin_path = _CONDA_INSTALL_PATH / program_name
+    if _CONDA_NIFTYREG_BINARY_PATH is not None:
+        bin_path = _CONDA_NIFTYREG_BINARY_PATH / program_name
     else:
-        binaries_folder = (
-            Path(__file__).parent.parent.parent / "bin" / "nifty_reg"
-        )
-        bin_path = Path(binaries_folder) / os_folder_name / program_name
-    
+        bin_path = packaged_binaries_folder / os_folder_name / program_name
+
     # Append exe label to Windows executables
     # It looks like subprocess is actually able to cope without the .exe appended,
     # but just to be safe we'll include it on Windows OS calls
     if _IS_WINDOWS_OS:
-        bin_path = bin_path.parent / f"{bin_path.name}.exe"
+        bin_path = bin_path.parent / f"{bin_path.stem}.exe"
     return bin_path
