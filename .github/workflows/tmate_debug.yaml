@@ -1,0 +1,24 @@
+name: Windows Tmate Debug
+on: 
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          init-shell: >-
+            bash
+            powershell
+          environment-name: br-debug
+          create-args: >-
+            python=3.9
+            niftyreg
+
+      # Enable tmate debugging of manually-triggered workflows
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 30
