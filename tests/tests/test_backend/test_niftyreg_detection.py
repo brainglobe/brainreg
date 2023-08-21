@@ -37,7 +37,7 @@ def test_conda_with_niftyreg():
         # We are not in a conda envrionment
         # _CONDA_NIFTYREG_BINARY_PATH should be none
         assert (
-            _CONDA_NIFTYREG_BINARY_PATH == None
+            _CONDA_NIFTYREG_BINARY_PATH is None
         ), f"Not in a conda environment but _CONDA_NIFTYREG_BINARY_PATH is non-None: {_CONDA_NIFTYREG_BINARY_PATH}"
 
         using_packaged_binaries, bin_folder = packaged_binaries_are_used()
@@ -51,14 +51,9 @@ def test_conda_with_niftyreg():
             # Apparently niftyreg is not installed in this environment
             # Assert the located binaries are the packaged ones
             using_packaged_binaries, bin_folder = packaged_binaries_are_used()
-            assert (
-                using_packaged_binaries
-            ), f"Conda environment without niftyreg installed exists, but non-packaged binaries in {bin_folder} are being used."
+            assert using_packaged_binaries, f"Conda environment without niftyreg installed exists, but non-packaged binaries in {bin_folder} are being used."
         else:
             # We are in a conda environment that _has_ niftyreg conda-installed
             # Assert that we are using the CONDA-installed binaries
             using_packaged_binaries, bin_folder = packaged_binaries_are_used()
-            assert (
-                not using_packaged_binaries,
-                f"Packaged binaries are being used despite appearing to be installed by CONDA at {_CONDA_NIFTYREG_BINARY_PATH}",
-            )
+            assert not using_packaged_binaries, f"Packaged binaries are being used despite appearing to be installed by CONDA at {_CONDA_NIFTYREG_BINARY_PATH}"
