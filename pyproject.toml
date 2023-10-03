@@ -3,7 +3,7 @@ name = "brainreg-napari"
 authors = [{name = "Adam Tyson, Stephen Lenzi", email= "code@adamltyson.com"}]
 description = "Multi-atlas whole-brain microscopy registration"
 readme = "README.md"
-requires-python = ">=3.8.0"
+requires-python = ">=3.9.0"
 dynamic = ["version"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -13,9 +13,9 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Operating System :: OS Independent",
     ]
 
@@ -67,7 +67,7 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools_scm]
 
 [tool.black]
-target-version = ['py38', 'py39', 'py310']
+target-version = ['py39', 'py310', 'py311']
 skip-string-normalization = false
 line-length = 79
 
