@@ -42,11 +42,11 @@ def safe_pandas_concat(df1: pd.DataFrame, df2: pd.DataFrame) -> pd.DataFrame:
     :param df2: DataFrame to concatenate.
     :returns: DataFrame formed from concatenation of df1 and df2.
     """
-    if df1.empty:
+    if df1.empty and df2.empty:
+        return pd.DataFrame(columns=df1.columns)
+    elif df1.empty:
         return df2.copy()
     elif df2.empty:
         return df1.copy()
-    elif df1.empty and df2.empty:
-        return pd.DataFrame(columns=df1.columns)
     else:
         return pd.concat([df1, df2], ignore_index=True)
