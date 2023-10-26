@@ -49,4 +49,4 @@ def safe_pandas_concat(df1: pd.DataFrame, df2: pd.DataFrame) -> pd.DataFrame:
     elif df1.empty and df2.empty:
         return pd.DataFrame(columns=df1.columns)
     else:
-        return pd.concat([df1, df2])
+        return pd.concat([df1, df2], ignore_index=True)
