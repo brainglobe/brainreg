@@ -1,6 +1,8 @@
 [project]
 name = "brainreg-napari"
-authors = [{name = "Adam Tyson, Stephen Lenzi", email= "code@adamltyson.com"}]
+authors = [
+    { name = "Adam Tyson, Stephen Lenzi", email = "code@adamltyson.com" },
+]
 description = "Multi-atlas whole-brain microscopy registration"
 readme = "README.md"
 requires-python = ">=3.9.0"
@@ -17,9 +19,9 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Operating System :: OS Independent",
-    ]
+]
 
-license = {text = "BSD-3-Clause"}
+license = { text = "BSD-3-Clause" }
 dependencies = [
     "napari",
     "napari-plugin-engine >= 0.1.4",
@@ -29,20 +31,20 @@ dependencies = [
     "brainreg",
     "brainreg-segment",
     "brainglobe-utils",
-    "pooch>1",  # For sample data
+    "pooch>1",                       # For sample data
 ]
 
 [project.optional-dependencies]
 dev = [
-        "check-manifest",
-        "gitpython",
-        "napari[pyqt5]",
-        "pre-commit",
-        "pytest",
-        "pytest-cov",
-        "pytest-qt",
-        "setuptools_scm",
-        "tox",
+    "check-manifest",
+    "gitpython",
+    "napari[pyqt5]",
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+    "pytest-qt",
+    "setuptools_scm",
+    "tox",
 ]
 
 [project.urls]
@@ -54,17 +56,22 @@ user_support = "https://forum.image.sc/tag/brainglobe"
 twitter = "https://twitter.com/brain_globe"
 
 [project.entry-points."napari.manifest"]
-brainreg-napari = "brainreg_napari:napari.yaml"
+brainreg-napari = "brainreg.napari:napari.yaml"
 
 [build-system]
-requires = [
-    "setuptools>=45",
-    "wheel",
-    "setuptools_scm[toml]>=6.2",
-]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["brainreg*"]
+
+[tool.setuptools.package-data]
+include = ["brainreg*"]
 
 [tool.black]
 target-version = ['py39', 'py310', 'py311']
@@ -73,6 +80,9 @@ line-length = 79
 
 [tool.ruff]
 line-length = 79
-exclude = ["__init__.py","build",".eggs"]
+exclude = ["__init__.py", "build", ".eggs"]
 select = ["I", "E", "F"]
 fix = true
+
+[tool.ruff.isort]
+known-first-party = ["brainreg"]

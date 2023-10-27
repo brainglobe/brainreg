@@ -1,7 +1,6 @@
 import napari
 import pytest
 from bg_atlasapi import BrainGlobeAtlas
-
 from brainreg_napari.register import (
     add_registered_image_layers,
     brainreg_register,

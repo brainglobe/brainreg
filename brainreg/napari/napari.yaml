@@ -4,10 +4,10 @@ contributions:
   commands:
   - id: brainreg-napari.Register
     title: Atlas Registration
-    python_name: brainreg_napari.register:brainreg_register
+    python_name: brainreg.napari.register:brainreg_register
   - id: brainreg-napari.SampleData
     title: Low resolution brain
-    python_name: brainreg_napari.sample_data:load_test_brain
+    python_name: brainreg.napari.sample_data:load_test_brain
   widgets:
   - command: brainreg-napari.Register
     display_name: Atlas Registration
