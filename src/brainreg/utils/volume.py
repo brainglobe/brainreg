@@ -12,6 +12,8 @@ import numpy as np
 import pandas as pd
 from brainglobe_utils.pandas.misc import initialise_df
 
+from .misc import safe_pandas_concat
+
 
 class UnknownAtlasValue(Exception):
     pass
@@ -100,7 +102,7 @@ def add_structure_volume_to_df(
             "total_volume_mm3": [left_volume + right_volume],
         }
     )
-    df = pd.concat([df, df_new_row], ignore_index=True)
+    df = safe_pandas_concat(df, df_new_row)
     return df
 
 
