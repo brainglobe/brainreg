@@ -1,11 +1,12 @@
 include LICENSE
 include README.md
+include CITATION.cff
+
+exclude .flake8
+exclude .pre-commit-config.yaml
 exclude tox.ini
 
-exclude *.yaml
-exclude *.yml
-
-prune tests
+include brainreg/napari/napari.yaml
 
 recursive-include brainreg/core *.dll
 recursive-include brainreg/core *.exe
@@ -13,4 +14,8 @@ recursive-include brainreg/core *.txt
 recursive-include brainreg/core/bin/nifty_reg/linux_x64 *
 recursive-include brainreg/core/bin/nifty_reg/osX *
 
+recursive-exclude .napari *
 recursive-exclude brainreg/core *.zip
+recursive-exclude examples *
+
+prune tests

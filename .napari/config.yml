@@ -1,0 +1,7 @@
+labels:
+  ontology: EDAM-BIOIMAGING:alpha06
+  terms:
+  - Image registration
+  - Affine registration
+  - Multi-channel
+summary: Multi-atlas whole-brain microscopy registration
