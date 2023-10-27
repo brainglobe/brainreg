@@ -1,9 +1,10 @@
 [project]
 name = "brainreg"
-description = "Automated 3D brain registration"
+description = "Automated multi-atlas whole-brain microscopy registration"
 readme = "README.md"
+license = { file = "LICENSE" }
 authors = [
-    {name = "Adam Tyson, Charly Rousseau", email = "code@adamltyson.com"},
+    { name = "Adam Tyson, Charly Rousseau, Stephen Lenzi", email = "code@adamltyson.com" },
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -16,13 +17,13 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = [
     "bg-atlasapi",
     "bg-space",
+    "brainglobe-utils",
     "fancylog",
     "imio",
-    "brainglobe-utils",
     "numpy",
     "scikit-image",
 ]
@@ -31,32 +32,54 @@ dynamic = ["version"]
 [project.optional-dependencies]
 napari = [
     "brainglobe-napari-io",
-    "brainreg-napari",
-    "brainreg-segment>=0.0.2",
-    "napari[pyside2]",
+    "brainreg-segment",
+    "magicgui",
+    "napari-plugin-engine >= 0.1.4",
+    "napari[pyqt5]",
+    "pooch>1",                       # For sample data
+    "qtpy",
 ]
 dev = [
     "black",
+    "check-manifest",
+    "gitpython",
+    "napari[pyqt5]",
     "pre-commit",
-    "pytest",
     "pytest-cov",
+    "pytest-qt",
+    "pytest",
+    "setuptools_scm",
+    "tox",
 ]
+
+[project.entry-points."napari.manifest"]
+brainreg = "brainreg.napari:napari.yaml"
 
 [project.scripts]
-brainreg = "brainreg.cli:main"
+brainreg = "brainreg.core.cli:main"
+
+[project.urls]
+homepage = "https://brainglobe.info"
+bug_tracker = "https://github.com/brainglobe/brainreg/issues"
+documentation = "https://docs.brainglobe.info/brainreg"
+source_code = "https://github.com/brainglobe/brainreg"
+user_support = "https://forum.image.sc/tag/brainglobe"
+twitter = "https://twitter.com/brain_globe"
 
 [build-system]
-requires = [
-    "setuptools>=45",
-    "wheel",
-    "setuptools_scm[toml]>=6.2",
-]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
 
 [tool.setuptools]
 include-package-data = true
 
-[tool.setuptools_scm]
+[tool.setuptools.packages.find]
+include = ["brainreg*"]
+
+[tool.setuptools.package-data]
+include = ["brainreg*"]
 
 [tool.pytest.ini_options]
 addopts = "--cov=brainreg"
@@ -72,19 +95,17 @@ filterwarnings = [
     "ignore:`np.uint0` is a deprecated alias for `np.uintp`",
     "ignore:`np.void0` is a deprecated alias for `np.void`",
     "ignore:`np.bytes0` is a deprecated alias for `np.bytes_`",
-    "ignore:`np.str0` is a deprecated alias for `np.str_`"
+    "ignore:`np.str0` is a deprecated alias for `np.str_`",
 ]
-markers = [
-    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-]
+markers = ["slow: marks tests as slow (deselect with '-m \"not slow\"')"]
 
 [tool.black]
-target-version = ['py38', 'py39', 'py310', 'py311']
-skip-string-normalization = false
 line-length = 79
+skip-string-normalization = false
+target-version = ['py39', 'py310', 'py311']
 
 [tool.ruff]
 line-length = 79
-exclude = ["__init__.py","build",".eggs"]
+exclude = ["__init__.py", "build", ".eggs"]
 select = ["I", "E", "F"]
 fix = true

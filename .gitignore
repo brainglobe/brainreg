@@ -2,7 +2,7 @@
 *.conf.custom
 
 # Byte-compiled / optimized / DLL files
-__pycache__/
+**/__pycache__/
 *.py[cod]
 *$py.class
 
@@ -122,3 +122,4 @@ tests/data/test_output
 
 
 *.DS_Store
+pip-wheel-metadata/

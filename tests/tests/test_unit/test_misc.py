@@ -1,5 +1,6 @@
 import pandas as pd
-from brainreg.utils.misc import safe_pandas_concat
+
+from brainreg.core.utils.misc import safe_pandas_concat
 
 
 def test_safe_pandas_concat() -> None:

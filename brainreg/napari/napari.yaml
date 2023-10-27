@@ -1,0 +1,18 @@
+name: brainreg
+schema_version: 0.1.0
+contributions:
+  commands:
+  - id: brainreg.Register
+    title: Atlas Registration
+    python_name: brainreg.napari.register:brainreg_register
+  - id: brainreg.SampleData
+    title: Low resolution brain
+    python_name: brainreg.napari.sample_data:load_test_brain
+  widgets:
+  - command: brainreg.Register
+    display_name: Atlas Registration
+  sample_data:
+  - key: sample
+    display_name: Low resolution brain
+    command: brainreg.SampleData
+display_name: brainreg
