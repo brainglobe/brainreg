@@ -2,8 +2,9 @@
 name = "brainreg"
 description = "Automated 3D brain registration"
 readme = "README.md"
+license = { file = "LICENSE" }
 authors = [
-    {name = "Adam Tyson, Charly Rousseau", email = "code@adamltyson.com"},
+    { name = "Adam Tyson, Charly Rousseau", email = "code@adamltyson.com" },
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -35,26 +36,23 @@ napari = [
     "brainreg-segment>=0.0.2",
     "napari[pyside2]",
 ]
-dev = [
-    "black",
-    "pre-commit",
-    "pytest",
-    "pytest-cov",
-]
+dev = ["black", "pre-commit", "pytest", "pytest-cov"]
 
 [project.scripts]
-brainreg = "brainreg.cli:main"
+brainreg = "brainreg.core.cli:main"
 
 [build-system]
-requires = [
-    "setuptools>=45",
-    "wheel",
-    "setuptools_scm[toml]>=6.2",
-]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["brainreg*"]
+
+[tool.setuptools.package-data]
+include = ["brainreg*"]
 
 [tool.setuptools_scm]
 
@@ -72,11 +70,9 @@ filterwarnings = [
     "ignore:`np.uint0` is a deprecated alias for `np.uintp`",
     "ignore:`np.void0` is a deprecated alias for `np.void`",
     "ignore:`np.bytes0` is a deprecated alias for `np.bytes_`",
-    "ignore:`np.str0` is a deprecated alias for `np.str_`"
+    "ignore:`np.str0` is a deprecated alias for `np.str_`",
 ]
-markers = [
-    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-]
+markers = ["slow: marks tests as slow (deselect with '-m \"not slow\"')"]
 
 [tool.black]
 target-version = ['py38', 'py39', 'py310', 'py311']
@@ -85,6 +81,6 @@ line-length = 79
 
 [tool.ruff]
 line-length = 79
-exclude = ["__init__.py","build",".eggs"]
+exclude = ["__init__.py", "build", ".eggs"]
 select = ["I", "E", "F"]
 fix = true

@@ -1,17 +1,16 @@
 include LICENSE
 include README.md
-
-prune tests
 exclude tox.ini
 
 exclude *.yaml
 exclude *.yml
 
-recursive-include src *.dll
-recursive-include src *.exe
-recursive-include src *.txt
+prune tests
 
-recursive-exclude src *.zip
+recursive-include brainreg/core *.dll
+recursive-include brainreg/core *.exe
+recursive-include brainreg/core *.txt
+recursive-include brainreg/core/bin/nifty_reg/linux_x64 *
+recursive-include brainreg/core/bin/nifty_reg/osX *
 
-recursive-include src/brainreg/bin/nifty_reg/linux_x64 *
-recursive-include src/brainreg/bin/nifty_reg/osX *
+recursive-exclude brainreg/core *.zip
