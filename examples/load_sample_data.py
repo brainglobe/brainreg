@@ -11,7 +11,7 @@ import napari
 import numpy as np
 from napari.layers import Layer
 
-from brainreg_napari.sample_data import load_test_brain
+from brainreg.napari.sample_data import load_test_brain
 
 viewer = napari.Viewer()
 
