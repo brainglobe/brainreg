@@ -1,8 +1,8 @@
 from importlib.metadata import PackageNotFoundError, version
-from . import *
 
 try:
     __version__ = version("brainreg")
+    del version
 except PackageNotFoundError:
     # package is not installed
     pass

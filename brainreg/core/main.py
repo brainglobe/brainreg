@@ -5,10 +5,13 @@ import imio
 from bg_atlasapi import BrainGlobeAtlas
 from brainglobe_utils.general.system import get_num_processes
 
-from brainreg.backend.niftyreg.run import run_niftyreg
-from brainreg.exceptions import LoadFileException, path_is_folder_with_one_tiff
-from brainreg.utils.boundaries import boundaries
-from brainreg.utils.volume import calculate_volumes
+from brainreg.core.backend.niftyreg.run import run_niftyreg
+from brainreg.core.exceptions import (
+    LoadFileException,
+    path_is_folder_with_one_tiff,
+)
+from brainreg.core.utils.boundaries import boundaries
+from brainreg.core.utils.volume import calculate_volumes
 
 
 def main(
