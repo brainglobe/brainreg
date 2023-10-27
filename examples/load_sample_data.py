@@ -4,7 +4,7 @@ Load and show sample data
 This example:
 - loads some sample data
 - adds the data to a napari viewer
-- loads the brainreg-napari registration plugin
+- loads the brainreg napari registration plugin
 - opens the napari viewer
 """
 import napari
@@ -23,9 +23,9 @@ viewer.add_layer(Layer.create(*layer_data))
 
 # Open plugin
 _, brainreg_widget = viewer.window.add_plugin_dock_widget(
-    plugin_name="brainreg-napari", widget_name="Atlas Registration"
+    plugin_name="brainreg", widget_name="Atlas Registration"
 )
-# Set brainreg-napari plugin settings from sample data metadata
+# Set napari plugin settings from sample data metadata
 metadata = layer_data[1]["metadata"]
 brainreg_widget.data_orientation.value = metadata["data_orientation"]
 for i, dim in enumerate(["z", "y", "x"]):

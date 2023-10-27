@@ -1,7 +1,8 @@
 import napari
 import pytest
 from bg_atlasapi import BrainGlobeAtlas
-from brainreg_napari.register import (
+
+from brainreg.napari.register import (
     add_registered_image_layers,
     brainreg_register,
 )
@@ -23,7 +24,7 @@ def test_napari_sample_data(make_napari_viewer):
     viewer = make_napari_viewer()
 
     assert len(viewer.layers) == 0
-    viewer.open_sample("brainreg-napari", "sample")
+    viewer.open_sample("brainreg", "sample")
     assert len(viewer.layers) == 1
     new_layer = viewer.layers[0]
     assert isinstance(new_layer, napari.layers.Image)
@@ -32,17 +33,17 @@ def test_napari_sample_data(make_napari_viewer):
 
 def test_workflow(make_napari_viewer, tmp_path):
     """
-    Test a full workflow using brainreg-napari.
+    Test a full workflow using brainreg's napari plugin.
     """
     viewer = make_napari_viewer()
 
     # Load sample data
-    added_layers = viewer.open_sample("brainreg-napari", "sample")
+    added_layers = viewer.open_sample("brainreg", "sample")
     brain_layer = added_layers[0]
 
     # Load widget
     _, widget = viewer.window.add_plugin_dock_widget(
-        plugin_name="brainreg-napari", widget_name="Atlas Registration"
+        plugin_name="brainreg", widget_name="Atlas Registration"
     )
     # Set active layer and output folder
     widget.img_layer.value = brain_layer
@@ -87,7 +88,7 @@ def test_orientation_check(
 
     # Load widget
     _, widget = viewer.window.add_plugin_dock_widget(
-        plugin_name="brainreg-napari", widget_name="Atlas Registration"
+        plugin_name="brainreg", widget_name="Atlas Registration"
     )
 
     # Set a specific atlas
@@ -103,7 +104,7 @@ def test_orientation_check(
     assert len(viewer.layers) == 0
 
     # Load sample data
-    added_layers = viewer.open_sample("brainreg-napari", "sample")
+    added_layers = viewer.open_sample("brainreg", "sample")
     brain_layer = added_layers[0]
 
     assert len(viewer.layers) == 1

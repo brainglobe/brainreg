@@ -1,7 +1,7 @@
 
 cff-version: 1.2.0
 message: If you use this software, please cite it using these metadata.
-title: brainreg-napari
+title: brainreg
 authors:
 - family-names: "Tyson"
   given-names: "A."
@@ -23,7 +23,7 @@ authors:
   given-names: "T."
 - family-names: "Margrie"
   given-names: "T."
-url: https://github.com/brainglobe/brainreg-napari
+url: https://github.com/brainglobe/brainreg
 preferred-citation:
     type: article
     title: Accurate determination of marker location within whole-brain microscopy images
