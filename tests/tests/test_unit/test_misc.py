@@ -20,4 +20,3 @@ def test_safe_pandas_concat() -> None:
     assert df1.equals(safe_pandas_concat(df1, empty_df))
     assert df2.equals(safe_pandas_concat(empty_df, df2))
     assert empty_df.equals(safe_pandas_concat(empty_df, empty_df))
-    return
