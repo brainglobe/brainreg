@@ -4,7 +4,11 @@ include CITATION.cff
 
 exclude .flake8
 exclude .pre-commit-config.yaml
+exclude *.yml
 exclude tox.ini
+
+exclude BR-CORE-README.md
+exclude BR-NAPARI-README.md
 
 include brainreg/napari/napari.yaml
 
