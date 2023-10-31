@@ -13,7 +13,7 @@ brainreg is an update to [amap](https://github.com/SainsburyWellcomeCentre/amap_
 of the [original Java software](https://www.nature.com/articles/ncomms11879)) to include multiple registration backends, and to support the many atlases provided by [bg-atlasapi](https://github.com/brainglobe/bg-atlasapi).
 It also comes with an optional [napari plugin](https://github.com/brainglobe/brainreg-napari) if you'd rather use brainreg with through graphical interface, however this interface is slightly limited compared to the command line tool.
 
-Documentation can be found [here](https://brainglobe.info/documentation/brainreg/index.html).
+Documentation for both the command-line tool and graphical interface can be found [here](https://brainglobe.info/documentation/brainreg/index.html).
 This software is at a very early stage, and was written with our data in mind.
 Over time we hope to support other data types/formats.
 If you have any issues, please get in touch [on the forum](https://forum.image.sc/tag/brainglobe), [on Zulip](https://brainglobe.zulipchat.com/), or by
