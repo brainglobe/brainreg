@@ -11,11 +11,9 @@
 
 brainreg is an update to [amap](https://github.com/SainsburyWellcomeCentre/amap_python) (which is itself a port
 of the [original Java software](https://www.nature.com/articles/ncomms11879)) to include multiple registration backends, and to support the many atlases provided by [bg-atlasapi](https://github.com/brainglobe/bg-atlasapi).
-It also comes with an optional [napari plugin](https://github.com/brainglobe/brainreg-napari) if you'd rather use brainreg with through graphical interface, however this interface is slightly limited compared to the command line tool.
+It also comes with an optional [napari plugin](https://github.com/brainglobe/brainreg-napari) if you'd rather use brainreg with through graphical interface.
 
 Documentation for both the command-line tool and graphical interface can be found [here](https://brainglobe.info/documentation/brainreg/index.html).
-This software is at a very early stage, and was written with our data in mind.
-Over time we hope to support other data types/formats.
 If you have any issues, please get in touch [on the forum](https://forum.image.sc/tag/brainglobe), [on Zulip](https://brainglobe.zulipchat.com/), or by
 [raising an issue](https://github.com/brainglobe/brainreg/issues).
 
@@ -59,7 +57,7 @@ conda install -c conda-forge niftyreg
 
 in your environment before installing, to ensure all dependencies are installed.
 
-## Usage
+## Command line usage
 
 ### Basic usage
 
@@ -88,14 +86,9 @@ To use another atlas (e.g. for another species, or another resolution), you must
 To find out which atlases are available, once brainreg is installed, please run `brainglobe list`.
 The name of the resulting atlases is the string to pass with the `--atlas` flag.
 
-### Registration backend
-
-To change the registration algorithm used, use the `--backend` flag.
-The default is `niftyreg` as that is currently the only option.
-
 ### Input data orientation
 
-If your data does not match the [brainglobe](https://github.com/brainglobe) default orientation (the origin voxel is the most anterior, superior, left-most voxel), then you must specify the orientation by using the `--orientation` flag.
+If your data does not match the BrainGlobe default orientation (the origin voxel is the most anterior, superior, left-most voxel), then you must specify the orientation by using the `--orientation` flag.
 What follows must be a string in the [bg-space](https://github.com/brainglobe/bg-space) "initials" form, to describe the origin voxel.
 
 If the origin of your data (first, top left voxel) is the most anterior, superior, left part of the brain, then the orientation string would be "asl" (anterior, superior, left), and you would use:
@@ -142,15 +135,6 @@ Most of these images will not be visible by default - click the little eye icon 
 **Note:** If you use a high resolution atlas (such as `allen_mouse_10um`), then the files can take a little while to load.
 
 ![GIF illustration of loading brainreg output into napari for visualisation](https://raw.githubusercontent.com/brainglobe/napari-brainreg/master/resources/sample_space.gif)
-
-#### Atlas space
-
-You can visualise your data in altas space by enabling the bundled [brainglobe-napari-io](https://github.com/brainglobe/brainglobe-napari-io) plugin:
-
-- Open napari
-- Navigate to `Plugins` -> `Plugin Call Order`
-- In the `Plugin Sorter` window, select `napari_get_reader` from the `select hook...` dropdown box
-- Drag `brainreg_standard` (the atlas space viewer plugin) above `brainreg` (the normal plugin) to ensure that the atlas space plugin is used preferentially.
 
 ## Contributing
 
