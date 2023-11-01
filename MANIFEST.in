@@ -7,9 +7,6 @@ exclude .pre-commit-config.yaml
 exclude *.yml
 exclude tox.ini
 
-exclude BR-CORE-README.md
-exclude BR-NAPARI-README.md
-
 include brainreg/napari/napari.yaml
 
 recursive-include brainreg/core *.dll
