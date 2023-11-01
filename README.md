@@ -17,7 +17,7 @@ Documentation for both the command-line tool and graphical interface can be foun
 If you have any issues, please get in touch [on the forum](https://forum.image.sc/tag/brainglobe), [on Zulip](https://brainglobe.zulipchat.com/), or by
 [raising an issue](https://github.com/brainglobe/brainreg/issues).
 
-For segmentation of bulk structures in 3D space (e.g. injection sites, Neuropixels probes), please see [brainreg-segment](https://github.com/brainglobe/brainreg-segment).
+For segmentation of bulk structures in 3D space (e.g. injection sites, Neuropixels probes), please see [brainglobe-segmentation](https://github.com/brainglobe/brainglobe-segmentation).
 
 ## Details
 

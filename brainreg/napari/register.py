@@ -10,7 +10,7 @@ import napari
 import numpy as np
 from bg_atlasapi import BrainGlobeAtlas
 from brainglobe_napari_io.cellfinder.reader_dir import load_registration
-from brainreg_segment.atlas.utils import get_available_atlases
+from brainglobe_segmentation.atlas.utils import get_available_atlases
 from fancylog import fancylog
 from magicgui import magicgui
 from napari._qt.qthreading import thread_worker
