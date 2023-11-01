@@ -24,6 +24,7 @@ dependencies = [
     "brainglobe-utils",
     "fancylog",
     "imio",
+    "brainglobe-utils>=0.2.7",
     "numpy",
     "scikit-image",
 ]
