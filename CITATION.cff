@@ -1,0 +1,102 @@
+
+cff-version: 1.2.0
+message: If you use this software, please cite it using these metadata.
+title: brainreg
+authors:
+- family-names: "Tyson"
+  given-names: "A."
+- family-names: "Vélez-Fort"
+  given-names: "M."
+- family-names: "Rousseau"
+  given-names: "C."
+- family-names: "Cossell"
+  given-names: "L."
+- family-names: "Tsitoura"
+  given-names: " C."
+- family-names: "Lenzi"
+  given-names: " S."
+- family-names: "Obenhaus"
+  given-names: "H."
+- family-names: "Claudi"
+  given-names: "F."
+- family-names: "Branco"
+  given-names: "T."
+- family-names: "Margrie"
+  given-names: "T."
+url: https://github.com/brainglobe/brainreg
+preferred-citation:
+    type: article
+    title: Accurate determination of marker location within whole-brain microscopy images
+    journal: Scientific Reports
+    volume: 12
+    pages: 867
+    doi: 10.1038/s41598-021-04676-9
+    year: 2022
+    date-published: 2022-01-18
+    authors:
+      - family-names: "Tyson"
+        given-names: "A."
+      - family-names: "Vélez-Fort"
+        given-names: "M."
+      - family-names: "Rousseau"
+        given-names: "C."
+      - family-names: "Cossell"
+        given-names: "L."
+      - family-names: "Tsitoura"
+        given-names: " C."
+      - family-names: "Lenzi"
+        given-names: "S."
+      - family-names: "Obenhaus"
+        given-names: "H."
+      - family-names: "Claudi"
+        given-names: "F."
+      - family-names: "Branco"
+        given-names: "T."
+      - family-names: "Margrie"
+        given-names: "T."
+references:
+  - type: article
+    title: AMAP is a validated pipeline for registration and segmentation of high-resolution mouse brain data
+    journal: Nature Communications
+    volume: 7
+    pages: 1-9
+    doi: 10.1038/ncomms11879
+    year: 2016
+    date-published: 2016-07-07
+    authors:
+      - family-names: "Niedworok"
+        given-names: "C."
+      - family-names: "Brown"
+        given-names: "A."
+      - family-names: "Jorge"
+        given-names: "M."
+      - family-names: "Osten"
+        given-names: "P."
+      - family-names: "Ourselin"
+        given-names: "S."
+      - family-names: "Modat"
+        given-names: "M."
+      - family-names: "Margrie"
+        given-names: "T."
+references:
+  - type: article
+    title: BrainGlobe Atlas API a common interface for neuroanatomical atlases
+    journal: Journal of Open Source Software
+    volume: 5
+    pages: 2668
+    doi: 10.21105/joss.02668
+    year: 2020
+    date-published: 2020-09-04
+    authors:
+      - family-names: "Claudi"
+        given-names: "F."
+      - family-names: "Petrucco"
+        given-names: "L."
+      - family-names: "Tyson"
+        given-names: "A."
+      - family-names: "Branco"
+        given-names: "T."
+      - family-names: "Margrie"
+        given-names: "T."
+      - family-names: "Portugues"
+        given-names: "R."

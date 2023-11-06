@@ -42,9 +42,15 @@ jobs:
         with:
             path: ~/.brainglobe
             key: atlases
-      - uses: neuroinformatics-unit/actions/test@v2
+
+      - name: Setup QT libraries
+        uses: tlambert03/setup-qt-libs@v1
+
+      - name: Run tests
+        uses: neuroinformatics-unit/actions/test@v2
         with:
           python-version: ${{ matrix.python-version }}
+          use-xvfb: true
 
   test-with-conda:
     needs: [linting, manifest]

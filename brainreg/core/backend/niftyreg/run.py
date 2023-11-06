@@ -9,11 +9,11 @@ from bg_atlasapi import BrainGlobeAtlas
 from brainglobe_utils.general.system import delete_directory_contents
 from brainglobe_utils.image.scale import scale_and_convert_to_16_bits
 
-from brainreg.backend.niftyreg.parameters import RegistrationParams
-from brainreg.backend.niftyreg.paths import NiftyRegPaths
-from brainreg.backend.niftyreg.registration import BrainRegistration
-from brainreg.backend.niftyreg.utils import save_nii
-from brainreg.utils import preprocess
+from brainreg.core.backend.niftyreg.parameters import RegistrationParams
+from brainreg.core.backend.niftyreg.paths import NiftyRegPaths
+from brainreg.core.backend.niftyreg.registration import BrainRegistration
+from brainreg.core.backend.niftyreg.utils import save_nii
+from brainreg.core.utils import preprocess
 
 
 def crop_atlas(atlas, brain_geometry):

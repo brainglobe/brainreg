@@ -10,10 +10,10 @@ from fancylog import fancylog
 
 import brainreg as program_for_log
 from brainreg import __version__
-from brainreg.backend.niftyreg.parser import niftyreg_parse
-from brainreg.main import main as register
-from brainreg.paths import Paths
-from brainreg.utils.misc import get_arg_groups, log_metadata
+from brainreg.core.backend.niftyreg.parser import niftyreg_parse
+from brainreg.core.main import main as register
+from brainreg.core.paths import Paths
+from brainreg.core.utils.misc import get_arg_groups, log_metadata
 
 temp_dir = tempfile.TemporaryDirectory()
 temp_dir_path = temp_dir.name

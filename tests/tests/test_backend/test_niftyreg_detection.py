@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from typing import Tuple
 
-from brainreg.backend.niftyreg.niftyreg_binaries import (
+from brainreg.core.backend.niftyreg.niftyreg_binaries import (
     _CONDA_NIFTYREG_BINARY_PATH,
     get_binary,
     packaged_binaries_folder,

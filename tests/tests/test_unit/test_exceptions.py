@@ -2,8 +2,9 @@ import sys
 from pathlib import Path
 
 import pytest
-from brainreg.cli import main as brainreg_run
-from brainreg.exceptions import LoadFileException
+
+from brainreg.core.cli import main as brainreg_run
+from brainreg.core.exceptions import LoadFileException
 
 test_data_dir = Path(__file__).parent.parent.parent / "data"
 one_tiff_data_dir = test_data_dir / "input" / "exceptions" / "one_tiff"
