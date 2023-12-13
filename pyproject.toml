@@ -16,6 +16,7 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Framework :: napari",
 ]
 requires-python = ">=3.9"
 dependencies = [
@@ -37,7 +38,7 @@ napari = [
     "magicgui",
     "napari-plugin-engine >= 0.1.4",
     "napari[pyqt5]",
-    "pooch>1",                       # For sample data
+    "pooch>1",                          # For sample data
     "qtpy",
 ]
 dev = [
