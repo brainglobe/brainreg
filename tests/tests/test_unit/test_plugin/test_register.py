@@ -13,6 +13,8 @@ def test_get_available_atlases():
         "allen_mouse_50um",
         "mpin_zfish_1um",
     ]
-    
+
     for a in expected_atlases:
-        assert a in atlases.keys(), f"{a} is not in the list of expected atlases"
+        assert (
+            a in atlases.keys()
+        ), f"{a} is not in the list of expected atlases"
