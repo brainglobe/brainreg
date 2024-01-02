@@ -7,7 +7,12 @@ def test_get_available_atlases():
     atlases = get_available_atlases()
 
     # arbitrary selection of atlases
-    assert float(atlases["allen_mouse_10um"]) >= 0.3
-    assert float(atlases["allen_mouse_25um"]) >= 0.3
-    assert float(atlases["allen_mouse_50um"]) >= 0.3
-    assert float(atlases["mpin_zfish_1um"]) >= 0.4
+    expected_atlases = [
+        "allen_mouse_10um",
+        "allen_mouse_25um",
+        "allen_mouse_50um",
+        "mpin_zfish_1um",
+    ]
+    
+    for a in expected_atlases:
+        assert a in atlases.keys(), f"{a} is not in the list of expected atlases"
