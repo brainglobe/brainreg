@@ -10,7 +10,7 @@ import napari
 import numpy as np
 from bg_atlasapi import BrainGlobeAtlas
 from bg_atlasapi.list_atlases import descriptors, utils
-from brainglobe_napari_io.workflows.wholebrain_cell_reader_dir import (
+from brainglobe_napari_io.brainmapper.brainmapper_reader_dir import (
     load_registration,
 )
 from fancylog import fancylog
