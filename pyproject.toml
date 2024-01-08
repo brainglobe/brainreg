@@ -33,7 +33,7 @@ dynamic = ["version"]
 
 [project.optional-dependencies]
 napari = [
-    "brainglobe-napari-io",
+    "brainglobe-napari-io >=0.3.2",
     "brainglobe-segmentation >= 1.0.0",
     "magicgui",
     "napari-plugin-engine >= 0.1.4",
