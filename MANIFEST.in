@@ -15,7 +15,7 @@ recursive-include brainreg/core *.txt
 recursive-include brainreg/core/bin/nifty_reg/linux_x64 *
 recursive-include brainreg/core/bin/nifty_reg/osX *
 
-recursive-exclude .napari *
+recursive-exclude .napari-hub *
 recursive-exclude brainreg/core *.zip
 recursive-exclude examples *
 
