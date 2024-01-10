@@ -60,12 +60,12 @@ brainreg = "brainreg.napari:napari.yaml"
 brainreg = "brainreg.core.cli:main"
 
 [project.urls]
-homepage = "https://brainglobe.info"
-bug_tracker = "https://github.com/brainglobe/brainreg/issues"
-documentation = "https://docs.brainglobe.info/brainreg"
-source_code = "https://github.com/brainglobe/brainreg"
-user_support = "https://forum.image.sc/tag/brainglobe"
-twitter = "https://twitter.com/brain_globe"
+"Homepage" = "https://brainglobe.info"
+"Bug Tracker" = "https://github.com/brainglobe/brainreg/issues"
+"Documentation" = "https://docs.brainglobe.info/brainreg"
+"Source Code" = "https://github.com/brainglobe/brainreg"
+"User support" = "https://forum.image.sc/tag/brainglobe"
+"Twitter" = "https://twitter.com/brain_globe"
 
 [build-system]
 requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
