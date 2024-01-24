@@ -1,6 +1,6 @@
 import logging
 
-import bg_space as bg
+import brainglobe_space as bg
 import imio
 from bg_atlasapi import BrainGlobeAtlas
 from brainglobe_utils.general.system import get_num_processes
