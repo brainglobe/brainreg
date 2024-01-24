@@ -12,7 +12,6 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -21,7 +20,7 @@ classifiers = [
 requires-python = ">=3.9"
 dependencies = [
     "bg-atlasapi",
-    "bg-space",
+    "brainglobe-space>=1.0.0",
     "brainglobe-utils>=0.2.7",
     "fancylog",
     "imio",
