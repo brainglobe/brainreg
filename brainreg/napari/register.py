@@ -5,7 +5,7 @@ from collections import namedtuple
 from enum import Enum
 from typing import Dict, List, Tuple
 
-import bg_space as bg
+import brainglobe_space as bg
 import napari
 import numpy as np
 from bg_atlasapi import BrainGlobeAtlas

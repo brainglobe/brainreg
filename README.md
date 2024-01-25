@@ -88,7 +88,7 @@ The name of the resulting atlases is the string to pass with the `--atlas` flag.
 ### Input data orientation
 
 If your data does not match the BrainGlobe default orientation (the origin voxel is the most anterior, superior, left-most voxel), then you must specify the orientation by using the `--orientation` flag.
-What follows must be a string in the [bg-space](https://github.com/brainglobe/bg-space) "initials" form, to describe the origin voxel.
+What follows must be a string in the [brainglobe-space](https://github.com/brainglobe/brainglobe-space) "initials" form, to describe the origin voxel.
 
 If the origin of your data (first, top left voxel) is the most anterior, superior, left part of the brain, then the orientation string would be "asl" (anterior, superior, left), and you would use:
 

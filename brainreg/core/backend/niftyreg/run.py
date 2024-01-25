@@ -2,7 +2,7 @@ import logging
 import os
 from pathlib import Path
 
-import bg_space as bg
+import brainglobe_space as bg
 import imio
 import numpy as np
 from bg_atlasapi import BrainGlobeAtlas

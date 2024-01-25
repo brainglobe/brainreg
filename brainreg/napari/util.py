@@ -1,7 +1,7 @@
 import logging
 from dataclasses import dataclass
 
-import bg_space as bg
+import brainglobe_space as bg
 import numpy as np
 import skimage.transform
 from bg_atlasapi import BrainGlobeAtlas
