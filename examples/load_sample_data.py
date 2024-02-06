@@ -7,6 +7,7 @@ This example:
 - loads the brainreg napari registration plugin
 - opens the napari viewer
 """
+
 import napari
 import numpy as np
 from napari.layers import Layer
