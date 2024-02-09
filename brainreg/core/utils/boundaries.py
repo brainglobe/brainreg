@@ -1,9 +1,8 @@
 import logging
 
 import numpy as np
-from skimage.segmentation import find_boundaries
-
 from brainglobe_utils.image_io import load_any, to_tiff
+from skimage.segmentation import find_boundaries
 
 
 def boundaries(registered_atlas, boundaries_out_path):

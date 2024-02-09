@@ -1,5 +1,4 @@
 import numpy as np
-
 from brainglobe_utils.image_io import to_nii
 
 
