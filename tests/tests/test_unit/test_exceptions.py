@@ -49,8 +49,8 @@ def test_mismatched_dims_error(test_output_dir):
         brainreg_run()
 
     assert (
-        "File failed to load with "
-        "imio. Ensure all image files contain the "
+        "File failed to load with brainglobe_utils.image_io. "
+        "Ensure all image files contain the "
         "same number of pixels. Full traceback above." in e.value.message
     )
 

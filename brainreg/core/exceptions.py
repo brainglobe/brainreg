@@ -32,7 +32,7 @@ def search_dir_for_image_files(target_brain_path):
 class LoadFileException(Exception):
     """
     Custom exception class for errors found loading image with
-    imio.load_any (in main.py).
+    brainglobe_utils.image_io.load_any (in main.py).
 
     If the passed target brain directory contains only a single
     .tiff, alert the user.
@@ -58,8 +58,9 @@ class LoadFileException(Exception):
             )
             self.message = (
                 f"{origional_traceback}\nFile failed to load with "
-                f"imio. Ensure all image files contain the "
-                f"same number of pixels. Full traceback above."
+                "brainglobe_utils.image_io. "
+                "Ensure all image files contain the "
+                "same number of pixels. Full traceback above."
             )
 
         super().__init__(self.message)

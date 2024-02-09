@@ -21,9 +21,8 @@ requires-python = ">=3.9"
 dependencies = [
     "bg-atlasapi",
     "brainglobe-space>=1.0.0",
-    "brainglobe-utils>=0.2.7",
+    "brainglobe-utils>=0.4.0",
     "fancylog",
-    "imio",
     "numpy",
     "scikit-image",
 ]

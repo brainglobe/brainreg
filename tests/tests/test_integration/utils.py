@@ -2,7 +2,8 @@ import os
 
 import numpy as np
 import pandas as pd
-from imio.load import load_any
+
+from brainglobe_utils.image_io import load_any
 
 relative_tolerance = 0.01
 absolute_tolerance = 10
