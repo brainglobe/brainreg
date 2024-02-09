@@ -3,11 +3,11 @@ import os
 from pathlib import Path
 
 import brainglobe_space as bg
-import imio
 import numpy as np
 from bg_atlasapi import BrainGlobeAtlas
 from brainglobe_utils.general.system import delete_directory_contents
 from brainglobe_utils.image.scale import scale_and_convert_to_16_bits
+from brainglobe_utils.image_io import load_any, to_tiff
 
 from brainreg.core.backend.niftyreg.parameters import RegistrationParams
 from brainreg.core.backend.niftyreg.paths import NiftyRegPaths
@@ -72,7 +72,7 @@ def run_niftyreg(
     save_nii(reference, atlas.resolution, niftyreg_paths.brain_filtered)
     save_nii(target_brain, atlas.resolution, niftyreg_paths.downsampled_brain)
 
-    imio.to_tiff(
+    to_tiff(
         scale_and_convert_to_16_bits(target_brain),
         paths.downsampled_brain_path,
     )
@@ -125,32 +125,30 @@ def run_niftyreg(
     brain_reg.generate_deformation_field(niftyreg_paths.deformation_field)
 
     logging.info("Exporting images as tiff")
-    imio.to_tiff(
-        imio.load_any(niftyreg_paths.registered_atlas_path).astype(
+    to_tiff(
+        load_any(niftyreg_paths.registered_atlas_path).astype(
             np.uint32, copy=False
         ),
         paths.registered_atlas,
     )
 
     if save_original_orientation:
-        registered_atlas = imio.load_any(
+        registered_atlas = load_any(
             niftyreg_paths.registered_atlas_path
         ).astype(np.uint32, copy=False)
         atlas_remapped = bg.map_stack_to(
             ATLAS_ORIENTATION, DATA_ORIENTATION, registered_atlas
         ).astype(np.uint32, copy=False)
-        imio.to_tiff(
-            atlas_remapped, paths.registered_atlas_original_orientation
-        )
+        to_tiff(atlas_remapped, paths.registered_atlas_original_orientation)
 
-    imio.to_tiff(
-        imio.load_any(niftyreg_paths.registered_hemispheres_img_path).astype(
+    to_tiff(
+        load_any(niftyreg_paths.registered_hemispheres_img_path).astype(
             np.uint8, copy=False
         ),
         paths.registered_hemispheres,
     )
-    imio.to_tiff(
-        imio.load_any(niftyreg_paths.downsampled_brain_standard_space).astype(
+    to_tiff(
+        load_any(niftyreg_paths.downsampled_brain_standard_space).astype(
             np.uint16, copy=False
         ),
         paths.downsampled_brain_standard_space,
@@ -159,16 +157,16 @@ def run_niftyreg(
     del reference
     del target_brain
 
-    deformation_image = imio.load_any(niftyreg_paths.deformation_field)
-    imio.to_tiff(
+    deformation_image = load_any(niftyreg_paths.deformation_field)
+    to_tiff(
         deformation_image[..., 0, 0].astype(np.float32, copy=False),
         paths.deformation_field_0,
     )
-    imio.to_tiff(
+    to_tiff(
         deformation_image[..., 0, 1].astype(np.float32, copy=False),
         paths.deformation_field_1,
     )
-    imio.to_tiff(
+    to_tiff(
         deformation_image[..., 0, 2].astype(np.float32, copy=False),
         paths.deformation_field_2,
     )
@@ -201,7 +199,7 @@ def run_niftyreg(
             )
 
             # do the tiff part at the beginning
-            downsampled_brain = imio.load_any(
+            downsampled_brain = load_any(
                 filename,
                 scaling[1],
                 scaling[2],
@@ -219,7 +217,7 @@ def run_niftyreg(
                 downsampled_brain, atlas.resolution, tmp_downsampled_brain_path
             )
 
-            imio.to_tiff(downsampled_brain, downsampled_brain_path)
+            to_tiff(downsampled_brain, downsampled_brain_path)
 
             logging.info("Transforming to standard space")
 
@@ -227,8 +225,8 @@ def run_niftyreg(
                 tmp_downsampled_brain_path, tmp_downsampled_brain_standard_path
             )
 
-            imio.to_tiff(
-                imio.load_any(tmp_downsampled_brain_standard_path).astype(
+            to_tiff(
+                load_any(tmp_downsampled_brain_standard_path).astype(
                     np.uint16, copy=False
                 ),
                 downsampled_brain_standard_path,

@@ -1,5 +1,5 @@
-import imio
 import numpy as np
+from brainglobe_utils.image_io import to_nii
 
 
 def save_nii(stack, atlas_pixel_sizes, dest_path):
@@ -11,7 +11,7 @@ def save_nii(stack, atlas_pixel_sizes, dest_path):
     :param str dest_path: Where to save the image on the filesystem
     """
     transformation_matrix = get_transf_matrix_from_res(atlas_pixel_sizes)
-    imio.to_nii(
+    to_nii(
         stack,
         dest_path,
         scale=(

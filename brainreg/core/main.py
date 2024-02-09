@@ -1,9 +1,9 @@
 import logging
 
 import brainglobe_space as bg
-import imio
 from bg_atlasapi import BrainGlobeAtlas
 from brainglobe_utils.general.system import get_num_processes
+from brainglobe_utils.image_io import load_any
 
 from brainreg.core.backend.niftyreg.run import run_niftyreg
 from brainreg.core.exceptions import (
@@ -55,7 +55,7 @@ def main(
     logging.info("Loading raw image data")
 
     try:
-        target_brain = imio.load_any(
+        target_brain = load_any(
             target_brain_path,
             scaling[1],
             scaling[2],
