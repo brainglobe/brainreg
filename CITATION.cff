@@ -57,7 +57,6 @@ preferred-citation:
   title: "Accurate determination of marker location within whole-brain microscopy images"
   issue: 1
   volume: 12
-citation-sentence: "This project uses the brainreg pipeline, an update to aMAP, to register template brains to atlases."
 references:
   - type: article
     title: AMAP is a validated pipeline for registration and segmentation of high-resolution mouse brain data
