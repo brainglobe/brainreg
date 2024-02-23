@@ -8,8 +8,8 @@ from typing import Dict, List, Tuple
 import brainglobe_space as bg
 import napari
 import numpy as np
-from bg_atlasapi import BrainGlobeAtlas
-from bg_atlasapi.list_atlases import descriptors, utils
+from brainglobe_atlasapi import BrainGlobeAtlas
+from brainglobe_atlasapi.list_atlases import descriptors, utils
 from brainglobe_napari_io.brainmapper.brainmapper_reader_dir import (
     load_registration,
 )

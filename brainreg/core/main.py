@@ -1,7 +1,7 @@
 import logging
 
 import brainglobe_space as bg
-from bg_atlasapi import BrainGlobeAtlas
+from brainglobe_atlasapi import BrainGlobeAtlas
 from brainglobe_utils.general.system import get_num_processes
 from brainglobe_utils.image_io import load_any
 
