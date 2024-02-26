@@ -9,7 +9,7 @@
 # brainreg
 
 brainreg is an update to [amap](https://github.com/SainsburyWellcomeCentre/amap_python) (which is itself a port
-of the [original Java software](https://www.nature.com/articles/ncomms11879)) to include multiple registration backends, and to support the many atlases provided by [bg-atlasapi](https://github.com/brainglobe/bg-atlasapi).
+of the [original Java software](https://www.nature.com/articles/ncomms11879)) to include multiple registration backends, and to support the many atlases provided by [brainglobe-atlasapi](https://github.com/brainglobe/brainglobe-atlasapi).
 It also comes with an optional [napari plugin](https://github.com/brainglobe/brainreg-napari) if you'd rather use brainreg with through graphical interface.
 
 Documentation for both the command-line tool and graphical interface can be found [here](https://brainglobe.info/documentation/brainreg/index.html).
