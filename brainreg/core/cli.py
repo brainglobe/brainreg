@@ -197,14 +197,44 @@ def preprocessing_parser(parser):
 
 
 def prep_registration(args):
+    """
+    Prepares the file system for registration.
+
+    Ensures the brainreg directory exists and
+    computes the file names for additional channels
+    that should be registered (if any were passed).
+
+    Filenames for additional channels are 
+    * the file/folder name passed (if unique for all additional channels)
+    * the file/folder name prefixed with the parent folder name (otherwise)
+
+    Throws an error if multiple additional channels have
+    the same name and the same parent folder.
+
+    Parameters: 
+        args: ArgParse object. Expected attributes here are "brainreg_directory"
+        and (optionally) "additional_images".
+
+    """
     logging.debug("Making registration directory")
     ensure_directory_exists(args.brainreg_directory)
 
     additional_images_downsample = {}
+
     if args.additional_images:
-        for idx, images in enumerate(args.additional_images):
-            name = Path(images).name
-            additional_images_downsample[name] = images
+        file_names = [Path(path).name for path in args.additional_images]
+        has_duplicates = any(file_names.count(name) > 1 for name in file_names)  
+        for images in args.additional_images:
+            channel_name = Path(images).name
+            if not has_duplicates:
+                additional_images_downsample[channel_name] = images
+            else:
+                channel_name = Path(images).name
+                parent_folder = Path(images).parent.name
+                channel_name = f"{parent_folder}_{channel_name}"
+                additional_images_downsample[channel_name] = images
+
+        assert len(args.additional_images) == len(additional_images_downsample), "Something went wrong parsing additional channel names - please ensure additional channels have a unique combination of name and parent folder."
 
     return args, additional_images_downsample
 
