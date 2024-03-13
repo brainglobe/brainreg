@@ -254,9 +254,11 @@ def prep_registration(args):
 
         assert len(args.additional_images) == len(
             additional_images_to_downsample
-        ), "Something went wrong parsing additional channel names - \
-        please ensure additional channels have a unique \
-        combination of name and parent folder."
+        ), (
+            "Something went wrong parsing additional channel names - "
+            + "please ensure additional channels have a unique "
+            + "combination of name and parent folder."
+        )
 
     return args, additional_images_to_downsample
 

@@ -21,7 +21,8 @@ def test_prep_registration_different_names(mocker):
 
 def test_additional_channels_same_name_different_parent_name(mocker):
     """
-    Check that parent folder name returned if additional channel names are not unique.
+    Check that parent folder name is part of keys returned
+    if additional channel names are not unique.
     """
     args = mocker.Mock()
     args.brainreg_directory = Path.home()  # This just needs to exist
@@ -31,12 +32,14 @@ def test_additional_channels_same_name_different_parent_name(mocker):
     ]
 
     _, additional_channel_outputs = prep_registration(args)
-    assert "folder_1_duplicate_name" in additional_channel_outputs
-    assert "folder_1_duplicate_name" in additional_channel_outputs
+    assert "folder_1_duplicate_name" in additional_channel_outputs.keys()
+    assert "folder_1_duplicate_name" in additional_channel_outputs.keys()
 
 
 def test_prep_registration_same_name_same_parent_name(mocker):
-    """Check that error is thrown if both parent and additional channel name are non-unique."""
+    """Check that error is thrown if both
+    parent and additional channel name are non-unique.
+    """
     args = mocker.Mock()
     args.brainreg_directory = Path.home()  # This just needs to exist
     args.additional_images = [
@@ -46,6 +49,7 @@ def test_prep_registration_same_name_same_parent_name(mocker):
 
     with pytest.raises(
         AssertionError,
-        match=".*ensure additional channels have a unique combination of name and parent folder.*",
+        match=".*ensure additional channels have a unique "
+        + "combination of name and parent folder.*",
     ):
         prep_registration(args)
