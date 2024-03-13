@@ -219,24 +219,24 @@ def prep_registration(args):
     logging.debug("Making registration directory")
     ensure_directory_exists(args.brainreg_directory)
 
-    additional_images_downsample = {}
+    additional_images_to_downsample = {}
 
     if args.additional_images:
-        file_names = [Path(path).name for path in args.additional_images]
-        has_duplicates = any(file_names.count(name) > 1 for name in file_names)  
-        for images in args.additional_images:
-            channel_name = Path(images).name
-            if not has_duplicates:
-                additional_images_downsample[channel_name] = images
+        path_names = [Path(path).name for path in args.additional_images] #could be files or folders containing e.g. lots of 2D tiffs
+        has_duplicate_names = any(path_names.count(name) > 1 for name in path_names)  
+        for additional_channel_paths in args.additional_images:
+            channel_name = Path(additional_channel_paths).name
+            if not has_duplicate_names:
+                additional_images_to_downsample[channel_name] = additional_channel_paths
             else:
-                channel_name = Path(images).name
-                parent_folder = Path(images).parent.name
+                channel_name = Path(additional_channel_paths).name
+                parent_folder = Path(additional_channel_paths).parent.name
                 channel_name = f"{parent_folder}_{channel_name}"
-                additional_images_downsample[channel_name] = images
+                additional_images_to_downsample[channel_name] = additional_channel_paths
 
-        assert len(args.additional_images) == len(additional_images_downsample), "Something went wrong parsing additional channel names - please ensure additional channels have a unique combination of name and parent folder."
+        assert len(args.additional_images) == len(additional_images_to_downsample), "Something went wrong parsing additional channel names - please ensure additional channels have a unique combination of name and parent folder."
 
-    return args, additional_images_downsample
+    return args, additional_images_to_downsample
 
 
 def main():
