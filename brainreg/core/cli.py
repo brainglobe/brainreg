@@ -197,16 +197,70 @@ def preprocessing_parser(parser):
 
 
 def prep_registration(args):
+    """
+    Prepares the file system for registration.
+
+    Ensures the brainreg directory exists and
+    stores paths for additional channels
+    that should be registered (if any were passed)
+    into a dictionary.
+
+    Dictionary keys for additional channel paths are
+    - the file/folder name passed (if unique for all additional channels)
+    - the file/folder name prefixed with the parent folder name (otherwise)
+
+    Throws an error if multiple additional channels have
+    the same name and the same parent folder, because the dictionary
+    key is not unique in this situation.
+
+    Parameters
+    ----------
+    args : argparse.Namespace
+        ArgParse object. Expected attributes here are "brainreg_directory"
+        and (optionally) "additional_images".
+
+    Returns
+    -------
+    tuple
+        A tuple containing the `args` object
+        and the `additional_images_to_downsample` dictionary.
+
+    """
     logging.debug("Making registration directory")
     ensure_directory_exists(args.brainreg_directory)
 
-    additional_images_downsample = {}
-    if args.additional_images:
-        for idx, images in enumerate(args.additional_images):
-            name = Path(images).name
-            additional_images_downsample[name] = images
+    additional_images_to_downsample = {}
 
-    return args, additional_images_downsample
+    if args.additional_images:
+        path_names = [
+            Path(path).name for path in args.additional_images
+        ]  # could be files or folders containing e.g. lots of 2D tiffs
+        has_duplicate_names = any(
+            path_names.count(name) > 1 for name in path_names
+        )
+        for additional_channel_paths in args.additional_images:
+            channel_name = Path(additional_channel_paths).name
+            if not has_duplicate_names:
+                additional_images_to_downsample[channel_name] = (
+                    additional_channel_paths
+                )
+            else:
+                channel_name = Path(additional_channel_paths).name
+                parent_folder = Path(additional_channel_paths).parent.name
+                channel_name = f"{parent_folder}_{channel_name}"
+                additional_images_to_downsample[channel_name] = (
+                    additional_channel_paths
+                )
+
+        assert len(args.additional_images) == len(
+            additional_images_to_downsample
+        ), (
+            "Something went wrong parsing additional channel names - "
+            + "please ensure additional channels have a unique "
+            + "combination of name and parent folder."
+        )
+
+    return args, additional_images_to_downsample
 
 
 def main():

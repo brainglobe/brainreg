@@ -46,6 +46,7 @@ dev = [
     "pre-commit",
     "pytest-cov",
     "pytest-qt",
+    "pytest-mock",
     "pytest",
     "setuptools_scm",
     "tox",
