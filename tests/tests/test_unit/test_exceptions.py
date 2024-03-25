@@ -2,9 +2,9 @@ import sys
 from pathlib import Path
 
 import pytest
+from brainglobe_utils.image_io.utils import ImageIOLoadException
 
 from brainreg.core.cli import main as brainreg_run
-from brainreg.core.exceptions import LoadFileException
 
 test_data_dir = Path(__file__).parent.parent.parent / "data"
 one_tiff_data_dir = test_data_dir / "input" / "exceptions" / "one_tiff"
@@ -45,13 +45,13 @@ def test_mismatched_dims_error(test_output_dir):
     )
     sys.argv = brainreg_args
 
-    with pytest.raises(LoadFileException) as e:
+    with pytest.raises(ImageIOLoadException) as e:
         brainreg_run()
 
     assert (
-        "File failed to load with brainglobe_utils.image_io. "
-        "Ensure all image files contain the "
-        "same number of pixels. Full traceback above." in e.value.message
+        "Attempted to load an image sequence where individual 2D "
+        "images did not have the same shape. Please ensure all image "
+        "files contain the same number of pixels." in e.value.message
     )
 
 
@@ -60,7 +60,7 @@ def test_one_tiff_data_dir(test_output_dir):
     Test case in which a single 2D image is in the folder,
     which is not supported.
 
-    Some tiffs load as a zero-size array, wheras others
+    Some tiffs load as a zero-size array, whereas others
     load as a 2D array (well, 3D array with a singleton).
     Test both cases here.
     """
@@ -70,7 +70,7 @@ def test_one_tiff_data_dir(test_output_dir):
 
     sys.argv = brainreg_args
 
-    with pytest.raises(LoadFileException) as e:
+    with pytest.raises(ImageIOLoadException) as e:
         brainreg_run()
 
     assert (
