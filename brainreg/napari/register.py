@@ -13,11 +13,13 @@ from brainglobe_atlasapi.list_atlases import descriptors, utils
 from brainglobe_napari_io.brainmapper.brainmapper_reader_dir import (
     load_registration,
 )
+from brainglobe_utils.qtpy.logo import header_widget
 from fancylog import fancylog
 from magicgui import magicgui
 from napari._qt.qthreading import thread_worker
 from napari.types import LayerDataTuple
 from napari.utils.notifications import show_info
+from PyQt5.QtWidgets import QScrollArea
 
 import brainreg as program_for_log
 from brainreg.core.backend.niftyreg.run import run_niftyreg
@@ -218,6 +220,7 @@ def brainreg_register():
         check_orientation_button=dict(
             widget_type="PushButton", text="Check orientation"
         ),
+        scrollable=True,
     )
     def widget(
         viewer: napari.Viewer,
@@ -593,5 +596,20 @@ def brainreg_register():
             name="Input proj. 2",
             scale=[s1, s2],
         )
+
+    widget.native.layout().insertWidget(
+        0,
+        header_widget(
+            "brainreg",
+            "Automated 3D brain registration",
+            tutorial_file_name="tutorial-whole-brain-registration.html",
+            citation_doi="https://doi.org/10.1038/s41598-021-04676-9",
+            help_text="For help, hover the cursor over each parameter.",
+        ),
+    )
+
+    scroll = QScrollArea()
+    scroll.setWidget(widget._widget._qwidget)
+    widget._widget._qwidget = scroll
 
     return widget
