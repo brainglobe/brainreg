@@ -403,7 +403,7 @@ def brainreg_register():
             )
 
         @thread_worker
-        def run():
+        def run(n_free_cpus):
             paths = Paths(pathlib.Path(registration_output_folder))
 
             niftyreg_args = NiftyregArgs(
@@ -495,7 +495,7 @@ def brainreg_register():
                 f"{paths.registration_output_folder}"
             )
 
-        worker = run()
+        worker = run(n_free_cpus)
         if not block:
             worker.returned.connect(load_registration_as_layers)
 
