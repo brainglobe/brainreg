@@ -40,30 +40,52 @@ def initialise_brainreg(atlas_key, data_orientation_key, voxel_sizes):
     )
 
 
-def downsample_and_save_brain(img_layer, scaling):
+def downsample_and_save_brain(
+    img_layer,
+    scaling,
+    anti_aliasing=True,
+    preserve_range=True,
+    mode="constant",
+):
     first_frame_shape = skimage.transform.rescale(
-        img_layer.data[0], scaling[1:2], anti_aliasing=True
+        img_layer.data[0],
+        scaling[1:2],
+        anti_aliasing=anti_aliasing,
+        preserve_range=preserve_range,
+        mode=mode,
     ).shape
     preallocated_array = np.empty(
         (img_layer.data.shape[0], first_frame_shape[0], first_frame_shape[1])
     )
-    print("downsampling data in x, y")
+    print("Downsampling data in x, y")
     for i, img in tqdm(enumerate(img_layer.data)):
         down_xy = skimage.transform.rescale(
-            img, scaling[1:2], anti_aliasing=True
+            img,
+            scaling[1:2],
+            anti_aliasing=anti_aliasing,
+            preserve_range=preserve_range,
+            mode=mode,
         )
         preallocated_array[i] = down_xy
 
     first_ds_frame_shape = skimage.transform.rescale(
-        preallocated_array[:, :, 0], [scaling[0], 1], anti_aliasing=True
+        preallocated_array[:, :, 0],
+        [scaling[0], 1],
+        anti_aliasing=anti_aliasing,
+        preserve_range=preserve_range,
+        mode=mode,
     ).shape
     downsampled_array = np.empty(
         (first_ds_frame_shape[0], first_frame_shape[0], first_frame_shape[1])
     )
-    print("downsampling data in z")
+    print("Downsampling data in z")
     for i, img in tqdm(enumerate(preallocated_array.T)):
         down_xyz = skimage.transform.rescale(
-            img, [1, scaling[0]], anti_aliasing=True
+            img,
+            [1, scaling[0]],
+            anti_aliasing=anti_aliasing,
+            preserve_range=preserve_range,
+            mode=mode,
         )
         downsampled_array[:, :, i] = down_xyz.T
     return downsampled_array

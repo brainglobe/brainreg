@@ -127,9 +127,9 @@ def brainreg_register():
         freeform_n_steps=6,
         freeform_use_n_steps=4,
         bending_energy_weight=0.95,
-        grid_spacing=10,
-        smoothing_sigma_reference=1,
-        smoothing_sigma_floating=1,
+        grid_spacing=-10,
+        smoothing_sigma_reference=-1.0,
+        smoothing_sigma_floating=-1.0,
         histogram_n_bins_floating=128,
         histogram_n_bins_reference=128,
         debug=False,
@@ -194,15 +194,19 @@ def brainreg_register():
             label="bending_energy_weight",
         ),
         grid_spacing=dict(
-            value=DEFAULT_PARAMETERS["grid_spacing"], label="grid_spacing"
+            value=DEFAULT_PARAMETERS["grid_spacing"],
+            label="grid_spacing",
+            min=-100,
         ),
         smoothing_sigma_reference=dict(
             value=DEFAULT_PARAMETERS["smoothing_sigma_reference"],
             label="smoothing_sigma_reference",
+            min=-99.0,
         ),
         smoothing_sigma_floating=dict(
             value=DEFAULT_PARAMETERS["smoothing_sigma_floating"],
             label="smoothing_sigma_floating",
+            min=-99.0,
         ),
         histogram_n_bins_floating=dict(
             value=DEFAULT_PARAMETERS["histogram_n_bins_floating"],
@@ -239,10 +243,10 @@ def brainreg_register():
         freeform_use_n_steps: int,
         bending_energy_weight: float,
         grid_spacing: int,
-        smoothing_sigma_reference: int,
+        smoothing_sigma_reference: float,
         smoothing_sigma_floating: float,
-        histogram_n_bins_floating: float,
-        histogram_n_bins_reference: float,
+        histogram_n_bins_floating: int,
+        histogram_n_bins_reference: int,
         debug: bool,
         reset_button,
         check_orientation_button,
@@ -314,7 +318,9 @@ def brainreg_register():
         grid_spacing: int
             Sets the control point grid spacing in x, y & z.
             Smaller grid spacing allows for more local deformations
-             but increases the risk of over-fitting.
+             but increases the risk of over-fitting. Positive
+            values are interpreted as real values in mm, negative values
+            are interpreted as distance in voxels.
         smoothing_sigma_reference: int
             Adds a Gaussian smoothing to the reference image (the one being
             registered), with the sigma defined by the number. Positive
@@ -325,11 +331,11 @@ def brainreg_register():
             registered), with the sigma defined by the number. Positive
             values are interpreted as real values in mm, negative values
             are interpreted as distance in voxels.
-        histogram_n_bins_floating: float
+        histogram_n_bins_floating: int
             Number of bins used for the generation of the histograms used
             for the calculation of Normalized Mutual Information on the
             floating image
-        histogram_n_bins_reference: float
+        histogram_n_bins_reference: int
              Number of bins used for the generation of the histograms used
              for the calculation of Normalized Mutual Information on the
              reference image
@@ -404,9 +410,9 @@ def brainreg_register():
                 freeform_n_steps,
                 freeform_use_n_steps,
                 bending_energy_weight,
-                -grid_spacing,
-                -smoothing_sigma_reference,
-                -smoothing_sigma_floating,
+                grid_spacing,
+                smoothing_sigma_reference,
+                smoothing_sigma_floating,
                 histogram_n_bins_floating,
                 histogram_n_bins_reference,
                 debug=False,
@@ -463,6 +469,7 @@ def brainreg_register():
                 n_free_cpus,
                 save_original_orientation=save_original_orientation,
                 brain_geometry=brain_geometry.value,
+                debug=debug,
             )
 
             logging.info("Calculating volumes of each brain area")
