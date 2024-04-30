@@ -194,15 +194,19 @@ def brainreg_register():
             label="bending_energy_weight",
         ),
         grid_spacing=dict(
-            value=DEFAULT_PARAMETERS["grid_spacing"], label="grid_spacing"
+            value=DEFAULT_PARAMETERS["grid_spacing"],
+            label="grid_spacing",
+            min=-100,
         ),
         smoothing_sigma_reference=dict(
             value=DEFAULT_PARAMETERS["smoothing_sigma_reference"],
             label="smoothing_sigma_reference",
+            min=-99,
         ),
         smoothing_sigma_floating=dict(
             value=DEFAULT_PARAMETERS["smoothing_sigma_floating"],
             label="smoothing_sigma_floating",
+            min=-99,
         ),
         histogram_n_bins_floating=dict(
             value=DEFAULT_PARAMETERS["histogram_n_bins_floating"],
