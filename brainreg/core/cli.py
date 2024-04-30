@@ -98,7 +98,7 @@ def misc_parse(parser):
         "--n-free-cpus",
         dest="n_free_cpus",
         type=check_positive_int,
-        default=4,
+        default=2,
         help="The number of CPU cores on the machine to leave "
         "unused by the program to spare resources.",
     )

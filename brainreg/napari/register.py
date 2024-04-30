@@ -132,6 +132,7 @@ def brainreg_register():
         smoothing_sigma_floating=1,
         histogram_n_bins_floating=128,
         histogram_n_bins_reference=128,
+        n_free_cpus=2,
         debug=False,
     )
 
@@ -212,6 +213,10 @@ def brainreg_register():
             value=DEFAULT_PARAMETERS["histogram_n_bins_reference"],
             label="histogram_n_bins_reference",
         ),
+        n_free_cpus=dict(
+            value=DEFAULT_PARAMETERS["n_free_cpus"],
+            label="Free CPU cores",
+        ),
         debug=dict(
             value=DEFAULT_PARAMETERS["debug"],
             label="Debug mode",
@@ -243,6 +248,7 @@ def brainreg_register():
         smoothing_sigma_floating: float,
         histogram_n_bins_floating: float,
         histogram_n_bins_reference: float,
+        n_free_cpus: int,
         debug: bool,
         reset_button,
         check_orientation_button,
@@ -333,6 +339,8 @@ def brainreg_register():
              Number of bins used for the generation of the histograms used
              for the calculation of Normalized Mutual Information on the
              reference image
+        n_free_cpus : int
+            How many CPU cores to leave free
         debug: bool
             Activate debug mode (save intermediate steps).
         check_orientation_button:
@@ -432,7 +440,10 @@ def brainreg_register():
                 scaling,
                 load_parallel,
             ) = initialise_brainreg(
-                atlas_key.value, data_orientation, voxel_sizes
+                atlas_key.value,
+                data_orientation,
+                voxel_sizes,
+                n_free_cpus=n_free_cpus,
             )
 
             additional_images_downsample = get_additional_images_downsample(
