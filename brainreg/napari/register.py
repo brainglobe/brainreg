@@ -201,12 +201,12 @@ def brainreg_register():
         smoothing_sigma_reference=dict(
             value=DEFAULT_PARAMETERS["smoothing_sigma_reference"],
             label="smoothing_sigma_reference",
-            min=-99,
+            min=-99.0,
         ),
         smoothing_sigma_floating=dict(
             value=DEFAULT_PARAMETERS["smoothing_sigma_floating"],
             label="smoothing_sigma_floating",
-            min=-99,
+            min=-99.0,
         ),
         histogram_n_bins_floating=dict(
             value=DEFAULT_PARAMETERS["histogram_n_bins_floating"],
