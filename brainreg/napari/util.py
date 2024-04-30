@@ -9,9 +9,10 @@ from brainglobe_utils.general.system import get_num_processes
 from tqdm import tqdm
 
 
-def initialise_brainreg(atlas_key, data_orientation_key, voxel_sizes):
+def initialise_brainreg(
+    atlas_key, data_orientation_key, voxel_sizes, n_free_cpus=2
+):
     scaling_rounding_decimals = 5
-    n_free_cpus = 2
     atlas = BrainGlobeAtlas(atlas_key)
     source_space = bg.AnatomicalSpace(data_orientation_key)
 
