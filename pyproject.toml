@@ -98,6 +98,7 @@ fix = true
 [tool.tox]
 legacy_tox_ini = """
 [tox]
+requires = tox-conda
 envlist = py{38,39,310,311}
 isolated_build = True
 
@@ -109,6 +110,10 @@ python =
     3.11: py311
 
 [testenv]
+conda_deps =
+    niftyreg
+conda_channels =
+    conda-forge
 extras =
     dev
     napari
