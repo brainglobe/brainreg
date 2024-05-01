@@ -59,7 +59,10 @@ jobs:
           activate-environment: brainreg-env
       - name: Install niftyreg via conda on Apple Silicon
         if: matrix.os == 'macos-latest'
-        run: conda install niftyreg
+        run: |
+          which python
+          conda install niftyreg
+          conda install libpng
 
       - name: Setup QT libraries
         uses: tlambert03/setup-qt-libs@v1
