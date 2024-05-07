@@ -176,46 +176,47 @@ def brainreg_register():
             label="Save original orientation",
         ),
         affine_n_steps=dict(
-            value=DEFAULT_PARAMETERS["affine_n_steps"], label="affine_n_steps"
+            value=DEFAULT_PARAMETERS["affine_n_steps"],
+            label="Affine downsampling steps (calculate)",
         ),
         affine_use_n_steps=dict(
             value=DEFAULT_PARAMETERS["affine_use_n_steps"],
-            label="affine_use_n_steps",
+            label="Affine downsampling steps (use)",
         ),
         freeform_n_steps=dict(
             value=DEFAULT_PARAMETERS["freeform_n_steps"],
-            label="freeform_n_steps",
+            label="Freeform downsampling steps (calculate)",
         ),
         freeform_use_n_steps=dict(
             value=DEFAULT_PARAMETERS["freeform_use_n_steps"],
-            label="freeform_use_n_steps",
+            label="Freeform downsampling steps (use)",
         ),
         bending_energy_weight=dict(
             value=DEFAULT_PARAMETERS["bending_energy_weight"],
-            label="bending_energy_weight",
+            label="Bending energy weight",
         ),
         grid_spacing=dict(
             value=DEFAULT_PARAMETERS["grid_spacing"],
-            label="grid_spacing",
+            label="Grid spacing",
             min=-100,
         ),
         smoothing_sigma_reference=dict(
             value=DEFAULT_PARAMETERS["smoothing_sigma_reference"],
-            label="smoothing_sigma_reference",
+            label="Smoothing sigma (image)",
             min=-99.0,
         ),
         smoothing_sigma_floating=dict(
             value=DEFAULT_PARAMETERS["smoothing_sigma_floating"],
-            label="smoothing_sigma_floating",
+            label="Smoothing sigma (atlas)",
             min=-99.0,
         ),
         histogram_n_bins_floating=dict(
             value=DEFAULT_PARAMETERS["histogram_n_bins_floating"],
-            label="histogram_n_bins_floating",
+            label="Histogram bins (atlas)",
         ),
         histogram_n_bins_reference=dict(
             value=DEFAULT_PARAMETERS["histogram_n_bins_reference"],
-            label="histogram_n_bins_reference",
+            label="Histogram bins (image)",
         ),
         n_free_cpus=dict(
             value=DEFAULT_PARAMETERS["n_free_cpus"],
