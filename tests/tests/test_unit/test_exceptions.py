@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 import pytest
-from brainglobe_utils.image_io.utils import ImageIOLoadException
+from brainglobe_utils.IO.image.utils import ImageIOLoadException
 
 from brainreg.core.cli import main as brainreg_run
 

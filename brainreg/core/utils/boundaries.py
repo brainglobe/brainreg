@@ -1,7 +1,8 @@
 import logging
 
 import numpy as np
-from brainglobe_utils.image_io import load_any, to_tiff
+from brainglobe_utils.IO.image.load import load_any
+from brainglobe_utils.IO.image.save import to_tiff
 from skimage.segmentation import find_boundaries
 
 

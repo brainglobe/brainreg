@@ -7,7 +7,8 @@ import numpy as np
 from brainglobe_atlasapi import BrainGlobeAtlas
 from brainglobe_utils.general.system import delete_directory_contents
 from brainglobe_utils.image.scale import scale_and_convert_to_16_bits
-from brainglobe_utils.image_io import load_any, to_tiff
+from brainglobe_utils.IO.image.load import load_any
+from brainglobe_utils.IO.image.save import to_tiff
 
 from brainreg.core.backend.niftyreg.parameters import RegistrationParams
 from brainreg.core.backend.niftyreg.paths import NiftyRegPaths
