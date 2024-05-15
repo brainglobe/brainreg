@@ -3,7 +3,7 @@ import logging
 import brainglobe_space as bg
 from brainglobe_atlasapi import BrainGlobeAtlas
 from brainglobe_utils.general.system import get_num_processes
-from brainglobe_utils.image_io import load_any
+from brainglobe_utils.IO.image.load import load_any
 
 from brainreg.core.backend.niftyreg.run import run_niftyreg
 from brainreg.core.utils.boundaries import boundaries

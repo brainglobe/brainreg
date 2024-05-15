@@ -1,5 +1,5 @@
 import numpy as np
-from brainglobe_utils.image_io import to_nii
+from brainglobe_utils.IO.image.save import to_nii
 
 
 def save_nii(stack, atlas_pixel_sizes, dest_path):

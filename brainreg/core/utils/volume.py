@@ -9,7 +9,7 @@ import logging
 
 import numpy as np
 import pandas as pd
-from brainglobe_utils.image_io import load_any
+from brainglobe_utils.IO.image.load import load_any
 from brainglobe_utils.pandas.misc import initialise_df, safe_pandas_concat
 
 
