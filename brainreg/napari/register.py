@@ -572,47 +572,58 @@ def brainreg_register():
         data_remapped = bg.map_stack_to(
             input_orientation, atlas.orientation, data
         )
-
+        viewer.add_image(data_remapped)
         # Compute average projection of atlas and remapped data
-        u_proj = []
-        u_proja = []
+        input_projections = []
+        atlas_projections = []
         s = []
         for i in range(3):
-            u_proj.append(np.mean(data_remapped, axis=i))
-            u_proja.append(np.mean(atlas.reference, axis=i))
-            s.append(u_proja[-1].shape[0])
+            input_projections.append(np.mean(data_remapped, axis=i))
+            atlas_projections.append(np.mean(atlas.reference, axis=i))
+            s.append(atlas_projections[-1].shape[0])
         s = np.max(s)
 
         # Display all projections with somewhat consistent scaling
-        viewer.add_image(u_proja[0], name="Ref. proj. 0")
+        viewer.add_image(atlas_projections[0], name="Atlas proj 0")
         viewer.add_image(
-            u_proja[1], translate=[0, u_proja[0].shape[1]], name="Ref. proj. 1"
+            atlas_projections[1],
+            translate=[0, atlas_projections[0].shape[1]],
+            name="Atlas proj 1",
         )
         viewer.add_image(
-            u_proja[2],
-            translate=[0, u_proja[0].shape[1] + u_proja[1].shape[1]],
-            name="Ref. proj. 2",
+            atlas_projections[2],
+            translate=[
+                0,
+                atlas_projections[0].shape[1] + atlas_projections[1].shape[1],
+            ],
+            name="Atlas proj 2",
         )
 
-        s1 = u_proja[0].shape[0] / u_proj[0].shape[0]
-        s2 = u_proja[0].shape[1] / u_proj[0].shape[1]
+        s1 = atlas_projections[0].shape[0] / input_projections[0].shape[0]
+        s2 = atlas_projections[0].shape[1] / input_projections[0].shape[1]
         viewer.add_image(
-            u_proj[0], translate=[s, 0], name="Input proj. 0", scale=[s1, s2]
-        )
-        s1 = u_proja[1].shape[0] / u_proj[1].shape[0]
-        s2 = u_proja[1].shape[1] / u_proj[1].shape[1]
-        viewer.add_image(
-            u_proj[1],
-            translate=[s, u_proja[0].shape[1]],
-            name="Input proj. 1",
+            input_projections[0],
+            translate=[s, 0],
+            name="Input proj 0",
             scale=[s1, s2],
         )
-        s1 = u_proja[2].shape[0] / u_proj[2].shape[0]
-        s2 = u_proja[2].shape[1] / u_proj[2].shape[1]
+        s1 = atlas_projections[1].shape[0] / input_projections[1].shape[0]
+        s2 = atlas_projections[1].shape[1] / input_projections[1].shape[1]
         viewer.add_image(
-            u_proj[2],
-            translate=[s, u_proja[0].shape[1] + u_proja[1].shape[1]],
-            name="Input proj. 2",
+            input_projections[1],
+            translate=[s, atlas_projections[0].shape[1]],
+            name="Input proj 1",
+            scale=[s1, s2],
+        )
+        s1 = atlas_projections[2].shape[0] / input_projections[2].shape[0]
+        s2 = atlas_projections[2].shape[1] / input_projections[2].shape[1]
+        viewer.add_image(
+            input_projections[2],
+            translate=[
+                s,
+                atlas_projections[0].shape[1] + atlas_projections[1].shape[1],
+            ],
+            name="Input proj 2",
             scale=[s1, s2],
         )
 
