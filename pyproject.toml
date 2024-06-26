@@ -24,7 +24,7 @@ dependencies = [
     "brainglobe-utils>=0.5.0",
     "fancylog",
     "numpy",
-    "scikit-image",
+    "scikit-image>=0.24.0",
 ]
 dynamic = ["version"]
 
