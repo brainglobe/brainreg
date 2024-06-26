@@ -560,11 +560,11 @@ def brainreg_register():
         atlas = BrainGlobeAtlas(widget.atlas_key.value.name)
         if brain_geometry.value == "hemisphere_l":
             atlas.reference[
-                atlas.hemispheres == atlas.left_hemisphere_value
+                atlas.hemispheres == atlas.right_hemisphere_value
             ] = 0
         elif brain_geometry.value == "hemisphere_r":
             atlas.reference[
-                atlas.hemispheres == atlas.right_hemisphere_value
+                atlas.hemispheres == atlas.left_hemisphere_value
             ] = 0
         input_orientation = getattr(widget, "data_orientation").value
         data = getattr(widget, "img_layer").value.data

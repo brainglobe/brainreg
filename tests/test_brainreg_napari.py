@@ -116,6 +116,22 @@ def test_orientation_check(
     # run again and check previous output was deleted properly
     run_and_check_orientation_check(widget, viewer, brain_layer, atlas)
 
+    # "allen_mouse_50um" orientation is ASR
+    # so S-I projection will have origin AR
+    # so the columns 0 to half should be filled with zeros
+    # if we only want to register to the left hemisphere
+    # LR axis is 228
+    widget.brain_geometry.value = widget.brain_geometry.annotation[
+        "Left hemisphere"
+    ]
+    run_and_check_orientation_check(widget, viewer, brain_layer, atlas)
+    ar_projection = viewer.layers["Ref. proj. 1"].data
+    import numpy as np
+
+    assert ar_projection.shape[1] // 2 == 114
+    assert np.all(ar_projection[:, 114] == 0)
+    assert not np.all(ar_projection[:, 115] == 0)
+
 
 def run_and_check_orientation_check(widget, viewer, brain_layer, atlas):
     widget.check_orientation_button.clicked()
