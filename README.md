@@ -13,8 +13,6 @@ of the [original Java software](https://www.nature.com/articles/ncomms11879)) to
 It also comes with an optional [napari plugin](https://github.com/brainglobe/brainreg-napari) if you'd rather use brainreg with through graphical interface.
 
 Documentation for both the command-line tool and graphical interface can be found [here](https://brainglobe.info/documentation/brainreg/index.html).
-If you have any issues, please get in touch [on the forum](https://forum.image.sc/tag/brainglobe), [on Zulip](https://brainglobe.zulipchat.com/), or by
-[raising an issue](https://github.com/brainglobe/brainreg/issues).
 
 For segmentation of bulk structures in 3D space (e.g. injection sites, Neuropixels probes), please see [brainglobe-segmentation](https://github.com/brainglobe/brainglobe-segmentation).
 
@@ -135,10 +133,8 @@ Most of these images will not be visible by default - click the little eye icon 
 
 ![GIF illustration of loading brainreg output into napari for visualisation](https://raw.githubusercontent.com/brainglobe/napari-brainreg/master/resources/sample_space.gif)
 
-## Contributing
-
-Contributions to brainreg are more than welcome.
-Please see the [developers guide](https://brainglobe.info/developers/index.html).
+## Seeking help or contributing
+We are always happy to help users of our tools, and welcome any contributions. If you would like to get in contact with us for any reason, please see the [contact page of our website](https://brainglobe.info/contact.html).
 
 ## Citing brainreg
 
