@@ -79,7 +79,8 @@ def test_workflow(make_napari_viewer, tmp_path):
 
 
 @pytest.mark.xfail(
-    reason="See https://github.com/brainglobe/cellfinder/issues/443"
+    reason="See https://github.com/brainglobe/cellfinder/issues/443",
+    raises=AssertionError
 )
 def test_orientation_check(
     make_napari_viewer, tmp_path, atlas_choice="allen_mouse_50um"
