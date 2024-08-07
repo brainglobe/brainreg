@@ -80,7 +80,7 @@ def test_workflow(make_napari_viewer, tmp_path):
 
 @pytest.mark.xfail(
     reason="See https://github.com/brainglobe/cellfinder/issues/443",
-    raises=AssertionError
+    raises=AssertionError,
 )
 def test_orientation_check(
     make_napari_viewer, tmp_path, atlas_choice="allen_mouse_50um"
@@ -173,7 +173,7 @@ def check_orientation_output(viewer, brain_layer, atlas):
 
 @pytest.mark.xfail(
     reason="See https://github.com/brainglobe/cellfinder/issues/443",
-    raises=AssertionError
+    raises=AssertionError,
 )
 def test_add_layers_errors(tmp_path, make_napari_viewer):
     """
