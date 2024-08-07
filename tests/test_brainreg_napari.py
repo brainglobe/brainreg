@@ -171,7 +171,8 @@ def check_orientation_output(viewer, brain_layer, atlas):
 
 
 @pytest.mark.xfail(
-    reason="See https://github.com/brainglobe/cellfinder/issues/443"
+    reason="See https://github.com/brainglobe/cellfinder/issues/443",
+    raises=AssertionError
 )
 def test_add_layers_errors(tmp_path, make_napari_viewer):
     """
