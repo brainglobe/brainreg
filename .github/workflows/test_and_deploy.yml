@@ -52,7 +52,7 @@ jobs:
         uses: tlambert03/setup-qt-libs@v1
 
       # Helps set up VTK with a headless display
-      - uses: pyvista/setup-headless-display-action@v2
+      - uses: pyvista/setup-headless-display-action@v3
 
       - name: Run tests
         uses: neuroinformatics-unit/actions/test@v2
