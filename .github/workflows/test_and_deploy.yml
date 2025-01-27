@@ -123,12 +123,17 @@ jobs:
     steps:
       - uses: neuroinformatics-unit/actions/build_sdist_wheels@v2
 
-  deploy:
-    name: Deploy to PyPI
+  upload_all:
+    name: Publish build distributions
     needs: [build_sdist_wheel]
     if: github.event_name == 'push' && github.ref_type == 'tag'
     runs-on: ubuntu-latest
     steps:
-    - uses: neuroinformatics-unit/actions/upload_pypi@v2
+    - uses: actions/download-artifact@v4
       with:
-        secret-pypi-key: ${{ secrets.TWINE_API_KEY }}
+        name: artifact
+        path: dist
+    - uses: pypa/gh-action-pypi-publish@v1.12.3
+      with:
+        user: __token__
+        password: ${{ secrets.TWINE_API_KEY }}
