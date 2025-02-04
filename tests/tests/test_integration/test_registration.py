@@ -1,3 +1,4 @@
+import platform
 import sys
 from pathlib import Path
 
@@ -7,7 +8,13 @@ from brainreg.core.cli import main as brainreg_run
 
 from .utils import check_images_same, check_volumes_equal
 
-test_dir = "Linux"
+if platform.system() == "Darwin":
+    if platform.machine() == "x86_64":
+        test_dir = "Darwin_intel"
+    else:
+        test_dir = "Darwin_arm"
+else:
+    test_dir = platform.system()
 
 test_data_dir = Path(__file__).parent.parent.parent / "data"
 
