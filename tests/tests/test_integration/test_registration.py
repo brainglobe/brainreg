@@ -8,7 +8,14 @@ from brainreg.core.cli import main as brainreg_run
 
 from .utils import check_images_same, check_volumes_equal
 
-test_dir = platform.system()
+if platform.system() == "Darwin":
+    if platform.machine() == "x86_64":
+        test_dir = "Darwin_intel"
+    else:
+        test_dir = "Darwin_arm"
+else:
+    test_dir = platform.system()
+
 test_data_dir = Path(__file__).parent.parent.parent / "data"
 
 whole_brain_data_dir = test_data_dir / "input" / "brain"
