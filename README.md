@@ -3,7 +3,7 @@
 [![Wheel](https://img.shields.io/pypi/wheel/brainreg.svg)](https://pypi.org/project/brainreg)
 [![Development Status](https://img.shields.io/pypi/status/brainreg.svg)](https://github.com/brainglobe/brainreg)
 [![Tests](https://img.shields.io/github/actions/workflow/status/brainglobe/brainreg/test_and_deploy.yml?branch=main)](https://github.com/brainglobe/brainreg/actions)
-[![codecov](https://codecov.io/gh/brainglobe/brainreg/branch/master/graph/badge.svg?token=FbPgwBIGnd)](https://codecov.io/gh/brainglobe/brainreg)
+[![codecov](https://codecov.io/gh/brainglobe/brainreg/branch/main/graph/badge.svg?token=FbPgwBIGnd)](https://codecov.io/gh/brainglobe/brainreg)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 
 # brainreg
