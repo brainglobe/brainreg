@@ -90,7 +90,7 @@ jobs:
           init-shell: bash
           environment-name: niftyreg-env
           create-args: >-
-            python=3.13silicon mac tested with mamba due to niftyreg complications
+            python=3.13
             setuptools
             setuptools_scm
             wheel
