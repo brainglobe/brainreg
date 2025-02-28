@@ -30,14 +30,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Run across a mixture of Python versions and operating systems
+        # Run all supported Python versions on linux
+        os: [ ubuntu-latest ]
+        python-version: [ "3.11", "3.12", "3.13" ]
         include:
-        - os: ubuntu-latest
-          python-version: "3.12"
-        - os: macos-13 # just intel mac here, silicon mac tested with mamba due to niftyreg complications
-          python-version: "3.11"
-        - os: windows-latest
-          python-version: "3.10"
+          # silicon mac tested with mamba due to niftyreg complications
+          - os: windows-latest
+            python-version: "3.13"
 
     steps:
       - name: Cache brainglobe directory
@@ -90,7 +89,7 @@ jobs:
           init-shell: bash
           environment-name: niftyreg-env
           create-args: >-
-            python=3.12
+            python=3.13
             setuptools
             setuptools_scm
             wheel
