@@ -33,7 +33,6 @@ jobs:
         # Run all supported Python versions on linux
         os: [ ubuntu-latest ]
         python-version: [ "3.11", "3.12", "3.13" ]
-        # Include one windows and two macOS (intel based and arm based) runs
         include:
           # silicon mac tested with mamba due to niftyreg complications
           - os: windows-latest
