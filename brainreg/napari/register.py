@@ -146,18 +146,21 @@ def brainreg_register():
         ),
         z_pixel_um=dict(
             value=DEFAULT_PARAMETERS["z_pixel_um"],
-            label="Voxel size (z)",
+            label="Voxel size (z, um)",
             step=0.1,
+            tooltip="Voxel size in the z-dimension (micrometers).",
         ),
         y_pixel_um=dict(
             value=DEFAULT_PARAMETERS["y_pixel_um"],
-            label="Voxel size (y)",
+            label="Voxel size (y, um)",
             step=0.1,
+            tooltip="Voxel size in the y-dimension (micrometers).",
         ),
         x_pixel_um=dict(
             value=DEFAULT_PARAMETERS["x_pixel_um"],
-            label="Voxel size (x)",
+            label="Voxel size (x, um)",
             step=0.1,
+            tooltip="Voxel size in the x-dimension (micrometers).",
         ),
         data_orientation=dict(
             value=DEFAULT_PARAMETERS["data_orientation"],
