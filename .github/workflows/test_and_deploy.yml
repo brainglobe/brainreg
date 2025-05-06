@@ -47,11 +47,10 @@ jobs:
             !~/.brainglobe/atlas.tar.gz
           key: atlases
 
-      - name: Setup QT libraries
-        uses: tlambert03/setup-qt-libs@v1
-
       # Helps set up VTK with a headless display
       - uses: pyvista/setup-headless-display-action@v3
+        with:
+          qt: true
 
       - name: Run tests
         uses: neuroinformatics-unit/actions/test@v2
