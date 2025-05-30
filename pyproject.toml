@@ -98,7 +98,7 @@ fix = true
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py{311,312,313}
+envlist = py{311,312,313}, napari-dev
 isolated_build = True
 
 [gh-actions]
@@ -120,4 +120,6 @@ passenv =
     XAUTHORITY
     NUMPY_EXPERIMENTAL_ARRAY_FUNCTION
     PYVISTA_OFF_SCREEN
+deps =
+    napari-dev: git+https://github.com/napari/napari
 """
