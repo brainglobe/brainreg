@@ -10,7 +10,6 @@ from brainglobe_utils.IO.image.save import to_tiff
 
 from brainreg.core.backend.ants.paths import AntsPaths
 from brainreg.core.backend.ants.registration import AntsRegistration
-from brainreg.core.utils.misc import check_and_convert_format
 
 INTERPOLATOR_MAP = {
     "labels": "genericLabel",
@@ -34,7 +33,8 @@ def run_ants(
     n_free_cpus,
     debug=False,
     save_original_orientation=False,
-    brain_geometry="full",  # Not directly used by ANTs, but passed for consistency
+    # Not directly used by ANTs, but passed for consistency
+    brain_geometry="full",
 ):
     """
     The main function for running the ANTs registration pipeline.
@@ -161,7 +161,7 @@ def run_ants(
     # --- 7. Export Deformation Field (for visualization/analysis) ---
     logging.info("Generating and saving deformation field.")
     # ANTs warp files are 5D (x,y,z,t,vector_component). We need 3D.
-    # We load the FORWARD warp, which maps from fixed (sample) to moving (atlas)
+    # Load the FORWARD warp (fixed->moving) for the deformation field.
     warp_field_ants = ants.image_read(reg_results["fwdtransforms"][0])
     # The field gives displacement vectors, so it's already float32
     warp_field_numpy = warp_field_ants.numpy()

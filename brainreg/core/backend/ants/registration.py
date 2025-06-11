@@ -1,5 +1,6 @@
-import ants
 import logging
+
+import ants
 
 
 class AntsRegistration:
@@ -38,7 +39,7 @@ class AntsRegistration:
         verbose : bool
             Whether to print the ANTs command to the console.
         """
-        logging.info(f"--- Running ANTs registration ---")
+        logging.info("--- Running ANTs registration ---")
         logging.info(f"Transform type: {self.params.ants_transform_type}")
 
         # The core ANTs call. We pass the parameters directly.

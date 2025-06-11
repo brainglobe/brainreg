@@ -16,7 +16,8 @@ def main(
     target_brain_path,
     paths,
     voxel_sizes,
-    niftyreg_args,
+    # Change niftyreg_args to a more generic name
+    backend_args,
     preprocessing_args,
     n_free_cpus=2,
     sort_input_file=False,
@@ -71,7 +72,7 @@ def main(
             additional_images_downsample,
             data_orientation,
             atlas.metadata["orientation"],
-            niftyreg_args,
+            backend_args,
             preprocessing_args,
             scaling,
             load_parallel,
@@ -81,6 +82,28 @@ def main(
             save_original_orientation=save_original_orientation,
             brain_geometry=brain_geometry,
         )
+    elif backend == "ants":
+        from brainreg.core.backend.ants.run import run_ants
+        run_ants(
+            paths.registration_output_folder,
+            paths,
+            atlas,
+            target_brain,
+            n_processes,
+            additional_images_downsample,
+            data_orientation,
+            atlas.metadata["orientation"],
+            backend_args,
+            scaling,
+            load_parallel,
+            sort_input_file,
+            n_free_cpus,
+            debug=debug,
+            save_original_orientation=save_original_orientation,
+            brain_geometry=brain_geometry,
+        )
+    else:
+        raise NotImplementedError(f"The backend '{backend}' is not supported.")
 
     logging.info("Calculating volumes of each brain area")
     calculate_volumes(
