@@ -10,6 +10,7 @@ from fancylog import fancylog
 
 import brainreg as program_for_log
 from brainreg import __version__
+from brainreg.core.backend.ants.parser import ants_parse
 from brainreg.core.backend.niftyreg.parser import niftyreg_parse
 from brainreg.core.main import main as register
 from brainreg.core.paths import Paths
@@ -25,6 +26,7 @@ def register_cli_parser():
     parser = atlas_parse(parser)
     parser = backend_parse(parser)
     parser = niftyreg_parse(parser)
+    parser = ants_parse(parser)
     parser = pixel_parser(parser)
     parser = geometry_parser(parser)
     parser = misc_parse(parser)
@@ -87,7 +89,8 @@ def backend_parse(parser):
         dest="backend",
         type=str,
         default="niftyreg",
-        help="Registration backend to use.",
+        help="Registration backend to use.Choices: niftyreg, ants.",
+        choices=["niftyreg", "ants"],
     )
     return parser
 
@@ -285,13 +288,20 @@ def main():
 
     logging.info("Starting registration")
 
+    if args.backend == "niftyreg":
+        backend_args = arg_groups["NiftyReg registration backend options"]
+    elif args.backend == "ants":
+        backend_args = arg_groups["ANTs registration backend options"]
+    else:
+        raise ValueError(f"Unknown backend: {args.backend}")
+
     register(
         args.atlas,
         args.orientation,
         args.image_paths,
         paths,
         args.voxel_sizes,
-        arg_groups["NiftyReg registration backend options"],
+        backend_args,
         arg_groups["Pre-processing options"],
         sort_input_file=args.sort_input_file,
         n_free_cpus=args.n_free_cpus,
