@@ -84,6 +84,7 @@ def main(
         )
     elif backend == "ants":
         from brainreg.core.backend.ants.run import run_ants
+
         run_ants(
             paths.registration_output_folder,
             paths,

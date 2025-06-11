@@ -1,4 +1,3 @@
-
 def ants_parse(parser):
     ants_opt_parser = parser.add_argument_group(
         "ANTs registration backend options"

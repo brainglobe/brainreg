@@ -155,8 +155,9 @@ def run_ants(
                 spacing=spacing,
                 interpolator_type="image",
             )
-            to_tiff(warped_additional_image.numpy(),
-                    output_path_standard_space)
+            to_tiff(
+                warped_additional_image.numpy(), output_path_standard_space
+            )
 
     # --- 7. Export Deformation Field (for visualization/analysis) ---
     logging.info("Generating and saving deformation field.")

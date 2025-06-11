@@ -15,7 +15,8 @@ class AntsPaths:
         The `outprefix` will be a path inside the ants_directory.
         """
         self.registration_log = os.path.join(
-            self.ants_directory, "ants_registration.log")
+            self.ants_directory, "ants_registration.log"
+        )
         self.output_prefix = os.path.join(self.ants_directory, "ants_reg_")
 
         # ANTs generates these files based on the prefix
