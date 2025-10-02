@@ -74,8 +74,20 @@ def add_registered_image_layers(
             f"'brainreg.json' file not found in {registration_directory}"
         )
 
-    boundaries = viewer.add_layer(napari.layers.Layer.create(*layers[0]))
-    labels = viewer.add_layer(napari.layers.Layer.create(*layers[1]))
+    # Set expected default values
+    boundaries_ind = 2
+    labels_ind = 1
+
+    for idx, layer in enumerate(layers):
+        if layer[1]["name"] == "Boundaries":
+            boundaries_ind = idx
+        if layer[1]["name"] == metadata["atlas"]:
+            labels_ind = idx
+
+    boundaries = viewer.add_layer(
+        napari.layers.Layer.create(*layers[boundaries_ind])
+    )
+    labels = viewer.add_layer(napari.layers.Layer.create(*layers[labels_ind]))
     return boundaries, labels
 
 

@@ -63,9 +63,8 @@ def test_workflow(make_napari_viewer, tmp_path):
     # Check that layers have been added
     assert len(viewer.layers) == 3
     # Check layers have expected type/name
-    labels = viewer.layers[1]
+    labels = viewer.layers["example_mouse_100um"]
     assert isinstance(labels, napari.layers.Labels)
-    assert labels.name == "example_mouse_100um"
     for key in ["orientation", "atlas"]:
         # There are lots of other keys in the metadata, but just check
         # for a couple here.
@@ -73,9 +72,8 @@ def test_workflow(make_napari_viewer, tmp_path):
             key in labels.metadata
         ), f"Missing key '{key}' from labels metadata"
 
-    boundaries = viewer.layers[2]
+    boundaries = viewer.layers["Boundaries"]
     assert isinstance(boundaries, napari.layers.Image)
-    assert boundaries.name == "Boundaries"
 
 
 @pytest.mark.xfail(
