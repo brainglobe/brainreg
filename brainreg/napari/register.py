@@ -84,7 +84,9 @@ def add_registered_image_layers(
         if layer[1]["name"] == metadata["atlas"]:
             labels_ind = idx
 
-    boundaries = viewer.add_layer(napari.layers.Layer.create(*layers[boundaries_ind]))
+    boundaries = viewer.add_layer(
+        napari.layers.Layer.create(*layers[boundaries_ind])
+    )
     labels = viewer.add_layer(napari.layers.Layer.create(*layers[labels_ind]))
     return boundaries, labels
 
