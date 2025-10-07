@@ -75,7 +75,6 @@ def test_workflow(make_napari_viewer, tmp_path):
     boundaries = viewer.layers["Boundaries"]
     assert isinstance(boundaries, napari.layers.Image)
 
-
 @pytest.mark.xfail(
     reason="See https://github.com/brainglobe/cellfinder/issues/443",
     raises=AssertionError,
@@ -169,10 +168,6 @@ def check_orientation_output(viewer, brain_layer, atlas):
     assert viewer.layers[3].data.shape == (atlas.shape[0], atlas.shape[1])
 
 
-@pytest.mark.xfail(
-    reason="See https://github.com/brainglobe/cellfinder/issues/443",
-    raises=AssertionError,
-)
 def test_add_layers_errors(tmp_path, make_napari_viewer):
     """
     Check that an error is raised if registration metadata isn't present when
