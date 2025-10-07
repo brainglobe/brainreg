@@ -21,7 +21,7 @@ from napari.types import LayerDataTuple
 from napari.utils.notifications import show_info
 from qtpy.QtWidgets import QScrollArea
 
-import brainreg as program_for_log
+import brainreg as package_for_log
 from brainreg.core.backend.niftyreg.run import run_niftyreg
 from brainreg.core.paths import Paths
 from brainreg.core.utils.boundaries import boundaries
@@ -446,7 +446,7 @@ def brainreg_register():
 
             fancylog.start_logging(
                 str(paths.registration_output_folder),
-                program_for_log,
+                package=package_for_log,
                 variables=args_namedtuple,
                 verbose=niftyreg_args.debug,
                 log_header="BRAINREG LOG",

@@ -8,7 +8,7 @@ from brainglobe_utils.general.numerical import check_positive_int
 from brainglobe_utils.general.system import ensure_directory_exists
 from fancylog import fancylog
 
-import brainreg as program_for_log
+import brainreg as package_for_log
 from brainreg import __version__
 from brainreg.core.backend.niftyreg.parser import niftyreg_parse
 from brainreg.core.main import main as register
@@ -276,7 +276,7 @@ def main():
 
     fancylog.start_logging(
         paths.registration_output_folder,
-        program_for_log,
+        package=package_for_log,
         variables=[args],
         verbose=args.debug,
         log_header="BRAINREG LOG",
