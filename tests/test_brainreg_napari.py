@@ -75,6 +75,7 @@ def test_workflow(make_napari_viewer, tmp_path):
     boundaries = viewer.layers["Boundaries"]
     assert isinstance(boundaries, napari.layers.Image)
 
+
 @pytest.mark.xfail(
     reason="See https://github.com/brainglobe/cellfinder/issues/443",
     raises=AssertionError,
