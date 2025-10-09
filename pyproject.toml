@@ -42,7 +42,7 @@ dev = [
     "black",
     "check-manifest",
     "gitpython",
-    "napari[pyqt5]>=0.6.1",
+    "napari[pyqt5]>=0.6.5",
     "pre-commit",
     "pytest-cov",
     "pytest-qt",
