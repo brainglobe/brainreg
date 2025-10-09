@@ -34,7 +34,7 @@ napari = [
     "brainglobe-segmentation >= 1.0.0",
     "magicgui",
     "napari-plugin-engine >= 0.1.4",
-    "napari[pyqt5]>=0.6.1",
+    "napari[pyqt5]>=0.6.5",
     "pooch>1",                          # For sample data
     "qtpy",
 ]
@@ -42,7 +42,7 @@ dev = [
     "black",
     "check-manifest",
     "gitpython",
-    "napari[pyqt5]>=0.6.1",
+    "napari[pyqt5]>=0.6.5",
     "pre-commit",
     "pytest-cov",
     "pytest-qt",
