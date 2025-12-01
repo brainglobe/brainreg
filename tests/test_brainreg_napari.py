@@ -126,8 +126,8 @@ def test_orientation_check(
     ar_projection = viewer.layers["Ref. proj. 1"].data
     import numpy as np
 
-    midpoint = ar_projection.shape[1] // 2
-    assert midpoint == 114
+    midpoint = atlas.shape[2] // 2
+    assert ar_projection.shape[1] // 2 == midpoint
     assert np.all(ar_projection[:, midpoint-1] == 0)
     assert not np.all(ar_projection[:, midpoint] == 0)
 
