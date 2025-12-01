@@ -39,10 +39,10 @@ napari = [
     "qtpy",
 ]
 dev = [
+    "brainreg[napari]",
     "black",
     "check-manifest",
     "gitpython",
-    "napari[pyqt5]>=0.6.5",
     "pre-commit",
     "pytest-cov",
     "pytest-qt",
