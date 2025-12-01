@@ -128,7 +128,7 @@ def test_orientation_check(
 
     midpoint = atlas.shape[2] // 2
     assert ar_projection.shape[1] // 2 == midpoint
-    assert np.all(ar_projection[:, midpoint-1] == 0)
+    assert np.all(ar_projection[:, midpoint - 1] == 0)
     assert not np.all(ar_projection[:, midpoint] == 0)
 
 
