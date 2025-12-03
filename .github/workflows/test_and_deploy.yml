@@ -93,7 +93,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup mamba environment
-        uses: mamba-org/setup-micromamba@v1
+        uses: mamba-org/setup-micromamba@v2
         with:
           init-shell: bash
           environment-name: niftyreg-env

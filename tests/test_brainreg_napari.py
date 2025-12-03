@@ -76,10 +76,6 @@ def test_workflow(make_napari_viewer, tmp_path):
     assert isinstance(boundaries, napari.layers.Image)
 
 
-@pytest.mark.xfail(
-    reason="See https://github.com/brainglobe/cellfinder/issues/443",
-    raises=AssertionError,
-)
 def test_orientation_check(
     make_napari_viewer, tmp_path, atlas_choice="allen_mouse_50um"
 ):
@@ -130,9 +126,10 @@ def test_orientation_check(
     ar_projection = viewer.layers["Ref. proj. 1"].data
     import numpy as np
 
-    assert ar_projection.shape[1] // 2 == 114
-    assert np.all(ar_projection[:, 114] == 0)
-    assert not np.all(ar_projection[:, 115] == 0)
+    midpoint = atlas.shape[2] // 2
+    assert ar_projection.shape[1] // 2 == midpoint
+    assert np.all(ar_projection[:, midpoint - 1] == 0)
+    assert not np.all(ar_projection[:, midpoint] == 0)
 
 
 def run_and_check_orientation_check(widget, viewer, brain_layer, atlas):
