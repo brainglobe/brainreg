@@ -28,7 +28,7 @@ def atlas_value_to_name(atlas_value, structures_reference_df):
 
 
 def lateralise_atlas(
-    atlas, hemispheres, left_hemisphere_value=2, right_hemisphere_value=1
+    atlas, hemispheres, left_hemisphere_value=1, right_hemisphere_value=2
 ):
     atlas_left = atlas[hemispheres == left_hemisphere_value]
     atlas_right = atlas[hemispheres == right_hemisphere_value]
