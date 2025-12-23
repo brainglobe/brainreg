@@ -508,6 +508,7 @@ def brainreg_register():
                 # for all brainglobe atlases
                 left_hemisphere_value=1,
                 right_hemisphere_value=2,
+                brain_geometry=brain_geometry.value,
             )
 
             logging.info("Generating boundary image")
