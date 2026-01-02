@@ -41,17 +41,18 @@ class BrainRegistration(object):
         self.openmp_flag = "-omp {}".format(self.n_processes)
 
     def _prepare_affine_reg_cmd(self):
-        cmd = "{} {} -flo {} -ref {} -aff {} -res {}".format(
+        cmd = [
             self.reg_params.affine_reg_program_path,
-            self.reg_params.format_affine_params().strip(),
-            '"' + self.brain_of_atlas_img_path + '"',
-            '"' + self.dataset_img_path + '"',
-            '"' + self.paths.affine_matrix_path + '"',
-            '"' + self.paths.affine_registered_atlas_brain_path + '"',
-        )
+            *self.reg_params.format_affine_params().split(),
+            "-flo", self.brain_of_atlas_img_path,
+            "-ref", self.dataset_img_path,
+            "-aff", self.paths.affine_matrix_path,
+            "-res", self.paths.affine_registered_atlas_brain_path,
+        ]
 
         if self.n_processes is not None:
-            cmd += " " + self.openmp_flag
+            cmd.extend(["-omp", str(self.n_processes)])
+
         return cmd
 
     def register_affine(self):
@@ -75,18 +76,19 @@ class BrainRegistration(object):
             )
 
     def _prepare_freeform_reg_cmd(self):
-        cmd = "{} {} -aff {} -flo {} -ref {} -cpp {} -res {}".format(
+        cmd = [
             self.reg_params.freeform_reg_program_path,
-            self.reg_params.format_freeform_params().strip(),
-            '"' + self.paths.affine_matrix_path + '"',
-            '"' + self.brain_of_atlas_img_path + '"',
-            '"' + self.dataset_img_path + '"',
-            '"' + self.paths.control_point_file_path + '"',
-            '"' + self.paths.freeform_registered_atlas_brain_path + '"',
-        )
+            *self.reg_params.format_freeform_params().split(),
+            "-aff", self.paths.affine_matrix_path,
+            "-flo", self.brain_of_atlas_img_path,
+            "-ref", self.dataset_img_path,
+            "-cpp", self.paths.control_point_file_path,
+            "-res", self.paths.freeform_registered_atlas_brain_path,
+        ]
 
         if self.n_processes is not None:
-            cmd += " " + self.openmp_flag
+            cmd.extend(["-omp", str(self.n_processes)])
+
         return cmd
 
     def register_freeform(self):
@@ -114,12 +116,12 @@ class BrainRegistration(object):
         self.register_inverse_freeform()
 
     def _prepare_invert_affine_cmd(self):
-        cmd = "{} -invAff {} {}".format(
+        return [
             self.reg_params.transform_program_path,
-            '"' + self.paths.affine_matrix_path + '"',
-            '"' + self.paths.invert_affine_matrix_path + '"',
-        )
-        return cmd
+            "-invAff",
+            self.paths.affine_matrix_path,
+            self.paths.invert_affine_matrix_path,
+        ]
 
     def generate_inverse_affine(self):
         """
@@ -144,20 +146,19 @@ class BrainRegistration(object):
             )
 
     def _prepare_inverse_freeform_reg_cmd(self):
-        cmd = "{} {} -aff {} -flo {} -ref {} -cpp {} -res {}".format(
+        cmd = [
             self.reg_params.freeform_reg_program_path,
-            self.reg_params.format_freeform_params().strip(),
-            '"' + self.paths.invert_affine_matrix_path + '"',
-            '"' + self.dataset_img_path + '"',
-            '"' + self.brain_of_atlas_img_path + '"',
-            '"' + self.paths.inverse_control_point_file_path + '"',
-            '"'
-            + self.paths.inverse_freeform_registered_atlas_brain_path
-            + '"',
-        )
+            *self.reg_params.format_freeform_params().split(),
+            "-aff", self.paths.invert_affine_matrix_path,
+            "-flo", self.dataset_img_path,
+            "-ref", self.brain_of_atlas_img_path,
+            "-cpp", self.paths.inverse_control_point_file_path,
+            "-res", self.paths.inverse_freeform_registered_atlas_brain_path,
+        ]
 
         if self.n_processes is not None:
-            cmd += " " + self.openmp_flag
+            cmd.extend(["-omp", str(self.n_processes)])
+
         return cmd
 
     def register_inverse_freeform(self):
@@ -183,37 +184,34 @@ class BrainRegistration(object):
             )
 
     def _prepare_segmentation_cmd(self, floating_image_path, dest_img_path):
-        cmd = "{} {} -cpp {} -flo {} -ref {} -res {}".format(
+        return [
             self.reg_params.segmentation_program_path,
-            self.reg_params.format_segmentation_params().strip(),
-            '"' + self.paths.control_point_file_path + '"',
-            '"' + floating_image_path + '"',
-            '"' + self.dataset_img_path + '"',
-            '"' + dest_img_path + '"',
-        )
-        return cmd
+            *self.reg_params.format_segmentation_params().split(),
+            "-cpp", self.paths.control_point_file_path,
+            "-flo", floating_image_path,
+            "-ref", self.dataset_img_path,
+            "-res", dest_img_path,
+        ]
 
     def _prepare_inverse_registration_cmd(
         self, floating_image_path, dest_img_path
     ):
-        cmd = "{} {} -cpp {} -flo {} -ref {} -res {}".format(
+        return [
             self.reg_params.segmentation_program_path,
-            self.reg_params.format_segmentation_params().strip(),
-            '"' + self.paths.inverse_control_point_file_path + '"',
-            '"' + floating_image_path + '"',
-            '"' + self.brain_of_atlas_img_path + '"',
-            '"' + dest_img_path + '"',
-        )
-        return cmd
+            *self.reg_params.format_segmentation_params().split(),
+            "-cpp", self.paths.inverse_control_point_file_path,
+            "-flo", floating_image_path,
+            "-ref", self.brain_of_atlas_img_path,
+            "-res", dest_img_path,
+        ]
 
     def _prepare_deformation_field_cmd(self, deformation_field_path):
-        cmd = "{} -def {} {} -ref {}".format(
+        return [
             self.reg_params.transform_program_path,
-            '"' + self.paths.control_point_file_path + '"',
-            '"' + deformation_field_path + '"',
-            '"' + self.paths.downsampled_filtered + '"',
-        )
-        return cmd
+            "-def", self.paths.control_point_file_path,
+            deformation_field_path,
+            "-ref", self.paths.downsampled_filtered,
+        ]
 
     def segment(self):
         """
