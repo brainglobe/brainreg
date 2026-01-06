@@ -38,7 +38,7 @@ class BrainRegistration(object):
         self.hemispheres_img_path = paths.hemispheres
 
     def _prepare_openmp_thread_flag(self):
-        self.openmp_flag = "-omp {}".format(self.n_processes)
+        self.openmp_flag = ["-omp", str(self.n_processes)]
 
     def _prepare_affine_reg_cmd(self):
         cmd = [
@@ -51,7 +51,7 @@ class BrainRegistration(object):
         ]
 
         if self.n_processes is not None:
-            cmd.extend(["-omp", str(self.n_processes)])
+            cmd.extend(self.openmp_flag)
 
         return cmd
 
@@ -87,7 +87,7 @@ class BrainRegistration(object):
         ]
 
         if self.n_processes is not None:
-            cmd.extend(["-omp", str(self.n_processes)])
+            cmd.extend(self.openmp_flag)
 
         return cmd
 
@@ -157,7 +157,7 @@ class BrainRegistration(object):
         ]
 
         if self.n_processes is not None:
-            cmd.extend(["-omp", str(self.n_processes)])
+            cmd.extend(self.openmp_flag)
 
         return cmd
 
@@ -232,7 +232,7 @@ class BrainRegistration(object):
                 self.paths.segmentation_error_file,
             )
         except SafeExecuteCommandError as err:
-            SegmentationError("Segmentation failed; {}".format(err))
+            raise SegmentationError("Segmentation failed; {}".format(err))
 
     def register_hemispheres(self):
         """
@@ -254,7 +254,7 @@ class BrainRegistration(object):
                 self.paths.segmentation_error_file,
             )
         except SafeExecuteCommandError as err:
-            SegmentationError("Segmentation failed; {}".format(err))
+            raise SegmentationError("Segmentation failed; {}".format(err))
 
     def transform_to_standard_space(self, image_path, destination_path):
         """
