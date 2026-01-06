@@ -2,6 +2,7 @@ import platform
 import sys
 from pathlib import Path
 
+import pandas as pd
 import pytest
 
 from brainreg.core.cli import main as brainreg_run
@@ -26,6 +27,11 @@ whole_brain_expected_output_dir = (
 hemisphere_data_dir = test_data_dir / "input" / "hemisphere_l"
 hemisphere_expected_output_dir = (
     test_data_dir / "registration_output" / "hemisphere_l" / test_dir
+)
+
+hemisphere_r_data_dir = test_data_dir / "input" / "hemisphere_r"
+hemisphere_r_expected_output_dir = (
+    test_data_dir / "registration_output" / "hemisphere_r" / test_dir
 )
 
 whole_brain_voxel_sizes = ("50", "40", "40")
@@ -84,6 +90,32 @@ def hemisphere_output_path(tmp_path_factory):
     return test_output_dir
 
 
+@pytest.fixture(scope="session")
+def hemisphere_r_output_path(tmp_path_factory):
+    test_output_dir = tmp_path_factory.mktemp("hemisphere_r_output_dir")
+    brainreg_args = [
+        "brainreg",
+        str(hemisphere_data_dir),
+        str(test_output_dir),
+        "-v",
+        hemisphere_voxel_sizes[0],
+        hemisphere_voxel_sizes[1],
+        hemisphere_voxel_sizes[2],
+        "--orientation",
+        "asr",
+        "--n-free-cpus",
+        "0",
+        "--atlas",
+        "allen_mouse_100um",
+        "--brain_geometry",
+        "hemisphere_r",
+    ]
+
+    sys.argv = brainreg_args
+    brainreg_run()
+    return test_output_dir
+
+
 @pytest.mark.parametrize(
     "image",
     [
@@ -126,3 +158,15 @@ def test_hemisphere(hemisphere_output_path, image):
         image, hemisphere_output_path, hemisphere_expected_output_dir
     )
     check_volumes_equal(hemisphere_output_path, hemisphere_expected_output_dir)
+
+
+def test_hemisphere_r_volume(hemisphere_r_output_path):
+    volumes = pd.read_csv(
+        hemisphere_r_output_path / "volumes.csv"
+    )
+
+    assert not volumes.empty
+    assert volumes["left_volume_mm3"].sum() == pytest.approx(0.0, abs=0.001)
+    assert volumes["total_volume_mm3"].sum() == pytest.approx(
+        volumes["right_volume_mm3"].sum(), abs=0.001
+    )
