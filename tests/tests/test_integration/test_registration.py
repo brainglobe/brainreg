@@ -161,9 +161,7 @@ def test_hemisphere(hemisphere_output_path, image):
 
 
 def test_hemisphere_r_volume(hemisphere_r_output_path):
-    volumes = pd.read_csv(
-        hemisphere_r_output_path / "volumes.csv"
-    )
+    volumes = pd.read_csv(hemisphere_r_output_path / "volumes.csv")
 
     assert not volumes.empty
     assert volumes["left_volume_mm3"].sum() == pytest.approx(0.0, abs=0.001)
