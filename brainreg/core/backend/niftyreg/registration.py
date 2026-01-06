@@ -44,10 +44,14 @@ class BrainRegistration(object):
         cmd = [
             self.reg_params.affine_reg_program_path,
             *self.reg_params.format_affine_params().split(),
-            "-flo", self.brain_of_atlas_img_path,
-            "-ref", self.dataset_img_path,
-            "-aff", self.paths.affine_matrix_path,
-            "-res", self.paths.affine_registered_atlas_brain_path,
+            "-flo",
+            self.brain_of_atlas_img_path,
+            "-ref",
+            self.dataset_img_path,
+            "-aff",
+            self.paths.affine_matrix_path,
+            "-res",
+            self.paths.affine_registered_atlas_brain_path,
         ]
 
         if self.n_processes is not None:
@@ -79,11 +83,16 @@ class BrainRegistration(object):
         cmd = [
             self.reg_params.freeform_reg_program_path,
             *self.reg_params.format_freeform_params().split(),
-            "-aff", self.paths.affine_matrix_path,
-            "-flo", self.brain_of_atlas_img_path,
-            "-ref", self.dataset_img_path,
-            "-cpp", self.paths.control_point_file_path,
-            "-res", self.paths.freeform_registered_atlas_brain_path,
+            "-aff",
+            self.paths.affine_matrix_path,
+            "-flo",
+            self.brain_of_atlas_img_path,
+            "-ref",
+            self.dataset_img_path,
+            "-cpp",
+            self.paths.control_point_file_path,
+            "-res",
+            self.paths.freeform_registered_atlas_brain_path,
         ]
 
         if self.n_processes is not None:
@@ -149,11 +158,16 @@ class BrainRegistration(object):
         cmd = [
             self.reg_params.freeform_reg_program_path,
             *self.reg_params.format_freeform_params().split(),
-            "-aff", self.paths.invert_affine_matrix_path,
-            "-flo", self.dataset_img_path,
-            "-ref", self.brain_of_atlas_img_path,
-            "-cpp", self.paths.inverse_control_point_file_path,
-            "-res", self.paths.inverse_freeform_registered_atlas_brain_path,
+            "-aff",
+            self.paths.invert_affine_matrix_path,
+            "-flo",
+            self.dataset_img_path,
+            "-ref",
+            self.brain_of_atlas_img_path,
+            "-cpp",
+            self.paths.inverse_control_point_file_path,
+            "-res",
+            self.paths.inverse_freeform_registered_atlas_brain_path,
         ]
 
         if self.n_processes is not None:
@@ -187,10 +201,14 @@ class BrainRegistration(object):
         return [
             self.reg_params.segmentation_program_path,
             *self.reg_params.format_segmentation_params().split(),
-            "-cpp", self.paths.control_point_file_path,
-            "-flo", floating_image_path,
-            "-ref", self.dataset_img_path,
-            "-res", dest_img_path,
+            "-cpp",
+            self.paths.control_point_file_path,
+            "-flo",
+            floating_image_path,
+            "-ref",
+            self.dataset_img_path,
+            "-res",
+            dest_img_path,
         ]
 
     def _prepare_inverse_registration_cmd(
@@ -199,18 +217,24 @@ class BrainRegistration(object):
         return [
             self.reg_params.segmentation_program_path,
             *self.reg_params.format_segmentation_params().split(),
-            "-cpp", self.paths.inverse_control_point_file_path,
-            "-flo", floating_image_path,
-            "-ref", self.brain_of_atlas_img_path,
-            "-res", dest_img_path,
+            "-cpp",
+            self.paths.inverse_control_point_file_path,
+            "-flo",
+            floating_image_path,
+            "-ref",
+            self.brain_of_atlas_img_path,
+            "-res",
+            dest_img_path,
         ]
 
     def _prepare_deformation_field_cmd(self, deformation_field_path):
         return [
             self.reg_params.transform_program_path,
-            "-def", self.paths.control_point_file_path,
+            "-def",
+            self.paths.control_point_file_path,
             deformation_field_path,
-            "-ref", self.paths.downsampled_filtered,
+            "-ref",
+            self.paths.downsampled_filtered,
         ]
 
     def segment(self):
