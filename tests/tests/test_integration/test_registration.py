@@ -84,6 +84,34 @@ def hemisphere_output_path(tmp_path_factory):
     return test_output_dir
 
 
+@pytest.fixture(scope="session")
+def whole_brain_output_path_with_spaces(tmp_path_factory):
+    test_output_dir = tmp_path_factory.mktemp("output dir with spaces")
+
+    brainreg_args = [
+        "brainreg",
+        str(whole_brain_data_dir),
+        str(test_output_dir),
+        "-v",
+        whole_brain_voxel_sizes[0],
+        whole_brain_voxel_sizes[1],
+        whole_brain_voxel_sizes[2],
+        "--orientation",
+        "psl",
+        "--n-free-cpus",
+        "0",
+        "--atlas",
+        "allen_mouse_100um",
+        "-a",
+        str(whole_brain_data_dir),
+    ]
+
+    sys.argv = brainreg_args
+    brainreg_run()
+
+    return test_output_dir
+
+
 @pytest.mark.parametrize(
     "image",
     [
@@ -126,3 +154,21 @@ def test_hemisphere(hemisphere_output_path, image):
         image, hemisphere_output_path, hemisphere_expected_output_dir
     )
     check_volumes_equal(hemisphere_output_path, hemisphere_expected_output_dir)
+
+
+def test_whole_brain_with_space_in_output_path(
+    whole_brain_output_path_with_spaces,
+):
+    """
+    Ensure brainreg runs successfully when output path contains spaces.
+    """
+    expected_files = [
+        "registered_atlas.tiff",
+        "registered_hemispheres.tiff",
+        "downsampled_standard.tiff",
+    ]
+
+    for fname in expected_files:
+        assert (
+            whole_brain_output_path_with_spaces / fname
+        ).exists(), f"{fname} was not created"
