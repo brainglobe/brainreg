@@ -28,7 +28,7 @@ def atlas_value_to_name(atlas_value, structures_reference_df):
 
 
 def lateralise_atlas(
-    atlas, hemispheres, left_hemisphere_value=2, right_hemisphere_value=1
+    atlas, hemispheres, left_hemisphere_value=1, right_hemisphere_value=2
 ):
     atlas_left = atlas[hemispheres == left_hemisphere_value]
     atlas_right = atlas[hemispheres == right_hemisphere_value]
@@ -38,8 +38,8 @@ def lateralise_atlas(
 def get_lateralised_atlas(
     atlas_path,
     hemispheres_path,
-    left_hemisphere_value=2,
-    right_hemisphere_value=1,
+    left_hemisphere_value=1,
+    right_hemisphere_value=2,
 ):
     atlas = load_any(atlas_path)
     hemispheres = load_any(hemispheres_path)
@@ -75,17 +75,19 @@ def add_structure_volume_to_df(
         left_index = np.where(unique_vals_left == atlas_value)[0][0]
         left_volume = counts_left[left_index] * voxel_volume
     except IndexError:
-        logging.warning(
-            "Atlas value: {} not found in registered atlas. "
-            "Setting registered volume to 0.".format(atlas_value)
-        )
+        # Display a warning for missing area only on full brains.
+        if brain_geometry == "full":
+            logging.warning(
+                "Atlas value: {} not found in registered atlas. "
+                "Setting registered volume to 0.".format(atlas_value)
+            )
         left_volume = 0
 
     try:
         right_index = np.where(unique_vals_right == atlas_value)[0][0]
         right_volume = counts_right[right_index] * voxel_volume
     except IndexError:
-        # Disply a warning for missing area only on full brains.
+        # Display a warning for missing area only on full brains.
         if brain_geometry == "full":
             logging.warning(
                 "Atlas value: {} not found in registered atlas. "
@@ -118,8 +120,8 @@ def calculate_volumes(
     registered_atlas_path,
     hemispheres_path,
     output_file,
-    left_hemisphere_value=2,
-    right_hemisphere_value=1,
+    left_hemisphere_value=1,
+    right_hemisphere_value=2,
     brain_geometry="full",
 ):
     (
@@ -143,7 +145,9 @@ def calculate_volumes(
         "right_volume_mm3",
         "total_volume_mm3",
     )
-    for atlas_value in unique_vals_left:
+    unique_vals = np.union1d(unique_vals_left, unique_vals_right)
+
+    for atlas_value in unique_vals:
         if atlas_value != 0:  # outside brain
             try:
                 df = add_structure_volume_to_df(
