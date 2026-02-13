@@ -19,7 +19,7 @@ It also comes with an optional [napari plugin](https://github.com/brainglobe/bra
 
 Documentation for both the command-line tool and graphical interface can be found [here](https://brainglobe.info/documentation/brainreg/index.html).
 
-For segmentation of bulk structures in 3D space (e.g. injection sites, Neuropixels probes), please see [brainreg](https://github.com/brainglobe/brainreg).
+For segmentation of bulk structures in 3D space (e.g. injection sites, Neuropixels probes), please see [brainglobe-segmentation](https://github.com/brainglobe/brainglobe-segmentation).
 
 ## Details
 
