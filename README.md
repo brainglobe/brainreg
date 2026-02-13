@@ -1,10 +1,15 @@
 [![Python Version](https://img.shields.io/pypi/pyversions/brainreg.svg)](https://pypi.org/project/brainreg)
 [![PyPI](https://img.shields.io/pypi/v/brainreg.svg)](https://pypi.org/project/brainreg)
+[![Anaconda version](https://anaconda.org/conda-forge/brainreg/badges/version.svg)](https://anaconda.org/conda-forge/brainreg)
+[![Napari hub](https://img.shields.io/endpoint?url=https://npe2api-git-add-shields-napari.vercel.app/api/shields/brainreg)](https://napari-hub.org/plugins/brainreg.html)
 [![Wheel](https://img.shields.io/pypi/wheel/brainreg.svg)](https://pypi.org/project/brainreg)
 [![Development Status](https://img.shields.io/pypi/status/brainreg.svg)](https://github.com/brainglobe/brainreg)
 [![Tests](https://img.shields.io/github/actions/workflow/status/brainglobe/brainreg/test_and_deploy.yml?branch=main)](https://github.com/brainglobe/brainreg/actions)
 [![codecov](https://codecov.io/gh/brainglobe/brainreg/branch/main/graph/badge.svg?token=FbPgwBIGnd)](https://codecov.io/gh/brainglobe/brainreg)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+[![Code style: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/format.json)](https://github.com/astral-sh/ruff)
+[![image.sc forum](https://img.shields.io/badge/dynamic/json.svg?label=forum&url=https%3A%2F%2Fforum.image.sc%2Ftags%2Fbrainglobe.json&query=%24.topic_list.tags.0.topic_count&colorB=brightgreen&suffix=%20topics&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABPklEQVR42m3SyyqFURTA8Y2BER0TDyExZ+aSPIKUlPIITFzKeQWXwhBlQrmFgUzMMFLKZeguBu5y+//17dP3nc5vuPdee6299gohUYYaDGOyyACq4JmQVoFujOMR77hNfOAGM+hBOQqB9TjHD36xhAa04RCuuXeKOvwHVWIKL9jCK2bRiV284QgL8MwEjAneeo9VNOEaBhzALGtoRy02cIcWhE34jj5YxgW+E5Z4iTPkMYpPLCNY3hdOYEfNbKYdmNngZ1jyEzw7h7AIb3fRTQ95OAZ6yQpGYHMMtOTgouktYwxuXsHgWLLl+4x++Kx1FJrjLTagA77bTPvYgw1rRqY56e+w7GNYsqX6JfPwi7aR+Y5SA+BXtKIRfkfJAYgj14tpOF6+I46c4/cAM3UhM3JxyKsxiOIhH0IO6SH/A1Kb1WBeUjbkAAAAAElFTkSuQmCC)](https://forum.image.sc/tag/brainglobe)
+[![Bluesky](https://img.shields.io/badge/Bluesky-0285FF?logo=bluesky&logoColor=fff)](https://bsky.app/profile/brainglobe.info)
+[![Mastodon](https://img.shields.io/badge/Mastodon-6364FF?logo=mastodon&logoColor=fff)](https://mastodon.online/@brainglobe)
 
 # brainreg
 
@@ -14,7 +19,7 @@ It also comes with an optional [napari plugin](https://github.com/brainglobe/bra
 
 Documentation for both the command-line tool and graphical interface can be found [here](https://brainglobe.info/documentation/brainreg/index.html).
 
-For segmentation of bulk structures in 3D space (e.g. injection sites, Neuropixels probes), please see [brainglobe-segmentation](https://github.com/brainglobe/brainglobe-segmentation).
+For segmentation of bulk structures in 3D space (e.g. injection sites, Neuropixels probes), please see [brainreg](https://github.com/brainglobe/brainreg).
 
 ## Details
 
