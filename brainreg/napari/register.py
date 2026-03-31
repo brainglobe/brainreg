@@ -19,7 +19,7 @@ from magicgui import magicgui
 from napari._qt.qthreading import thread_worker
 from napari.types import LayerDataTuple
 from napari.utils.notifications import show_info
-from qtpy.QtWidgets import QScrollArea, QMessageBox
+from qtpy.QtWidgets import QMessageBox, QScrollArea
 
 import brainreg as package_for_log
 from brainreg.core.backend.niftyreg.run import run_niftyreg
