@@ -19,7 +19,7 @@ from magicgui import magicgui
 from napari._qt.qthreading import thread_worker
 from napari.types import LayerDataTuple
 from napari.utils.notifications import show_info
-from qtpy.QtWidgets import QScrollArea
+from qtpy.QtWidgets import QScrollArea, QMessageBox
 
 import brainreg as package_for_log
 from brainreg.core.backend.niftyreg.run import run_niftyreg
@@ -584,6 +584,23 @@ def brainreg_register():
             ] = 0
         input_orientation = getattr(widget, "data_orientation").value
         data = getattr(widget, "img_layer").value.data
+
+        # Safeguard for large datasets
+        num_voxels = np.prod(data.shape)
+        bytes_per_voxel = data.dtype.itemsize
+        estimated_gb = num_voxels * bytes_per_voxel / 1e9
+        if num_voxels > 500_000_000 or estimated_gb > 2.0:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Warning)
+            msg.setText(
+                "This dataset is very large and may cause napari to crash when rendered in 3D."
+                " Do you want to continue?"
+            )
+            msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            ret = msg.exec()
+            if ret == QMessageBox.No:
+                return
+
         # Transform data to atlas orientation from user input
         data_remapped = bg.map_stack_to(
             input_orientation, atlas.orientation, data
