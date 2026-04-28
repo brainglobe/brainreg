@@ -103,6 +103,11 @@ jobs:
             setuptools_scm
             wheel
 
+      # Helps set up VTK with a headless display
+      - uses: pyvista/setup-headless-display-action@v3
+        with:
+          qt: true
+
       - name: Install package into environment
         shell: bash -el {0}
         run: |
