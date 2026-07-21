@@ -9,7 +9,7 @@ import brainglobe_space as bg
 import napari
 import numpy as np
 from brainglobe_atlasapi import BrainGlobeAtlas
-from brainglobe_atlasapi.list_atlases import descriptors, utils
+from brainglobe_atlasapi.list_atlases import get_all_atlases_lastversions
 from brainglobe_napari_io.brainmapper.brainmapper_reader_dir import (
     load_registration,
 )
@@ -41,11 +41,7 @@ def get_available_atlases():
     Get the available brainglobe atlases
     :return: Dict of available atlases (["name":version])
     """
-    available_atlases = utils.conf_from_url(
-        descriptors.remote_url_base.format("last_versions.conf")
-    )
-    available_atlases = dict(available_atlases["atlases"])
-    return available_atlases
+    return get_all_atlases_lastversions()
 
 
 def add_registered_image_layers(
