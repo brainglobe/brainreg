@@ -55,6 +55,9 @@ def test_workflow(make_napari_viewer, tmp_path):
         pixel_widget = getattr(widget, f"{dim}_pixel_um")
         pixel_widget.value = brain_layer.metadata["voxel_size"][i]
 
+    # Set atlas to example_mouse_100um
+    widget.atlas_key.value = widget.atlas_key.annotation["example_mouse_100um"]
+
     assert len(viewer.layers) == 1
 
     # Run registration
