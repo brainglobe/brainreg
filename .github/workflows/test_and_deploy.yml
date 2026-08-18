@@ -49,7 +49,7 @@ jobs:
 
       # Helps set up VTK with a headless display
       - name: Run tests
-        uses: neuroinformatics-unit/actions/test-uv@main
+        uses: neuroinformatics-unit/actions/test-uv@34bedfdfd70c6010be02182c9ca37fae8a1fd99d # v3.0.0
         with:
           python-version: "${{ matrix.python-version }}"
           secret-codecov-token: ${{ secrets.CODECOV_TOKEN }}
@@ -58,7 +58,7 @@ jobs:
 
       - name: Run tests against napari main
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        uses: neuroinformatics-unit/actions/test-uv@main
+        uses: neuroinformatics-unit/actions/test-uv@34bedfdfd70c6010be02182c9ca37fae8a1fd99d # v3.0.0
         with:
           python-version: "${{ matrix.python-version }}"
           secret-codecov-token: ${{ secrets.CODECOV_TOKEN }}
