@@ -470,7 +470,9 @@ def brainreg_register():
 
             logging.info(f"Registering {img_layer._name}")
 
-            target_brain = downsample_and_save_brain(img_layer, scaling)
+            target_brain = downsample_and_save_brain(
+                img_layer, scaling, n_processes=n_processes
+            )
             target_brain = bg.map_stack_to(
                 data_orientation, atlas.metadata["orientation"], target_brain
             )
