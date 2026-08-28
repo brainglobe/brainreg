@@ -1,4 +1,5 @@
 import logging
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 
 import brainglobe_space as bg
@@ -44,12 +45,13 @@ def initialise_brainreg(
 def downsample_and_save_brain(
     img_layer,
     scaling,
+    n_processes=1,
     anti_aliasing=True,
     preserve_range=True,
     mode="constant",
 ):
     first_frame_shape = skimage.transform.rescale(
-        img_layer.data[0],
+        np.asarray(img_layer.data[0]),
         scaling[1:2],
         anti_aliasing=anti_aliasing,
         preserve_range=preserve_range,
@@ -59,15 +61,27 @@ def downsample_and_save_brain(
         (img_layer.data.shape[0], first_frame_shape[0], first_frame_shape[1])
     )
     print("Downsampling data in x, y")
-    for i, img in tqdm(enumerate(img_layer.data)):
-        down_xy = skimage.transform.rescale(
-            img,
+
+    def downsample_plane(i):
+        # np.asarray: a lazy (dask) layer is otherwise recomputed several times
+        # inside rescale, i.e. re-read from disk once per internal step.
+        preallocated_array[i] = skimage.transform.rescale(
+            np.asarray(img_layer.data[i]),
             scaling[1:2],
             anti_aliasing=anti_aliasing,
             preserve_range=preserve_range,
             mode=mode,
         )
-        preallocated_array[i] = down_xy
+
+    n_planes = img_layer.data.shape[0]
+    with ThreadPoolExecutor(max_workers=n_processes) as executor:
+        list(
+            tqdm(
+                executor.map(downsample_plane, range(n_planes)),
+                total=n_planes,
+                unit="plane",
+            )
+        )
 
     first_ds_frame_shape = skimage.transform.rescale(
         preallocated_array[:, :, 0],
