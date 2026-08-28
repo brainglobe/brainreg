@@ -13,7 +13,7 @@ from brainreg import __version__
 from brainreg.core.backend.niftyreg.parser import niftyreg_parse
 from brainreg.core.main import main as register
 from brainreg.core.paths import Paths
-from brainreg.core.utils.logging import quieten_dependency_logging
+from brainreg.core.utils.logging import NOISY_DEPENDENCY_LOGGERS
 from brainreg.core.utils.misc import get_arg_groups, log_metadata
 
 temp_dir = tempfile.TemporaryDirectory()
@@ -282,8 +282,8 @@ def main():
         verbose=args.debug,
         log_header="BRAINREG LOG",
         multiprocessing_aware=False,
+        third_party_loggers=NOISY_DEPENDENCY_LOGGERS,
     )
-    quieten_dependency_logging()
 
     logging.info("Starting registration")
 

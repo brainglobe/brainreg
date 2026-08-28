@@ -25,7 +25,7 @@ import brainreg as package_for_log
 from brainreg.core.backend.niftyreg.run import run_niftyreg
 from brainreg.core.paths import Paths
 from brainreg.core.utils.boundaries import boundaries
-from brainreg.core.utils.logging import quieten_dependency_logging
+from brainreg.core.utils.logging import NOISY_DEPENDENCY_LOGGERS
 from brainreg.core.utils.misc import log_metadata
 from brainreg.core.utils.volume import calculate_volumes
 from brainreg.napari.util import (
@@ -448,8 +448,8 @@ def brainreg_register():
                 verbose=niftyreg_args.debug,
                 log_header="BRAINREG LOG",
                 multiprocessing_aware=False,
+                third_party_loggers=NOISY_DEPENDENCY_LOGGERS,
             )
-            quieten_dependency_logging()
 
             voxel_sizes = z_pixel_um, x_pixel_um, y_pixel_um
 
