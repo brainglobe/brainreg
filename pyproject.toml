@@ -24,7 +24,7 @@ dependencies = [
     "brainglobe-segmentation>=1.0.0",
     "brainglobe-space>=1.0.0",
     "brainglobe-utils>=0.10.0",
-    "fancylog>=0.6.0",
+    "fancylog>=0.8.1",
     "magicgui",
     "numpy",
     "pooch>1",                          # For sample data

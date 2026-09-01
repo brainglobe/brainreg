@@ -25,6 +25,7 @@ import brainreg as package_for_log
 from brainreg.core.backend.niftyreg.run import run_niftyreg
 from brainreg.core.paths import Paths
 from brainreg.core.utils.boundaries import boundaries
+from brainreg.core.utils.logging import NOISY_DEPENDENCY_LOGGERS
 from brainreg.core.utils.misc import log_metadata
 from brainreg.core.utils.volume import calculate_volumes
 from brainreg.napari.util import (
@@ -447,6 +448,7 @@ def brainreg_register():
                 verbose=niftyreg_args.debug,
                 log_header="BRAINREG LOG",
                 multiprocessing_aware=False,
+                third_party_loggers=NOISY_DEPENDENCY_LOGGERS,
             )
 
             voxel_sizes = z_pixel_um, x_pixel_um, y_pixel_um
@@ -470,7 +472,9 @@ def brainreg_register():
 
             logging.info(f"Registering {img_layer._name}")
 
-            target_brain = downsample_and_save_brain(img_layer, scaling)
+            target_brain = downsample_and_save_brain(
+                img_layer, scaling, n_processes=n_processes
+            )
             target_brain = bg.map_stack_to(
                 data_orientation, atlas.metadata["orientation"], target_brain
             )
