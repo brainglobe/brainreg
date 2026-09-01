@@ -109,7 +109,7 @@ jobs:
       - name: Run backend tests (no conda binaries)
         shell: bash -el {0}
         run: |
-          pytest -v tests/tests/test_backend
+          pytest -v -p no:pytest-qt tests/tests/test_backend
 
       - name: Install niftyreg with conda
         shell: bash -el {0}
@@ -119,7 +119,7 @@ jobs:
       - name: Run backend tests(conda binaries present)
         shell: bash -el {0}
         run: |
-          pytest -v tests/tests/test_backend
+          pytest -v -p no:pytest-qt tests/tests/test_backend
 
   build_sdist_wheel:
     name: Build source distribution and wheel
