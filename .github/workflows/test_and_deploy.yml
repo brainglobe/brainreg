@@ -48,26 +48,23 @@ jobs:
           key: atlases
 
       # Helps set up VTK with a headless display
-      - uses: pyvista/setup-headless-display-action@5bc8de3bc71fcda7a96439571287a554901541a0 # v4
-        with:
-          qt: true
-
       - name: Run tests
-        uses: neuroinformatics-unit/actions/test@v2
+        uses: neuroinformatics-unit/actions/test-uv@34bedfdfd70c6010be02182c9ca37fae8a1fd99d # v3.0.0
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "${{ matrix.python-version }}"
           secret-codecov-token: ${{ secrets.CODECOV_TOKEN }}
-          use-xvfb: true
+          install-extras: 'dev,napari'
+          use-headless: 'true'
 
-      # Run tests on napari main if this is a scheduled run
-      - name: Run tests on napari main
-        if: github.event_name == 'schedule'
-        uses: neuroinformatics-unit/actions/test@v2
+      - name: Run tests against napari main
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        uses: neuroinformatics-unit/actions/test-uv@34bedfdfd70c6010be02182c9ca37fae8a1fd99d # v3.0.0
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "${{ matrix.python-version }}"
           secret-codecov-token: ${{ secrets.CODECOV_TOKEN }}
-          use-xvfb: true
-          tox-args: '-e napari-dev'
+          install-extras: 'dev,napari'
+          use-headless: 'true'
+          install-main-branch: 'napari/napari'
 
       - name: Notify slack on scheduled failure
         if: failure() && github.event_name == 'schedule'
@@ -103,11 +100,6 @@ jobs:
             setuptools_scm
             wheel
 
-      # Helps set up VTK with a headless display
-      - uses: pyvista/setup-headless-display-action@5bc8de3bc71fcda7a96439571287a554901541a0 # v4
-        with:
-          qt: true
-
       - name: Install package into environment
         shell: bash -el {0}
         run: |
@@ -116,7 +108,7 @@ jobs:
       - name: Run backend tests (no conda binaries)
         shell: bash -el {0}
         run: |
-          pytest -v tests/tests/test_backend
+          pytest -v -p no:pytest-qt tests/tests/test_backend
 
       - name: Install niftyreg with conda
         shell: bash -el {0}
@@ -126,7 +118,7 @@ jobs:
       - name: Run backend tests(conda binaries present)
         shell: bash -el {0}
         run: |
-          pytest -v tests/tests/test_backend
+          pytest -v -p no:pytest-qt tests/tests/test_backend
 
   build_sdist_wheel:
     name: Build source distribution and wheel
