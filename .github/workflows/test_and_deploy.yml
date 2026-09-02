@@ -100,7 +100,6 @@ jobs:
             setuptools_scm
             wheel
 
-      # Helps set up VTK with a headless display
       - name: Install package into environment
         shell: bash -el {0}
         run: |
