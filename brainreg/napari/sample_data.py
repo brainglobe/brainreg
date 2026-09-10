@@ -7,12 +7,12 @@ from napari.types import LayerData
 from skimage.io import imread
 
 # git SHA for version of sample data to download
-data_commit_sha = "72b73c52f19cee2173467ecdca60747a60e5fb95"
+data_commit_sha = "3bb18dd5ae2a85d10cafe1bfb3154b9f744a0fb3"
 
 POOCH_REGISTRY = pooch.create(
     path=pooch.os_cache("brainreg_napari"),
     base_url=(
-        "https://gin.g-node.org/cellfinder/data/"
+        "https://gin.swc.ucl.ac.uk/brainglobe/test-data/"
         f"raw/{data_commit_sha}/brainreg/"
     ),
     registry={
@@ -26,7 +26,17 @@ def load_test_brain() -> List[LayerData]:
     Load test brain data.
     """
     data = []
-    brain_zip = POOCH_REGISTRY.fetch("test_brain.zip")
+
+    try:
+        brain_zip = POOCH_REGISTRY.fetch("test_brain.zip")
+    except OSError:
+        pooch_url = POOCH_REGISTRY.base_url
+        POOCH_REGISTRY.base_url = pooch_url.replace("https://", "http://")
+
+        try:
+            brain_zip = POOCH_REGISTRY.fetch("test_brain.zip")
+        finally:
+            POOCH_REGISTRY.base_url = pooch_url
 
     with zipfile.ZipFile(brain_zip, mode="r") as archive:
         for i in range(270):
