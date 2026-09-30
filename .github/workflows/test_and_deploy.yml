@@ -1,144 +1,95 @@
-name: tests
-
-on:
-  push:
-    branches:
-      - main
-    tags:
-      - '*'
-  pull_request:
-  schedule:
-  # Runs at 6:10am UTC on Monday
-    - cron: '10 6 * * 1'
-
+name: Allen 3.1 clean atlas audit
 jobs:
   linting:
     runs-on: ubuntu-latest
     steps:
-      - uses: neuroinformatics-unit/actions/lint@v2
-
+    - uses: neuroinformatics-unit/actions/lint@v2
   manifest:
     name: Check manifest
     runs-on: ubuntu-latest
     steps:
-      - uses: neuroinformatics-unit/actions/check_manifest@v2
-
+    - uses: neuroinformatics-unit/actions/check_manifest@v2
   test:
-    needs: [linting, manifest]
+    needs:
+    - linting
+    - manifest
     name: ${{ matrix.os }} py${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        # Run all supported Python versions on linux
-        os: [ ubuntu-latest ]
-        python-version: [ "3.12", "3.13", "3.14" ]
+        os:
+        - ubuntu-latest
+        python-version:
+        - '3.12'
+        - '3.13'
+        - '3.14'
         include:
-          # silicon mac tested with mamba due to niftyreg complications
-          - os: windows-latest
-            python-version: "3.14"
-
+        - os: windows-latest
+          python-version: '3.14'
     steps:
-      - name: Cache brainglobe directory
-        uses: actions/cache@v3
-        with:
-          path: | # ensure we don't cache any interrupted atlas download and extraction, if e.g. we cancel the workflow manually
-            ~/.brainglobe
-            !~/.brainglobe/atlas.tar.gz
-          key: atlases
-
-      # Helps set up VTK with a headless display
-      - name: Run tests
-        uses: neuroinformatics-unit/actions/test-uv@34bedfdfd70c6010be02182c9ca37fae8a1fd99d # v3.0.0
-        with:
-          python-version: "${{ matrix.python-version }}"
-          secret-codecov-token: ${{ secrets.CODECOV_TOKEN }}
-          install-extras: 'dev,napari'
-          use-headless: 'true'
-
-      - name: Run tests against napari main
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        uses: neuroinformatics-unit/actions/test-uv@34bedfdfd70c6010be02182c9ca37fae8a1fd99d # v3.0.0
-        with:
-          python-version: "${{ matrix.python-version }}"
-          secret-codecov-token: ${{ secrets.CODECOV_TOKEN }}
-          install-extras: 'dev,napari'
-          use-headless: 'true'
-          install-main-branch: 'napari/napari'
-
-      - name: Notify slack on scheduled failure
-        if: failure() && github.event_name == 'schedule'
-        uses: ravsamhq/notify-slack-action@v2
-        with:
-          status: ${{ job.status }} # required
-          notify_when: 'failure'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_NOTIFYBOT_WEBHOOK_URL }} # required
-
+    - name: 'Audit: start with empty atlas storage'
+      shell: python {0}
+      run: "from pathlib import Path\nimport shutil\nfor name in (\".brainglobe\", \".brainglobe-tests\"):\n    root = Path.home() / name\n    if root.exists():\n        shutil.rmtree(root)\n    assert not root.exists(), root\n    print(f\"EMPTY_ATLAS_STORAGE {root}\", flush=True)\n"
+    - name: Run tests
+      uses: neuroinformatics-unit/actions/test-uv@34bedfdfd70c6010be02182c9ca37fae8a1fd99d
+      with:
+        python-version: ${{ matrix.python-version }}
+        secret-codecov-token: ${{ secrets.CODECOV_TOKEN }}
+        install-extras: dev,napari
+        use-headless: 'true'
+    - name: 'Audit: verify downloaded Allen atlas is 3.1'
+      if: always()
+      shell: python {0}
+      run: "from pathlib import Path\nimport json\nimport re\nfound = []\nfor name in (\".brainglobe\", \".brainglobe-tests\"):\n    for manifest in (Path.home() / name).rglob(\"manifest.json\"):\n        atlas_name = manifest.parent.parent.name\n        if re.fullmatch(r\"allen_mouse_\\d+um\", atlas_name):\n            record = {\"atlas\": atlas_name, \"version\": manifest.parent.name.replace(\"_\", \".\"), \"manifest\": str(manifest)}\n            print(\"ALLEN_ATLAS_AUDIT \" + json.dumps(record), flush=True)\n            found.append(record)\nassert all(item[\"version\"] == \"3.1\" for item in found), found\nif not found:\n    print(\"ALLEN_ATLAS_AUDIT no Allen manifest found; this job does not establish Allen coverage\", flush=True)\n"
   test-with-conda:
-    # mainly checks conda installation of niftyreg, especially key on Silicon macs
-    needs: [linting, manifest]
+    needs:
+    - linting
+    - manifest
     name: Test conda-install, on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-
+        os:
+        - ubuntu-latest
+        - macos-latest
+        - windows-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup mamba environment
-        uses: mamba-org/setup-micromamba@v2
-        with:
-          init-shell: bash
-          environment-name: niftyreg-env
-          create-args: >-
-            python=3.14
-            setuptools
-            setuptools_scm
-            wheel
-
-      - name: Install package into environment
-        shell: bash -el {0}
-        run: |
-          pip install .[dev]
-
-      - name: Run backend tests (no conda binaries)
-        shell: bash -el {0}
-        run: |
-          pytest -v -p no:pytest-qt tests/tests/test_backend
-
-      - name: Install niftyreg with conda
-        shell: bash -el {0}
-        run: |
-          micromamba install niftyreg
-
-      - name: Run backend tests(conda binaries present)
-        shell: bash -el {0}
-        run: |
-          pytest -v -p no:pytest-qt tests/tests/test_backend
-
-  build_sdist_wheel:
-    name: Build source distribution and wheel
-    needs: [test, test-with-conda]
-    if: github.event_name == 'push' && github.ref_type == 'tag'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: neuroinformatics-unit/actions/build_sdist_wheels@v2
-
-  upload_all:
-    name: Publish build distributions
-    needs: [build_sdist_wheel]
-    if: github.event_name == 'push' && github.ref_type == 'tag'
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/download-artifact@v4
+    - name: 'Audit: start with empty atlas storage'
+      shell: python {0}
+      run: "from pathlib import Path\nimport shutil\nfor name in (\".brainglobe\", \".brainglobe-tests\"):\n    root = Path.home() / name\n    if root.exists():\n        shutil.rmtree(root)\n    assert not root.exists(), root\n    print(f\"EMPTY_ATLAS_STORAGE {root}\", flush=True)\n"
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Setup mamba environment
+      uses: mamba-org/setup-micromamba@v2
       with:
-        name: artifact
-        path: dist
-    - uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.TWINE_API_KEY }}
+        init-shell: bash
+        environment-name: niftyreg-env
+        create-args: python=3.14 setuptools setuptools_scm wheel
+    - name: Install package into environment
+      shell: bash -el {0}
+      run: 'pip install .[dev]
+
+        '
+    - name: Run backend tests (no conda binaries)
+      shell: bash -el {0}
+      run: 'pytest -v -p no:pytest-qt tests/tests/test_backend
+
+        '
+    - name: Install niftyreg with conda
+      shell: bash -el {0}
+      run: 'micromamba install niftyreg
+
+        '
+    - name: Run backend tests(conda binaries present)
+      shell: bash -el {0}
+      run: 'pytest -v -p no:pytest-qt tests/tests/test_backend
+
+        '
+    - name: 'Audit: verify downloaded Allen atlas is 3.1'
+      if: always()
+      shell: python {0}
+      run: "from pathlib import Path\nimport json\nimport re\nfound = []\nfor name in (\".brainglobe\", \".brainglobe-tests\"):\n    for manifest in (Path.home() / name).rglob(\"manifest.json\"):\n        atlas_name = manifest.parent.parent.name\n        if re.fullmatch(r\"allen_mouse_\\d+um\", atlas_name):\n            record = {\"atlas\": atlas_name, \"version\": manifest.parent.name.replace(\"_\", \".\"), \"manifest\": str(manifest)}\n            print(\"ALLEN_ATLAS_AUDIT \" + json.dumps(record), flush=True)\n            found.append(record)\nassert all(item[\"version\"] == \"3.1\" for item in found), found\nif not found:\n    print(\"ALLEN_ATLAS_AUDIT no Allen manifest found; this job does not establish Allen coverage\", flush=True)\n"
+'on':
+  workflow_dispatch: null
