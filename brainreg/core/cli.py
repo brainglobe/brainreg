@@ -4,6 +4,7 @@ from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 from datetime import datetime
 from pathlib import Path
 
+from brainglobe_atlasapi import BrainGlobeAtlas
 from brainglobe_utils.general.numerical import check_positive_int
 from brainglobe_utils.general.system import ensure_directory_exists
 from fancylog import fancylog
@@ -77,6 +78,12 @@ def atlas_parse(parser):
         default="allen_mouse_25um",
         help="Brainglobe atlas to use for registration. Run 'brainglobe list' "
         "to see the atlases available.",
+    )
+    atlas_parser.add_argument(
+        "--atlas-version",
+        type=str,
+        default=None,
+        help="Atlas version to use. Defaults to AtlasAPI's usual selection.",
     )
     return parser
 
@@ -273,6 +280,8 @@ def main():
 
     paths = Paths(args.brainreg_directory)
 
+    atlas = BrainGlobeAtlas(args.atlas, version=args.atlas_version)
+    args.atlas_version = atlas.metadata["version"]
     log_metadata(paths.metadata_path, args)
 
     fancylog.start_logging(
@@ -302,6 +311,7 @@ def main():
         debug=args.debug,
         save_original_orientation=args.save_original_orientation,
         brain_geometry=args.brain_geometry,
+        atlas_version=args.atlas_version,
     )
 
     logging.info("Finished. Total time taken: %s", datetime.now() - start_time)
