@@ -26,8 +26,9 @@ def main(
     debug=False,
     save_original_orientation=False,
     brain_geometry="full",
+    atlas_version=None,
 ):
-    atlas = BrainGlobeAtlas(atlas)
+    atlas = BrainGlobeAtlas(atlas, version=atlas_version)
     source_space = bg.AnatomicalSpace(data_orientation)
 
     scaling = []
