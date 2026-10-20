@@ -18,7 +18,9 @@ from brainreg.core.utils import preprocess
 
 
 def crop_atlas(atlas, brain_geometry):
-    atlas_cropped = BrainGlobeAtlas(atlas.atlas_name)
+    atlas_cropped = BrainGlobeAtlas(
+        atlas.atlas_name, version=atlas.metadata["version"]
+    )
 
     # crop the hemisphere missing from the data
     if brain_geometry == "hemisphere_l":
