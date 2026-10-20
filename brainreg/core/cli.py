@@ -83,7 +83,7 @@ def atlas_parse(parser):
         "--atlas-version",
         type=str,
         default=None,
-        help="Atlas version to use. Defaults to AtlasAPI's usual selection.",
+        help="Atlas version to use. Defaults to the latest version.",
     )
     return parser
 
