@@ -439,7 +439,6 @@ def brainreg_register():
                 debug=False,
             )
             args_namedtuple, args_dict = get_gui_logging_args()
-            log_metadata(paths.metadata_path, args_dict)
 
             fancylog.start_logging(
                 str(paths.registration_output_folder),
@@ -465,6 +464,8 @@ def brainreg_register():
                 voxel_sizes,
                 n_free_cpus=n_free_cpus,
             )
+            args_dict["atlas_version"] = atlas.metadata["version"]
+            log_metadata(paths.metadata_path, args_dict)
 
             additional_images_downsample = get_additional_images_downsample(
                 widget

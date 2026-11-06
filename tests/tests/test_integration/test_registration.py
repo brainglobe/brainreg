@@ -55,6 +55,8 @@ def whole_brain_output_path(tmp_path_factory):
         "0",
         "--atlas",
         "allen_mouse_100um",
+        "--atlas-version",
+        "3.0",
         "-a",
         str(whole_brain_data_dir),
     ]
@@ -81,6 +83,8 @@ def hemisphere_output_path(tmp_path_factory):
         "0",
         "--atlas",
         "allen_mouse_100um",
+        "--atlas-version",
+        "3.0",
         "--brain_geometry",
         "hemisphere_l",
     ]
@@ -107,6 +111,8 @@ def hemisphere_r_output_path(tmp_path_factory):
         "0",
         "--atlas",
         "allen_mouse_100um",
+        "--atlas-version",
+        "3.0",
         "--brain_geometry",
         "hemisphere_r",
     ]
@@ -134,6 +140,8 @@ def whole_brain_output_path_with_spaces(tmp_path_factory):
         "0",
         "--atlas",
         "allen_mouse_100um",
+        "--atlas-version",
+        "3.0",
         "-a",
         str(whole_brain_data_dir),
     ]
